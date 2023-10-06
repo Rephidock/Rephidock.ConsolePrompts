@@ -10,6 +10,84 @@ namespace Rephidock.AdeptConsole;
 
 
 /// <summary>
+/// A class to create instances of <see cref="Prompt{T}"/>.
+/// </summary>
+public static class Prompt {
+
+	#region //// Generic Creation
+
+	/// <summary>
+	/// Creates a prompt for any value.
+	/// A parser is required.
+	/// </summary>
+	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	public static Prompt<T> For<T>(string? textPrompt, Func<string, IFormatProvider?, T> parser) {
+		return new Prompt<T>().SetPrompt(textPrompt).SetParser(parser);
+	}
+
+	/// <summary>
+	/// Creates a prompt for a parsable value.
+	/// </summary>
+	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	public static Prompt<T> For<T>(string? textPrompt = null) where T : IParsable<T> {
+		return new Prompt<T>().SetPrompt(textPrompt).SetParser(T.Parse);
+	}
+
+	/// <summary>
+	/// Creates a prompt for a numeric value.
+	/// </summary>
+	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	public static Prompt<T> For<T>(string? textPrompt, bool allowInfinite, bool allowNan)
+	where T : struct, INumber<T>
+	{
+
+		Prompt<T> ret = For<T>(textPrompt);
+
+		if (!allowInfinite) ret.DisallowInfinities();
+		if (!allowNan) ret.DisallowNaN();
+
+		return ret;
+	}
+
+	/// <summary>Creates a prompt for a string.</summary>
+	/// <returns>A new <see cref="Prompt{string}"/></returns>
+	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
+
+		// Define parsers
+		static string PassthroughParser(string input, IFormatProvider? _) => input;
+		static string TrimParser(string input, IFormatProvider? _) => input.Trim();
+
+		// Choose the parser
+		Func<string, IFormatProvider?, string> chosenParser = trim ? TrimParser : PassthroughParser;
+
+		// Create Prompt
+		return For<string>(textPrompt, chosenParser).SetParserFormat(null);
+	}
+
+	/// <summary>
+	/// Creates a prompt for a boolean
+	/// that asks for a one character (y/n)
+	/// </summary>
+	/// <returns>A new <see cref="Prompt{bool}"/></returns>
+	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
+
+		// Define parser
+		bool BoolCharParser(string input, IFormatProvider? _) {
+			if (input.Length == 0) return defaultValue;
+			if (input.Length > 1) throw new ArgumentException("Input was not of correct length");
+			if (input[0] == 'Y' || input[0] == 'y' || input[0] == '1') return true;
+			return false;
+		}
+
+		return For<bool>(textPrompt, BoolCharParser).SetParserFormat(null);
+	}
+
+	#endregion
+
+}
+
+
+/// <summary>
 /// A textPrompt for a value to be shown to the user.
 /// </summary>
 public sealed class Prompt<T> {
@@ -191,7 +269,5 @@ public sealed class Prompt<T> {
 		} while (true);
 
 	}
-
-
 
 }
