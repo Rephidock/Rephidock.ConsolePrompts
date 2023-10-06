@@ -103,7 +103,7 @@ public sealed class Prompt<T> {
 
 	/// <summary>Removes validators from this textPrompt.</summary>
 	/// <returns>this</returns>
-	public Prompt<T> RemoveValidator() {
+	public Prompt<T> RemoveValidators() {
 		ThrowingValidator = null;
 		return this;
 	}
