@@ -65,16 +65,20 @@ public sealed class Prompt<T> {
 	/// throw an exception. See <see cref="AddValidator(Action{T})"/> 
 	/// for list of exceptions caught during user input.
 	/// </summary>
+	/// <exception cref="ArgumentNullException">throwingParser is null</exception>
 	/// <returns>this</returns>
-	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser, IFormatProvider? formatProvider) {
+	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser) {
+
+		ArgumentNullException.ThrowIfNull(throwingParser, nameof(throwingParser));
+
 		ThrowingParser = throwingParser;
-		this.formatProvider = formatProvider;
 		return this;
 	}
 
-	/// <inheritdoc cref="SetParser(Func{string, IFormatProvider?, T}, IFormatProvider?)"/>
-	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser) {
-		ThrowingParser = throwingParser;
+	/// <inheritdoc cref="SetParser(Func{string, IFormatProvider?, T})"/>
+	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser, IFormatProvider? formatProvider) {
+		SetParser(throwingParser);
+		SetParserFormat(formatProvider);
 		return this;
 	}
 
@@ -121,6 +125,8 @@ public sealed class Prompt<T> {
 	/// <returns>this</returns>
 	[SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Explicitly show a new delegate is created")]
 	public Prompt<T> AddValidator(Action<T> throwingValidator) {
+
+		if (throwingValidator is null) return this;
 
 		if (ThrowingValidator is null) {
 			ThrowingValidator = throwingValidator;
