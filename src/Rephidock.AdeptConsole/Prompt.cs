@@ -14,7 +14,7 @@ namespace Rephidock.AdeptConsole;
 /// </summary>
 public sealed class Prompt<T> {
 
-	#region //// Prompt
+	#region //// Text Prompt
 
 	/// <summary>
 	/// Text prompt to be tweaked and displayed,
@@ -86,7 +86,7 @@ public sealed class Prompt<T> {
 	}
 
 	/// <summary>
-	/// Default format provided used by the parser.
+	/// Default format used by the parser.
 	/// Is <see cref="CultureInfo.InvariantCulture"/>
 	/// </summary>
 	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
