@@ -65,21 +65,40 @@ public static class Prompt {
 	}
 
 	/// <summary>
-	/// Creates a prompt for a boolean
-	/// that asks for a one character (y/n)
+	/// Creates a prompt for a boolean.
+	/// Supports one character input (y/n).
 	/// </summary>
 	/// <returns>A new <see cref="Prompt{bool}"/></returns>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
 
 		// Define parser
-		bool BoolCharParser(string input, IFormatProvider? _) {
+		bool BoolParser(string input, IFormatProvider? _) {
+
+			// Trim input
+			input = input.Trim();
+
+			// Check for default return
 			if (input.Length == 0) return defaultValue;
-			if (input.Length > 1) throw new ArgumentException("Input was not of correct length");
-			if (input[0] == 'Y' || input[0] == 'y' || input[0] == '1') return true;
-			return false;
+
+			// Try default parser first
+			if (bool.TryParse(input, out bool defaultParserResult)) {
+				return defaultParserResult;
+			};
+
+			// Check for valid single characters
+			if (input.Length == 1) {
+
+				char inputChar = char.ToUpper(input[0]);
+
+				if (input[0] == 'Y' || input[0] == 'T' || input[0] == '1') return true;
+				if (input[0] == 'N' || input[0] == 'F' || input[0] == '0') return false;
+			}
+
+			// Throw if all other fails
+			throw new FormatException();
 		}
 
-		return For<bool>(textPrompt, BoolCharParser).SetParserFormat(null);
+		return For<bool>(textPrompt, BoolParser).SetParserFormat(null);
 	}
 
 	#endregion
