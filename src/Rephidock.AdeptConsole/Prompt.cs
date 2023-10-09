@@ -88,7 +88,7 @@ public static class Prompt {
 
 
 /// <summary>
-/// A textPrompt for a value to be shown to the user.
+/// A prompt (query) for a value to be shown to the user.
 /// </summary>
 public sealed class Prompt<T> {
 
