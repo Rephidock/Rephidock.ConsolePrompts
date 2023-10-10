@@ -7,7 +7,8 @@ public enum PromptHintLevel {
 	None,
 	Minimal,
 	Standard,
-	Verbose
+	Verbose,
+	Max
 }
 
 

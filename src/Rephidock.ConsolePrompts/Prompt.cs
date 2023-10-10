@@ -181,6 +181,20 @@ public sealed class Prompt<T> {
 		return AddHint(new PromptHint { Text = hint, Level = minRequiredLevel });
 	}
 
+	/// <summary>
+	/// Removes the last added hint.
+	/// Does nothing if no hints were previously added.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompt<T> RemoveLastHint() {
+		
+		if (hints.Count > 0) {
+			hints.RemoveAt(hints.Count - 1);
+		}
+
+		return this;
+	}
+
 	#endregion
 
 	#region //// Parser
