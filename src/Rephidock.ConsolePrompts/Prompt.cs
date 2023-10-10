@@ -43,8 +43,12 @@ public static class Prompt {
 
 		Prompt<T> ret = For<T>(textPrompt);
 
-		if (!allowInfinite) ret.DisallowInfinities();
-		if (!allowNan) ret.DisallowNaN();
+		if (!allowInfinite && !allowNan) {
+			ret.ForceFinite();
+		} else {
+			if (!allowInfinite) ret.DisallowInfinities();
+			if (!allowNan) ret.DisallowNaN();
+		}
 
 		return ret;
 	}
