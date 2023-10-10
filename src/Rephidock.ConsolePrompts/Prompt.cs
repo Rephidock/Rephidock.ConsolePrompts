@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 using System.Numerics;
 using System.Globalization;
@@ -114,27 +113,18 @@ public sealed class Prompt<T> {
 
 	#region //// Text Prompt
 
-	/// <summary>
-	/// Text prompt to be tweaked and displayed,
-	/// or <see langword="null"/> for default textPrompt with no tweaks.
-	/// </summary>
+	/// <summary>Text prompt to be tweaked and displayed.</summary>
 	string? textPrompt = null;
 
 	/// <summary>
-	/// Default display textPrompt.
-	/// Does not get tweaked.
-	/// </summary>
-	public const string DefaultTextPrompt = "> ";
-
-	/// <summary>
 	/// Sets the text prompt to be displayed on query.
-	/// If the <paramref name="textPrompt"/> is whitespace, empty or <see langword="null"/>,
-	/// the <see cref="DefaultTextPrompt"/> is used.
+	/// If text prompt is empty, whitespace or <see langword="null"/>,
+	/// <see cref="PromptStyler.NullPromptDisplay"/> will be displayed.
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> SetPrompt(string? textPrompt) {
 
-		if (IsPromptDefault(textPrompt)) {
+		if (string.IsNullOrWhiteSpace(textPrompt)) {
 			this.textPrompt = null;
 		} else {
 			this.textPrompt = textPrompt;
@@ -143,25 +133,21 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
-	/// <summary>Returns true for default prompts</summary>
-	static bool IsPromptDefault(string? textPrompt) {
-		return string.IsNullOrWhiteSpace(textPrompt) || textPrompt == DefaultTextPrompt;
-	}
+	/// <summary>
+	/// <para>
+	/// Removes text prompt from the current <seealso cref="Prompt"/>.
+	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
+	/// </para>
+	/// See also: <seealso cref="PromptStyler.NullPromptDisplay"/>.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompt<T> RemovePrompt() => SetPrompt(null);
 
 	#endregion
 
 	#region //// Hints
 
-	PromptHintLevel hintLevel = DefaultHintLevel;
-
-	public const PromptHintLevel DefaultHintLevel = PromptHintLevel.Standard;
-
 	readonly List<PromptHint> hints = new();
-
-	public Prompt<T> SetHintLevel(PromptHintLevel level) {
-		hintLevel = level;
-		return this;
-	}
 
 	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
 
@@ -175,15 +161,6 @@ public sealed class Prompt<T> {
 
 		hints.Add(new PromptHint { Text = hint, Level = minRequiredLevel});
 		return this;
-	}
-
-	string GetHintsString() {
-
-		var hintStrings = hints
-			.Where(hint => hintLevel >= hint.Level)
-			.Select(hint => hint.Text);
-
-		return string.Join(", ", hintStrings);
 	}
 
 	#endregion
@@ -288,30 +265,13 @@ public sealed class Prompt<T> {
 
 		do {
 
-			// Add hints to textPrompt
-			string tweakedPrompt;
-			if (IsPromptDefault(textPrompt)) {
+			// Stylize prompt text and add hints
+			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hints);
 
-				// Do not add hints to default prompt
-				tweakedPrompt = DefaultTextPrompt;
-
-			} else {
-
-				string hintsString = GetHintsString();
-
-				if (string.IsNullOrWhiteSpace(hintsString)) {
-					tweakedPrompt = $"{textPrompt}: ";
-				} else {
-					tweakedPrompt = $"{textPrompt} [{hintsString}]: ";
-				}
-
-			}
-
-			
 			try {
 
 				// Read line
-				Console.Write(tweakedPrompt);
+				Console.Write(styledPromptText);
 				string input = Console.ReadLine() ?? "";
 
 				// Parse and validate
