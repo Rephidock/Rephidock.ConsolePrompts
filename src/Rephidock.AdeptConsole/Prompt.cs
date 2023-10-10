@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
-using System.Text;
 using System.Numerics;
 using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
@@ -142,12 +143,48 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
-	/// <summary>
-	/// Returns true for default prompts
-	/// </summary>
+	/// <summary>Returns true for default prompts</summary>
 	static bool IsPromptDefault(string? textPrompt) {
 		return string.IsNullOrWhiteSpace(textPrompt) || textPrompt == DefaultTextPrompt;
-	} 
+	}
+
+	#endregion
+
+	#region //// Hints
+
+	PromptHintLevel hintLevel = DefaultHintLevel;
+
+	public const PromptHintLevel DefaultHintLevel = PromptHintLevel.Standard;
+
+	readonly List<PromptHint> hints = new();
+
+	public Prompt<T> SetHintLevel(PromptHintLevel level) {
+		hintLevel = level;
+		return this;
+	}
+
+	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
+
+		if (minRequiredLevel == PromptHintLevel.None) {
+			throw new ArgumentException(
+					$"Hint level {PromptHintLevel.None} is reserved to disable all hints. " +
+					$"Please use {PromptHintLevel.Minimal} or higher.",
+					nameof(minRequiredLevel)
+				);
+		}
+
+		hints.Add(new PromptHint { Text = hint, Level = minRequiredLevel});
+		return this;
+	}
+
+	string GetHintsString() {
+
+		var hintStrings = hints
+			.Where(hint => hintLevel >= hint.Level)
+			.Select(hint => hint.Text);
+
+		return string.Join(", ", hintStrings);
+	}
 
 	#endregion
 
@@ -251,9 +288,26 @@ public sealed class Prompt<T> {
 
 		do {
 
-			// Tweak the textPrompt
-			string tweakedPrompt = IsPromptDefault(textPrompt) ? DefaultTextPrompt : $"{textPrompt}: ";
+			// Add hints to textPrompt
+			string tweakedPrompt;
+			if (IsPromptDefault(textPrompt)) {
 
+				// Do not add hints to default prompt
+				tweakedPrompt = DefaultTextPrompt;
+
+			} else {
+
+				string hintsString = GetHintsString();
+
+				if (string.IsNullOrWhiteSpace(hintsString)) {
+					tweakedPrompt = $"{textPrompt}: ";
+				} else {
+					tweakedPrompt = $"{textPrompt} [{hintsString}]: ";
+				}
+
+			}
+
+			
 			try {
 
 				// Read line
