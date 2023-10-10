@@ -149,18 +149,22 @@ public sealed class Prompt<T> {
 
 	readonly List<PromptHint> hints = new();
 
-	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
+	public Prompt<T> AddHint(PromptHint hint) {
 
-		if (minRequiredLevel == PromptHintLevel.None) {
+		if (hint.Level == PromptHintLevel.None) {
 			throw new ArgumentException(
 					$"Hint level {PromptHintLevel.None} is reserved to disable all hints. " +
 					$"Please use {PromptHintLevel.Minimal} or higher.",
-					nameof(minRequiredLevel)
+					nameof(hint)
 				);
 		}
 
-		hints.Add(new PromptHint { Text = hint, Level = minRequiredLevel});
+		hints.Add(hint);
 		return this;
+	}
+
+	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
+		return AddHint(new PromptHint { Text = hint, Level = minRequiredLevel });
 	}
 
 	#endregion

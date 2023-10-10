@@ -39,7 +39,7 @@ static class PromptStyler {
 
 	public const PromptHintLevel DefaultHintLevel = PromptHintLevel.Standard;
 
-	internal static string GetHintsString(IReadOnlyList<PromptHint> hints) {
+	public static string GetHintsString(IReadOnlyList<PromptHint> hints) {
 
 		var hintStrings = hints
 			.Where(hint => HintLevel >= hint.Level)
