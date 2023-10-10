@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Numerics;
 
 
@@ -19,15 +18,21 @@ public static class PromptInputLimiter {
 		// Guards
 		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
 
-		// Define validator
+		// Define and add validator
 		void Validator(string value) {
 			if (value.Length != length) {
 				throw new ArgumentException("Input is not of the correct length");
 			}
 		}
+		
+		prompt.AddValidator(Validator);
 
-		// Add validator
-		return prompt.AddValidator(Validator);
+		// Add hint
+		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, length);
+		prompt.AddHint(hintText, PromptHintLevel.Standard);
+
+		// Return
+		return prompt; 
 	}
 
 	/// <summary>
@@ -60,41 +65,62 @@ public static class PromptInputLimiter {
 			return prompt.OfLength(minLength);
 		}
 
-		// Define validator
+		// Define and add validator
 		void Validator(string value) {
 			if (value.Length < minLength || (maxLength.HasValue && value.Length > maxLength)) {
 				throw new ArgumentException("Input length is out of range of value values");
 			}
 		}
 
-		// Add validator
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		string rangeText = PromptStyler.GetRangeHintString(minLength, maxLength);
+		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, rangeText);
+		prompt.AddHint(hintText, PromptHintLevel.Standard);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Denies empty input.</summary>
 	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowEmpty(this Prompt<string> prompt) {
 
+		// Define and add validator
 		static void Validator(string value) {
 			if (value == "") {
 				throw new ArgumentException("Input cannot be empty");
 			}
 		}
 
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.NotEmpty, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Denies input that is whitespace only.</summary>
 	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowOnlyWhiteSpace(this Prompt<string> prompt) {
 
+		// Define and add validator
 		static void Validator(string value) {
 			if (string.IsNullOrWhiteSpace(value)) {
 				throw new ArgumentException("Input cannot be empty or whitespace");
 			}
 		}
 
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.NotWhitespace, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	#endregion
@@ -105,6 +131,7 @@ public static class PromptInputLimiter {
 	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
 	public static Prompt<string> OfPath(this Prompt<string> prompt) {
 
+		// Define and add validator
 		static void Validator(string value) {
 
 			if (value.Trim().Length == 0) throw new ArgumentException("Path is empty.");
@@ -117,14 +144,20 @@ public static class PromptInputLimiter {
 
 		}
 
-		// Add validator
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.Path, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Limits input to be a path to a file.</summary>
 	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
 	public static Prompt<string> OfFilePath(this Prompt<string> prompt, bool mustExist = false) {
 
+		// Define and add validator
 		void Validator(string value) {
 
 			// Throw if is not a file
@@ -139,14 +172,25 @@ public static class PromptInputLimiter {
 
 		}
 
-		// Add validator
-		return prompt.OfPath().AddValidator(Validator);
+		prompt.OfPath().AddValidator(Validator);
+
+		// Add hint
+		prompt.RemoveLastHint(); // remove HintStrings.Path hint
+		prompt.AddHint(PromptStyler.HintStrings.FilePath, PromptHintLevel.Verbose);
+
+		if (mustExist) {
+			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
+		}
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Limits input to be a path to a directory.</summary>
 	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
 	public static Prompt<string> OfDirectoryPath(this Prompt<string> prompt, bool mustExist = false) {
 
+		// Define and add validator
 		void Validator(string value) {
 
 			// Throw if is not a directory
@@ -161,8 +205,18 @@ public static class PromptInputLimiter {
 
 		}
 
-		// Add validator
-		return prompt.OfPath().AddValidator(Validator);
+		prompt.OfPath().AddValidator(Validator);
+
+		// Add hint
+		prompt.RemoveLastHint(); // remove HintStrings.Path hint
+		prompt.AddHint(PromptStyler.HintStrings.DirectoryPath, PromptHintLevel.Verbose);
+
+		if (mustExist) {
+			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
+		}
+
+		// Return
+		return prompt;
 	}
 
 	#endregion
@@ -183,7 +237,7 @@ public static class PromptInputLimiter {
 			(min, max) = (max, min);
 		}
 
-		// Define validator
+		// Define and add validator
 		void Validator(T value) {
 			#pragma warning disable CA2208 // Instantiate argument exceptions correctly
 			if (min is not null && value < min) throw new ArgumentOutOfRangeException();
@@ -191,47 +245,73 @@ public static class PromptInputLimiter {
 			#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 		}
 
-		// Add validator
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.GetRangeHintString(min, max), PromptHintLevel.Standard);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Denies input of infinite values.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<T> DisallowInfinities<T>(this Prompt<T> prompt) where T : INumber<T> {
 
+		// Define and add validator
 		static void Validator(T value) {
 			if (T.IsInfinity(value)) {
 				throw new ArgumentException("Value is too large or to small to be considered finite");
 			}
 		}
 
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.NotInfinite, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Denies input of NaN.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<T> DisallowNaN<T>(this Prompt<T> prompt) where T : INumber<T> {
 
+		// Define and add validator
 		static void Validator(T value) {
 			if (T.IsNaN(value)) {
 				throw new ArgumentException("Value cannot be NaN");
 			}
 		}
 
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.NotNan, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	/// <summary>Forces input value to be finite and not NaN.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<T> ForceFinite<T>(this Prompt<T> prompt) where T : INumber<T> {
 
+		// Define and add validator
 		static void Validator(T value) {
 			if (!T.IsFinite(value)) {
 				throw new ArgumentException("Value must be finite");
 			}
 		}
 
-		return prompt.AddValidator(Validator);
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		prompt.AddHint(PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
 	}
 
 	#endregion

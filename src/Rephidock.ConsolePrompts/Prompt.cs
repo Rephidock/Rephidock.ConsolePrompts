@@ -102,7 +102,21 @@ public static class Prompt {
 			throw new FormatException();
 		}
 
-		return For<bool>(textPrompt, BoolParser).SetParserFormat(null);
+		// Create prompt
+		Prompt<bool> prompt = For<bool>(textPrompt, BoolParser).SetParserFormat(null);
+
+		// Add y/n hint
+		string hintText;
+		if (defaultValue) {
+			hintText = PromptStyler.HintStrings.BoolDefaultTrue;
+		} else {
+			hintText = PromptStyler.HintStrings.BoolDefaultFalse;
+		}
+
+		prompt.AddHint(hintText, PromptHintLevel.Minimal);
+
+		// Return
+		return prompt;
 	}
 
 	#endregion
