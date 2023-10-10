@@ -221,6 +221,19 @@ public static class PromptInputLimiter {
 		return prompt.AddValidator(Validator);
 	}
 
+	/// <summary>Forces input value to be finite and not NaN.</summary>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
+	public static Prompt<T> ForceFinite<T>(this Prompt<T> prompt) where T : INumber<T> {
+
+		static void Validator(T value) {
+			if (!T.IsFinite(value)) {
+				throw new ArgumentException("Value must be finite");
+			}
+		}
+
+		return prompt.AddValidator(Validator);
+	}
+
 	#endregion
 
 }
