@@ -50,10 +50,18 @@ static class PromptStyler {
 	/// </summary>
 	public static PromptHintLevel HintLevel = PromptHintLevel.Standard;
 
+	/// <summary>
+	/// Generates a string comprised of all applicable hint texts.
+	/// </summary>
+	/// <remarks>
+	/// Hint level is taken into account.
+	/// Empty and whitespace only texts are skipped.
+	/// </remarks>
 	public static string GetHintsString(IReadOnlyList<PromptHint> hints) {
 
 		var hintStrings = hints
 			.Where(hint => HintLevel >= hint.Level)
+			.Where(hint => !string.IsNullOrWhiteSpace(hint.Text))
 			.Select(hint => hint.Text);
 
 		return string.Join(", ", hintStrings);
