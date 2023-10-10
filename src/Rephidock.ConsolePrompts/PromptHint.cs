@@ -1,6 +1,6 @@
 ﻿
 
-namespace Rephidock.AdeptConsole;
+namespace Rephidock.ConsolePrompts;
 
 
 public enum PromptHintLevel {

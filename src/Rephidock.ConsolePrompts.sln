@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.AdeptConsole", "Rephidock.AdeptConsole\Rephidock.AdeptConsole.csproj", "{36D7D5D3-FB2E-4AE0-9BC0-1A55848C42B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.ConsolePrompts", "Rephidock.ConsolePrompts\Rephidock.ConsolePrompts.csproj", "{36D7D5D3-FB2E-4AE0-9BC0-1A55848C42B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.AdeptConsole.Demo", "Rephidock.AdeptConsole.Demo\Rephidock.AdeptConsole.Demo.csproj", "{19501CED-9B07-4FF3-B81F-F3A52CA3947E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.ConsolePrompts.Demo", "Rephidock.ConsolePrompts.Demo\Rephidock.ConsolePrompts.Demo.csproj", "{19501CED-9B07-4FF3-B81F-F3A52CA3947E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

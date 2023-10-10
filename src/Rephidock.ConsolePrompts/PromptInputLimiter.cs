@@ -4,7 +4,7 @@ using System.Text;
 using System.Numerics;
 
 
-namespace Rephidock.AdeptConsole;
+namespace Rephidock.ConsolePrompts;
 
 
 public static class PromptInputLimiter {

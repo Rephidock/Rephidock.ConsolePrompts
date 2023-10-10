@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace Rephidock.AdeptConsole;
+namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>

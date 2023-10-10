@@ -1,8 +1,8 @@
 ﻿using System;
-using Rephidock.AdeptConsole;
+using Rephidock.ConsolePrompts;
 
 
-namespace Rephidock.AdeptConsole.Demo;
+namespace Rephidock.ConsolePrompts.Demo;
 
 
 internal class Program {
