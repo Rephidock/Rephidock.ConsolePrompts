@@ -35,9 +35,20 @@ static class PromptStyler {
 
 	#region //// Hints
 
-	public static PromptHintLevel HintLevel = DefaultHintLevel;
-
-	public const PromptHintLevel DefaultHintLevel = PromptHintLevel.Standard;
+	/// <summary>
+	/// <para>
+	/// Current hint level. Only hints with
+	/// this level or lower will be displayed.
+	/// </para>
+	/// <para>
+	/// <see cref="PromptHintLevel.None"/> is the lowest and
+	/// is reserved to disable all hints.
+	/// </para>
+	/// <para>
+	/// <see cref="PromptHintLevel.Standard"/> by default.
+	/// </para>
+	/// </summary>
+	public static PromptHintLevel HintLevel = PromptHintLevel.Standard;
 
 	public static string GetHintsString(IReadOnlyList<PromptHint> hints) {
 

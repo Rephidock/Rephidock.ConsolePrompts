@@ -149,6 +149,15 @@ public sealed class Prompt<T> {
 
 	readonly List<PromptHint> hints = new();
 
+	/// <summary>
+	/// <para>
+	/// Adds a hint to be displayed with the prompt.
+	/// Only hints with sufficient hint level will be displayed.
+	/// </para>
+	/// See also: <seealso cref="PromptStyler.HintLevel"/>
+	/// </summary>
+	/// <returns>this</returns>
+	/// <exception cref="ArgumentException">minRequiredLevel is <see cref="PromptHintLevel.None"/></exception>
 	public Prompt<T> AddHint(PromptHint hint) {
 
 		if (hint.Level == PromptHintLevel.None) {
@@ -163,6 +172,7 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
+	/// <inheritdoc cref="AddHint(PromptHint)"/>
 	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
 		return AddHint(new PromptHint { Text = hint, Level = minRequiredLevel });
 	}
