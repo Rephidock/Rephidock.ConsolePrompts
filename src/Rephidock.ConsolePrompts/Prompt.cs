@@ -226,13 +226,6 @@ public sealed class Prompt<T> {
 
 	Action<T>? ThrowingValidator;
 
-	/// <summary>Removes validators from this textPrompt.</summary>
-	/// <returns>this</returns>
-	public Prompt<T> RemoveValidators() {
-		ThrowingValidator = null;
-		return this;
-	}
-
 	/// <summary>
 	/// Adds a throwing validator for user input.
 	/// On invalid input the provided validator should throw
