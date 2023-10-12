@@ -22,7 +22,7 @@ public static class PromptStyler {
 			return NullPromptDisplay;
 		}
 
-		string hintsString = GetHintsString(hints);
+		string hintsString = string.Join(", ", FilterHints(hints));
 
 		if (string.IsNullOrWhiteSpace(hintsString)) {
 			return $"{textPrompt}: ";
@@ -57,12 +57,10 @@ public static class PromptStyler {
 
 	/// <summary>
 	/// <para>
-	/// Current hint level. Only hints with
-	/// this level or lower will be displayed.
+	/// Current hint level. Only hints with this level or lower will be displayed.
 	/// </para>
 	/// <para>
-	/// <see cref="PromptHintLevel.None"/> is the lowest and
-	/// is reserved to disable all hints.
+	/// <see cref="PromptHintLevel.None"/> is the lowest and disables all hints.
 	/// </para>
 	/// <para>
 	/// <see cref="PromptHintLevel.Standard"/> by default.
@@ -71,20 +69,15 @@ public static class PromptStyler {
 	public static PromptHintLevel HintLevel { get; set; } = PromptHintLevel.Standard;
 
 	/// <summary>
-	/// Generates a string comprised of all applicable hint texts.
+	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
+	/// Empty and whitespace only texts are also skipped.
 	/// </summary>
-	/// <remarks>
-	/// Hint level is taken into account.
-	/// Empty and whitespace only texts are skipped.
-	/// </remarks>
-	public static string GetHintsString(IReadOnlyList<PromptHint> hints) {
+	public static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
 
-		var hintStrings = hints
+		return hints
 			.Where(hint => HintLevel >= hint.Level)
 			.Where(hint => !string.IsNullOrWhiteSpace(hint.Text))
 			.Select(hint => hint.Text);
-
-		return string.Join(", ", hintStrings);
 	}
 
 	#endregion
