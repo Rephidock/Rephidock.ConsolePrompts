@@ -221,7 +221,7 @@ public static class PromptInputLimiter {
 
 	#endregion
 
-	#region //// Numeric Limits
+	#region //// Numeric Value Limits
 
 	/// <summary>Limits input to be in numeric range.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -253,6 +253,34 @@ public static class PromptInputLimiter {
 		// Return
 		return prompt;
 	}
+
+	/// <summary>
+	/// Limits input by setting a low numeric bound.
+	/// If high bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
+	/// </summary>
+	/// <remarks>
+	/// Shorthand for / Equivalent to <c>.OfRange(minBound, null)</c>
+	/// </remarks>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
+	public static Prompt<T> NoLessThan<T>(this Prompt<T> prompt, T minBound) where T : struct, INumber<T> {
+		return prompt.OfRange(minBound, null);
+	}
+
+	/// <summary>
+	/// Limits input by setting a high numeric bound.
+	/// If low bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
+	/// </summary>
+	/// <remarks>
+	/// Shorthand for / Equivalent to <c>.OfRange(null, maxBound)</c>
+	/// </remarks>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
+	public static Prompt<T> NoGreaterThan<T>(this Prompt<T> prompt, T maxBound) where T : struct, INumber<T> {
+		return prompt.OfRange(null, maxBound);
+	}
+
+	#endregion
+
+	#region //// Numeric Finiteness limits
 
 	/// <summary>Denies input of infinite values.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
