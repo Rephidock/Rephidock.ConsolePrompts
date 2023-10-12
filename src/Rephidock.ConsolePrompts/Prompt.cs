@@ -94,8 +94,8 @@ public static class Prompt {
 
 				char inputChar = char.ToUpper(input[0]);
 
-				if (input[0] == 'Y' || input[0] == 'T' || input[0] == '1') return true;
-				if (input[0] == 'N' || input[0] == 'F' || input[0] == '0') return false;
+				if (inputChar == 'Y' || inputChar == 'T' || inputChar == '1') return true;
+				if (inputChar == 'N' || inputChar == 'F' || inputChar == '0') return false;
 			}
 
 			// Throw if all other fails
