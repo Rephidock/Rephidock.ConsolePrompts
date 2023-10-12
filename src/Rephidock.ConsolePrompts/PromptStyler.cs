@@ -137,7 +137,7 @@ public static class PromptStyler {
 	/// Returns a hint for a numeric range.
 	/// Either of the bounds can be <see langword="null"/> to indicate no bound.
 	/// </summary>
-	public static string GetRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
+	public static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
 	
 		if (min.HasValue && max.HasValue) {
 			return string.Format(HintStrings.RangeFormat, min.Value, max.Value);

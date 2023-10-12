@@ -75,7 +75,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string rangeText = PromptStyler.GetRangeHintString(minLength, maxLength);
+		string rangeText = PromptStyler.MakeRangeHintString(minLength, maxLength);
 		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, rangeText);
 		prompt.AddHint(hintText, PromptHintLevel.Standard);
 
@@ -248,7 +248,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.GetRangeHintString(min, max), PromptHintLevel.Standard);
+		prompt.AddHint(PromptStyler.MakeRangeHintString(min, max), PromptHintLevel.Standard);
 
 		// Return
 		return prompt;
