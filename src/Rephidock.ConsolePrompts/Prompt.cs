@@ -14,7 +14,7 @@ namespace Rephidock.ConsolePrompts;
 /// </summary>
 public static class Prompt {
 
-	#region //// Generic Creation
+	#region //// Creation
 
 	/// <summary>
 	/// Creates a prompt for any value.
