@@ -8,12 +8,12 @@ using System.Text;
 namespace Rephidock.ConsolePrompts;
 
 
-static class PromptStyler {
+public static class PromptStyler {
 
 	#region //// Text prompt
 
 	/// <summary>Text to display when no text prompt is given.</summary>
-	public static string NullPromptDisplay = "> ";
+	public static string NullPromptDisplay { get; set; } = "> ";
 
 	public static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
 		
@@ -49,7 +49,7 @@ static class PromptStyler {
 	/// <see cref="PromptHintLevel.Standard"/> by default.
 	/// </para>
 	/// </summary>
-	public static PromptHintLevel HintLevel = PromptHintLevel.Standard;
+	public static PromptHintLevel HintLevel { get; set; } = PromptHintLevel.Standard;
 
 	/// <summary>
 	/// Generates a string comprised of all applicable hint texts.
@@ -79,8 +79,8 @@ static class PromptStyler {
 
 		#region //// Boolean
 
-		public static string BoolDefaultTrue = "Y/n";
-		public static string BoolDefaultFalse = "y/N";
+		public static string BoolDefaultTrue { get; set; } = "Y/n";
+		public static string BoolDefaultFalse { get; set; } = "y/N";
 
 		#endregion
 
@@ -89,45 +89,45 @@ static class PromptStyler {
 		/// <remarks>
 		/// {0} -- Character count or range string
 		/// </remarks>
-		public static string LengthFormat = "{0} characters";
+		public static string LengthFormat { get; set; } = "{0} characters";
 
-		public static string NotEmpty = "not empty";
+		public static string NotEmpty { get; set; } = "not empty";
 
-		public static string NotWhitespace = "not empty";
+		public static string NotWhitespace { get; set; } = "not empty";
 
 		#endregion
 
 		#region //// Path
 
-		public static string Path = "filesystem path";
-		public static string FilePath = "path a file";
-		public static string DirectoryPath = "path to a directory";
+		public static string Path { get; set; } = "filesystem path";
+		public static string FilePath { get; set; } = "path a file";
+		public static string DirectoryPath { get; set; } = "path to a directory";
 
-		public static string MustExist = "must exist";
+		public static string MustExist { get; set; } = "must exist";
 
 		#endregion
 
 		#region //// Numeric
 
-		public static string NotInfinite = "not infinite";
-		public static string NotNan = "not NaN";
-		public static string Finite = "finite";
+		public static string NotInfinite { get; set; } = "not infinite";
+		public static string NotNan { get; set; } = "not NaN";
+		public static string Finite { get; set; } = "finite";
 
 		/// <remarks>
 		/// {0} -- Low bound.
 		/// {1} -- High bound.
 		/// </remarks>
-		public static string RangeFormat = "{0}..{1}";
+		public static string RangeFormat { get; set; } = "{0}..{1}";
 
 		/// <remarks>
 		/// {0} -- Low bound.
 		/// </remarks>
-		public static string NoLessThanFormat = "{0}..";
+		public static string NoLessThanFormat { get; set; } = "{0}..";
 
 		/// <remarks>
 		/// {0} -- High bound.
 		/// </remarks>
-		public static string NoGreaterThanFormat = "..{0}";
+		public static string NoGreaterThanFormat { get; set; } = "..{0}";
 
 		#endregion
 
