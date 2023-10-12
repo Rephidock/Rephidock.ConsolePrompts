@@ -15,6 +15,33 @@ public static class PromptStyler {
 	/// <summary>Text to display when no text prompt is given.</summary>
 	public static string NullPromptDisplay { get; set; } = "> ";
 
+	/// <summary>
+	/// Format for the text prompts if
+	/// there are no hints to be displayed.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- text prompt.
+	/// </remarks>
+	public static string PromptFormatNoHints { get; set; } = "{0}: ";
+
+	/// <summary>
+	/// Format for the text prompts.
+	/// </summary>
+	/// /// <remarks>
+	/// {0} -- text prompt.
+	/// {1} -- hints.
+	/// </remarks>
+	public static string PromptFormat { get; set; } = "{0} ({1}): ";
+
+	/// <summary>
+	/// The separator between hints used for prompt formatting
+	/// </summary>
+	public static string HintSeparator { get; set; } = ", ";
+
+	/// <summary>
+	/// Creates a formatted display prompt,
+	/// taking hints into account.
+	/// </summary>
 	public static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
 		
 		// Check for null prompt
@@ -22,12 +49,14 @@ public static class PromptStyler {
 			return NullPromptDisplay;
 		}
 
-		string hintsString = string.Join(", ", FilterHints(hints));
+		// Get hint texts
+		string hintsString = string.Join(HintSeparator, FilterHints(hints));
 
+		// Format prompt display text
 		if (string.IsNullOrWhiteSpace(hintsString)) {
-			return $"{textPrompt}: ";
+			return string.Format(PromptFormatNoHints, textPrompt);
 		} else {
-			return $"{textPrompt} [{hintsString}]: ";
+			return string.Format(PromptFormat, textPrompt, hintsString);
 		}
 
 	}
@@ -40,7 +69,7 @@ public static class PromptStyler {
 	/// Format used for invalid input message.
 	/// </summary>
 	/// <remarks>
-	/// {0} -- Exception message
+	/// {0} -- Exception message.
 	/// </remarks>
 	public static string InvalidInputFormat { get; set; } = "Invalid input: {0}";
 
