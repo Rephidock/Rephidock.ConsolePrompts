@@ -34,6 +34,25 @@ public static class PromptStyler {
 
 	#endregion
 
+	#region //// Invalid input
+
+	/// <summary>
+	/// Format used for invalid input message.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- Exception message
+	/// </remarks>
+	public static string InvalidInputFormat { get; set; } = "Invalid input: {0}";
+
+	/// <summary>
+	/// Creates a formatted invalid input message
+	/// </summary>
+	public static string MakeInvalidInputString(Exception ex) {
+		return string.Format(InvalidInputFormat, ex.Message);
+	}
+
+	#endregion
+
 	#region //// Hints
 
 	/// <summary>
