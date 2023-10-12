@@ -15,6 +15,33 @@ public static class PromptStyler {
 	/// <summary>Text to display when no text prompt is given.</summary>
 	public static string NullPromptDisplay { get; set; } = "> ";
 
+	/// <summary>
+	/// Format for the text prompts if
+	/// there are no hints to be displayed.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- text prompt.
+	/// </remarks>
+	public static string PromptFormatNoHints { get; set; } = "{0}: ";
+
+	/// <summary>
+	/// Format for the text prompts.
+	/// </summary>
+	/// /// <remarks>
+	/// {0} -- text prompt.
+	/// {1} -- hints.
+	/// </remarks>
+	public static string PromptFormat { get; set; } = "{0} ({1}): ";
+
+	/// <summary>
+	/// The separator between hints used for prompt formatting
+	/// </summary>
+	public static string HintSeparator { get; set; } = ", ";
+
+	/// <summary>
+	/// Creates a formatted display prompt,
+	/// taking hints into account.
+	/// </summary>
 	public static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
 		
 		// Check for null prompt
@@ -22,14 +49,35 @@ public static class PromptStyler {
 			return NullPromptDisplay;
 		}
 
-		string hintsString = GetHintsString(hints);
+		// Get hint texts
+		string hintsString = string.Join(HintSeparator, FilterHints(hints));
 
+		// Format prompt display text
 		if (string.IsNullOrWhiteSpace(hintsString)) {
-			return $"{textPrompt}: ";
+			return string.Format(PromptFormatNoHints, textPrompt);
 		} else {
-			return $"{textPrompt} [{hintsString}]: ";
+			return string.Format(PromptFormat, textPrompt, hintsString);
 		}
 
+	}
+
+	#endregion
+
+	#region //// Invalid input
+
+	/// <summary>
+	/// Format used for invalid input message.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- Exception message.
+	/// </remarks>
+	public static string InvalidInputFormat { get; set; } = "Invalid input: {0}";
+
+	/// <summary>
+	/// Creates a formatted invalid input message
+	/// </summary>
+	public static string MakeInvalidInputString(Exception ex) {
+		return string.Format(InvalidInputFormat, ex.Message);
 	}
 
 	#endregion
@@ -38,12 +86,10 @@ public static class PromptStyler {
 
 	/// <summary>
 	/// <para>
-	/// Current hint level. Only hints with
-	/// this level or lower will be displayed.
+	/// Current hint level. Only hints with this level or lower will be displayed.
 	/// </para>
 	/// <para>
-	/// <see cref="PromptHintLevel.None"/> is the lowest and
-	/// is reserved to disable all hints.
+	/// <see cref="PromptHintLevel.None"/> is the lowest and disables all hints.
 	/// </para>
 	/// <para>
 	/// <see cref="PromptHintLevel.Standard"/> by default.
@@ -52,20 +98,15 @@ public static class PromptStyler {
 	public static PromptHintLevel HintLevel { get; set; } = PromptHintLevel.Standard;
 
 	/// <summary>
-	/// Generates a string comprised of all applicable hint texts.
+	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
+	/// Empty and whitespace only texts are also skipped.
 	/// </summary>
-	/// <remarks>
-	/// Hint level is taken into account.
-	/// Empty and whitespace only texts are skipped.
-	/// </remarks>
-	public static string GetHintsString(IReadOnlyList<PromptHint> hints) {
+	public static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
 
-		var hintStrings = hints
+		return hints
 			.Where(hint => HintLevel >= hint.Level)
 			.Where(hint => !string.IsNullOrWhiteSpace(hint.Text))
 			.Select(hint => hint.Text);
-
-		return string.Join(", ", hintStrings);
 	}
 
 	#endregion

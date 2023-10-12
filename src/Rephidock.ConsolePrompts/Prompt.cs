@@ -331,7 +331,7 @@ public sealed class Prompt<T> {
 					|| ex is NotSupportedException
 					|| ex is NotImplementedException
 				) {
-					Console.WriteLine($"Invalid input: {ex.Message}");
+					Console.WriteLine(PromptStyler.MakeInvalidInputString(ex));
 				} else {
 					throw;
 				}
