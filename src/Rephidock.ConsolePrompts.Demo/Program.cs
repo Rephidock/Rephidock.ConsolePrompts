@@ -71,8 +71,8 @@ internal class Program {
 
 		float x = Prompt
 			.For<float>("x")
-			.OfRange(0, 1)
 			.ForceFinite()
+			.OfRange(0, 1)
 			.AddHint("real", PromptHintLevel.Verbose)
 			.Display();
 
