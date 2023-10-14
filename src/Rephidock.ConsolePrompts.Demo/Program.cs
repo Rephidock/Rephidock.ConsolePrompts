@@ -47,6 +47,23 @@ internal class Program {
 			Console.WriteLine("They are alright I guess...");
 		}
 
+
+		//  -======- Styling -======-
+		PromptStyler.PromptFormat = "[{1}] {0} = ";
+		PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
+		PromptStyler.HintLevel = PromptHintLevel.Verbose;
+
+		Console.WriteLine("f(x) = 60 + 10x");
+
+		float x = Prompt
+			.For<float>("x")
+			.OfRange(0, 1)
+			.ForceFinite()
+			.AddHint("real", PromptHintLevel.Verbose)
+			.Display();
+
+		Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
+
 		Console.WriteLine("This concludes the ConsolePrompts demo!");
 
 	}
