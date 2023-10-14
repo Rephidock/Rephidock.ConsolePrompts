@@ -7,13 +7,21 @@ namespace Rephidock.ConsolePrompts.Demo;
 
 internal class Program {
 
+	static void WriteSectionSeparator() => Console.WriteLine("\n-=-=-=-=-=-=-\n");
+
+
 	static void Main(string[] args) {
 
+		// - Intro -
 		Console.WriteLine("Welcome to ConsolePrompts demo!");
+		WriteSectionSeparator();
+
 
 		//  -======- Strings -======-
 		string name = Prompt.ForString("What is your name", trim: true).DisallowEmpty().Display();
 		Console.WriteLine($"Hello, {name}");
+
+		WriteSectionSeparator();
 
 
 		//  -======- Numbers -======-
@@ -26,6 +34,8 @@ internal class Program {
 			Console.WriteLine("Sorry, you can't have a drink.");
 		}
 
+		WriteSectionSeparator();
+
 
 		//  -======- IParsable -======-
 		DateOnly userBirthday = Prompt.For<DateOnly>("When is your birthday").Display();
@@ -37,6 +47,8 @@ internal class Program {
 			Console.WriteLine($"Your birthday is on {userBirthday}");
 		}
 
+		WriteSectionSeparator();
+
 
 		//  -======- Boolean -======-
 		bool isHexagonEnjoyer = Prompt.ForBool("Do you like hexagons?", defaultValue: true).Display();
@@ -46,6 +58,8 @@ internal class Program {
 		} else {
 			Console.WriteLine("They are alright I guess...");
 		}
+
+		WriteSectionSeparator();
 
 
 		//  -======- Styling -======-
@@ -64,7 +78,13 @@ internal class Program {
 
 		Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
+		WriteSectionSeparator();
+
+
+		// - Outro -
 		Console.WriteLine("This concludes the ConsolePrompts demo!");
+		Console.Write("Press any key to exit...");
+		Console.ReadKey(intercept: true);
 
 	}
 
