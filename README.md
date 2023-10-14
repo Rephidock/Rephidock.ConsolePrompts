@@ -28,7 +28,7 @@ else
 }
 ```
 
-![image: example_prompt_age](media\example_prompt_age.png)
+![image: example_prompt_age](media/example_prompt_age.png)
 
 ### Styling
 
@@ -43,7 +43,7 @@ Console.WriteLine("f(x) = 60 + 10x");
 
 float x = Prompt
 	.For<float>("x")
-    .ForceFinite()
+	.ForceFinite()
 	.OfRange(0, 1)
 	.AddHint("real", PromptHintLevel.Verbose)
 	.Display();
