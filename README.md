@@ -53,3 +53,5 @@ Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
 ![image: example_styled_float](media/example_styled_float.png)
 
+See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for some other examples.
+
