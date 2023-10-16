@@ -55,3 +55,25 @@ Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
 See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for some other examples.
 
+## Installation
+
+### NuGet
+
+To be uploaded. Please refer to the [manual download](#Manual-Download) section.
+
+### Manual download
+
+1. Open the [Releases](./releases/latest) page.
+2. Download the `.dll`.
+3. (Optional, Recommended) Also download the `.xml` file of the same release.
+
+   The `.xml` file contains documentation and should be placed in the same directory as the `.dll` for hints to appear in an IDE. 
+   
+4. Add the dependency in your `.csproj` file via IDE or manually:
+   ```xml
+   <ItemGroup>
+     <Reference Include="Rephidock.ConsolePrompts">
+       <HintPath>Relative\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
+     </Reference>
+   </ItemGroup>
+   ```
