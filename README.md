@@ -63,7 +63,7 @@ To be uploaded. Please refer to the [manual download](#Manual-Download) section.
 
 ### Manual download
 
-1. Open the [Releases](./releases/latest) page.
+1. Open the [Releases](https://github.com/Rephidock/Rephidock.ConsolePrompts/releases) page.
 2. Download the `.dll`.
 3. (Optional, Recommended) Also download the `.xml` file of the same release.
 
