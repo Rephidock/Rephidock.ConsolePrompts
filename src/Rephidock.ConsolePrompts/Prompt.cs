@@ -53,7 +53,7 @@ public static class Prompt {
 	}
 
 	/// <summary>Creates a prompt for a string.</summary>
-	/// <returns>A new <see cref="Prompt{string}"/></returns>
+	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="string"/></returns>
 	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
 
 		// Define parsers
@@ -71,7 +71,7 @@ public static class Prompt {
 	/// Creates a prompt for a boolean.
 	/// Supports one character input (y/n).
 	/// </summary>
-	/// <returns>A new <see cref="Prompt{bool}"/></returns>
+	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="bool"/></returns>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
 
 		// Define parser
