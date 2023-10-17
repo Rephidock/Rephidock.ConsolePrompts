@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Globalization;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace Rephidock.ConsolePrompts;
@@ -256,7 +255,7 @@ public sealed class Prompt<T> {
 
 	#region //// Validator
 
-	Action<T>? ThrowingValidator;
+	Action<T> ThrowingValidator = (T _) => { };
 
 	/// <summary>
 	/// Adds a throwing validator for user input.
@@ -273,17 +272,8 @@ public sealed class Prompt<T> {
 	///	prompted to input something else.
 	/// </summary>
 	/// <returns>this</returns>
-	[SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Explicitly show a new delegate is created")]
 	public Prompt<T> AddValidator(Action<T> throwingValidator) {
-
-		if (throwingValidator is null) return this;
-
-		if (ThrowingValidator is null) {
-			ThrowingValidator = throwingValidator;
-		} else {
-			ThrowingValidator = ThrowingValidator + throwingValidator;
-		}
-
+		ThrowingValidator += throwingValidator;
 		return this;
 	}
 
@@ -315,7 +305,7 @@ public sealed class Prompt<T> {
 
 				// Parse and validate
 				T value = ThrowingParser(input, formatProvider);
-				if (ThrowingValidator is not null) ThrowingValidator(value);
+				ThrowingValidator(value);
 
 				// Return
 				return value;
