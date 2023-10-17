@@ -8,6 +8,9 @@ using System.Text;
 namespace Rephidock.ConsolePrompts;
 
 
+/// <summary>
+/// A class that holds all the style information from Prompts.
+/// </summary>
 public static class PromptStyler {
 
 	#region //// Text prompt
@@ -114,9 +117,11 @@ public static class PromptStyler {
 	#region //// Hint Strings
 
 	/// <summary>
-	/// Hint strings used by <see cref="PromptInputLimiter"/>.
+	/// Standard strings for hints added to the <see cref="Prompt{T}"/> instance.
 	/// </summary>
 	public static class HintStrings {
+
+		#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 		#region //// Boolean
 
@@ -172,12 +177,17 @@ public static class PromptStyler {
 
 		#endregion
 
+		#pragma warning restore CS1591
+
 	}
 
 	/// <summary>
 	/// Returns a hint for a numeric range.
 	/// Either of the bounds can be <see langword="null"/> to indicate no bound.
 	/// </summary>
+	/// <remarks>
+	/// Returns an empty string if both bounds are set to <see langword="null"/>.
+	/// </remarks>
 	public static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
 	
 		if (min.HasValue && max.HasValue) {

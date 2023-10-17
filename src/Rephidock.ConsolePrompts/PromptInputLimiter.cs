@@ -6,12 +6,17 @@ using System.Numerics;
 namespace Rephidock.ConsolePrompts;
 
 
+/// <summary>
+/// A class containing ways to limits user input.
+/// Holds extension methods that return the
+/// object operated on to allow fluent syntax.
+/// </summary>
 public static class PromptInputLimiter {
 
 	#region //// String Limits
 
 	/// <summary>Limits input to be of specified exact length.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">Provided length is negative</exception>
 	public static Prompt<string> OfLength(this Prompt<string> prompt, int length) {
 
@@ -40,7 +45,7 @@ public static class PromptInputLimiter {
 	/// Set <paramref name="minLength"/> to 0 for no lower bound.
 	/// Set <paramref name="maxLength"/> to <see langword="null"/> for no upper bound.
 	/// </summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">Either of provided length bounds are negative</exception>
 	public static Prompt<string> OfLength(this Prompt<string> prompt, int minLength, int? maxLength) {
 
@@ -84,7 +89,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>Denies empty input.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowEmpty(this Prompt<string> prompt) {
 
 		// Define and add validator
@@ -104,7 +109,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>Denies input that is whitespace only.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowOnlyWhiteSpace(this Prompt<string> prompt) {
 
 		// Define and add validator
@@ -128,7 +133,7 @@ public static class PromptInputLimiter {
 	#region //// Path Limits
 
 	/// <summary>Limits input to be a valid filesystem path.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> OfPath(this Prompt<string> prompt) {
 
 		// Define and add validator
@@ -154,7 +159,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>Limits input to be a path to a file.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> OfFilePath(this Prompt<string> prompt, bool mustExist = false) {
 
 		// Define and add validator
@@ -187,7 +192,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>Limits input to be a path to a directory.</summary>
-	/// <returns>The <see cref="Prompt{string}"/> instance operated on.</returns>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> OfDirectoryPath(this Prompt<string> prompt, bool mustExist = false) {
 
 		// Define and add validator
