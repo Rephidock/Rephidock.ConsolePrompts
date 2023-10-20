@@ -30,7 +30,8 @@ else
 }
 ```
 
-![image: example_prompt_age](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/media/example_prompt_age.png)
+![image: example_prompt_age](https://raw.github.com/Rephidock/Rephidock.ConsolePrompts/main/media/example_prompt_age.png)
+
 
 ### Styling
 
@@ -53,6 +54,6 @@ float x = Prompt
 Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 ```
 
-![image: example_styled_float](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/media/example_styled_float.png)
+![image: example_styled_float](https://raw.github.com/Rephidock/Rephidock.ConsolePrompts/main/media/example_styled_float.png)
 
-See [Demo Project](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/src/Rephidock.ConsolePrompts.Demo) for some other examples.
+See [Demo Project](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/src/Rephidock.ConsolePrompts.Demo) on the source repository for some other examples.
