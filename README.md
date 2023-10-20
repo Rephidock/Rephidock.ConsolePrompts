@@ -6,7 +6,7 @@ A small .NET library to take user input in a console with some exception handlin
 
 ## Features
 
-- User input queries
+- User input queries with fluent syntax
 - Input restrictions (e.g. numeric range, string length, path to an existing file)
 - Invalid input handling
 - Prompt styling
@@ -79,11 +79,11 @@ Alternatively you can download the library files manually.
 
    The `.xml` file contains documentation and should be placed in the same directory as the `.dll` for hints to appear in an IDE. 
    
-4. Add the dependency in your `.csproj` file via IDE or manually:
+4. Add the dependency in your `.csproj` file:
    ```xml
    <ItemGroup>
      <Reference Include="Rephidock.ConsolePrompts">
-       <HintPath>Relative\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
+       <HintPath>Relative\Or\Absolute\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
      </Reference>
    </ItemGroup>
    ```
