@@ -128,6 +128,9 @@ public static class Prompt {
 /// </summary>
 public sealed class Prompt<T> {
 
+	// Hide constructor
+	internal Prompt() { }
+
 	#region //// Text Prompt
 
 	/// <summary>Text prompt to be tweaked and displayed.</summary>
