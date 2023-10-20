@@ -8,6 +8,9 @@ using System.Text;
 namespace Rephidock.ConsolePrompts;
 
 
+/// <summary>
+/// A class that holds all the style information from Prompts.
+/// </summary>
 public static class PromptStyler {
 
 	#region //// Text prompt
@@ -42,7 +45,7 @@ public static class PromptStyler {
 	/// Creates a formatted display prompt,
 	/// taking hints into account.
 	/// </summary>
-	public static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
+	internal static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
 		
 		// Check for null prompt
 		if (string.IsNullOrWhiteSpace(textPrompt)) {
@@ -76,7 +79,7 @@ public static class PromptStyler {
 	/// <summary>
 	/// Creates a formatted invalid input message
 	/// </summary>
-	public static string MakeInvalidInputString(Exception ex) {
+	internal static string MakeInvalidInputString(Exception ex) {
 		return string.Format(InvalidInputFormat, ex.Message);
 	}
 
@@ -101,7 +104,7 @@ public static class PromptStyler {
 	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
 	/// Empty and whitespace only texts are also skipped.
 	/// </summary>
-	public static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
+	internal static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
 
 		return hints
 			.Where(hint => HintLevel >= hint.Level)
@@ -114,9 +117,11 @@ public static class PromptStyler {
 	#region //// Hint Strings
 
 	/// <summary>
-	/// Hint strings used by <see cref="PromptInputLimiter"/>.
+	/// Standard strings for hints added to the <see cref="Prompt{T}"/> instance.
 	/// </summary>
 	public static class HintStrings {
+
+		#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 		#region //// Boolean
 
@@ -172,13 +177,18 @@ public static class PromptStyler {
 
 		#endregion
 
+		#pragma warning restore CS1591
+
 	}
 
 	/// <summary>
 	/// Returns a hint for a numeric range.
 	/// Either of the bounds can be <see langword="null"/> to indicate no bound.
 	/// </summary>
-	public static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
+	/// <remarks>
+	/// Returns an empty string if both bounds are set to <see langword="null"/>.
+	/// </remarks>
+	internal static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
 	
 		if (min.HasValue && max.HasValue) {
 			return string.Format(HintStrings.RangeFormat, min.Value, max.Value);

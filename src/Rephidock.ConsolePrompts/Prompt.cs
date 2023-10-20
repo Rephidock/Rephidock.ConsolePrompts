@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Globalization;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>
-/// A class to create instances of <see cref="Prompt{T}"/>.
+/// A class for creating instances of <see cref="Prompt{T}"/>.
 /// </summary>
 public static class Prompt {
 
@@ -54,7 +53,7 @@ public static class Prompt {
 	}
 
 	/// <summary>Creates a prompt for a string.</summary>
-	/// <returns>A new <see cref="Prompt{string}"/></returns>
+	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="string"/></returns>
 	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
 
 		// Define parsers
@@ -72,7 +71,7 @@ public static class Prompt {
 	/// Creates a prompt for a boolean.
 	/// Supports one character input (y/n).
 	/// </summary>
-	/// <returns>A new <see cref="Prompt{bool}"/></returns>
+	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="bool"/></returns>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
 
 		// Define parser
@@ -121,6 +120,12 @@ public static class Prompt {
 
 	#endregion
 
+	/// <summary>
+	/// Default format used by <see cref="Prompt{T}"/>.
+	/// Is <see cref="CultureInfo.InvariantCulture"/>.
+	/// </summary>
+	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
+
 }
 
 
@@ -128,6 +133,9 @@ public static class Prompt {
 /// A prompt (query) for a value to be shown to the user.
 /// </summary>
 public sealed class Prompt<T> {
+
+	// Hide constructor
+	internal Prompt() { }
 
 	#region //// Text Prompt
 
@@ -213,7 +221,7 @@ public sealed class Prompt<T> {
 
 	#region //// Parser
 
-	IFormatProvider? formatProvider = DefaultFormatProvider;
+	IFormatProvider? formatProvider = Prompt.DefaultFormatProvider;
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
@@ -246,17 +254,11 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
-	/// <summary>
-	/// Default format used by the parser.
-	/// Is <see cref="CultureInfo.InvariantCulture"/>
-	/// </summary>
-	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
-
 	#endregion
 
 	#region //// Validator
 
-	Action<T>? ThrowingValidator;
+	Action<T> ThrowingValidator = (T _) => { };
 
 	/// <summary>
 	/// Adds a throwing validator for user input.
@@ -273,17 +275,8 @@ public sealed class Prompt<T> {
 	///	prompted to input something else.
 	/// </summary>
 	/// <returns>this</returns>
-	[SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Explicitly show a new delegate is created")]
 	public Prompt<T> AddValidator(Action<T> throwingValidator) {
-
-		if (throwingValidator is null) return this;
-
-		if (ThrowingValidator is null) {
-			ThrowingValidator = throwingValidator;
-		} else {
-			ThrowingValidator = ThrowingValidator + throwingValidator;
-		}
-
+		ThrowingValidator += throwingValidator;
 		return this;
 	}
 
@@ -315,7 +308,7 @@ public sealed class Prompt<T> {
 
 				// Parse and validate
 				T value = ThrowingParser(input, formatProvider);
-				if (ThrowingValidator is not null) ThrowingValidator(value);
+				ThrowingValidator(value);
 
 				// Return
 				return value;

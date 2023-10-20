@@ -1,6 +1,7 @@
 # Console Prompts
 
-![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts?&link=https%3A%2F%2Fgithub.com%2FRephidock%2FRephidock.ConsolePrompts%2Fblob%2Fmain%2FLICENSE) ![Nuget Version Badge](https://img.shields.io/nuget/v/Rephidock.ConsolePrompts?logo=nuget&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FRephidock.ConsolePrompts)
+[![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts)](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/LICENSE)
+[![Nuget Version Badge](https://img.shields.io/nuget/v/Rephidock.ConsolePrompts?logo=nuget)](https://www.nuget.org/packages/Rephidock.ConsolePrompts)
 
 A small .NET library to take user input in a console with some exception handling and fluent syntax.
 
