@@ -1,10 +1,12 @@
 # Console Prompts
 
-A small library to take user input in a console with some exception handling and fluent syntax.
+![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts?&link=https%3A%2F%2Fgithub.com%2FRephidock%2FRephidock.ConsolePrompts%2Fblob%2Fmain%2FLICENSE) ![Nuget Version Badge](https://img.shields.io/nuget/v/Rephidock.CosnolePrompts?logo=nuget&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FRephidock.ConsolePrompts)
+
+A small .NET library to take user input in a console with some exception handling and fluent syntax.
 
 ## Features
 
-- User input queries
+- User input queries with fluent syntax
 - Input restrictions (e.g. numeric range, string length, path to an existing file)
 - Invalid input handling
 - Prompt styling
@@ -59,9 +61,17 @@ See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for some other examples.
 
 ### NuGet
 
-To be uploaded. Please refer to the [manual download](#Manual-Download) section.
+The best way to add the library to your project is via NuGet package manager. Use the .NET CLI command:
+
+```
+dotnet add package Rephidock.ConsolePrompts
+```
+
+or the package browser in the IDE of your choice.
 
 ### Manual download
+
+Alternatively you can download the library files manually.
 
 1. Open the [Releases](https://github.com/Rephidock/Rephidock.ConsolePrompts/releases) page.
 2. Download the `.dll`.
@@ -69,11 +79,11 @@ To be uploaded. Please refer to the [manual download](#Manual-Download) section.
 
    The `.xml` file contains documentation and should be placed in the same directory as the `.dll` for hints to appear in an IDE. 
    
-4. Add the dependency in your `.csproj` file via IDE or manually:
+4. Add the dependency in your `.csproj` file:
    ```xml
    <ItemGroup>
      <Reference Include="Rephidock.ConsolePrompts">
-       <HintPath>Relative\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
+       <HintPath>Relative\Or\Absolute\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
      </Reference>
    </ItemGroup>
    ```

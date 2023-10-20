@@ -5,12 +5,14 @@ using Rephidock.ConsolePrompts;
 namespace Rephidock.ConsolePrompts.Demo;
 
 
-internal class Program {
+internal class Program
+{
 
 	static void WriteSectionSeparator() => Console.WriteLine("\n-=-=-=-=-=-=-\n");
 
 
-	static void Main(string[] args) {
+	static void Main(string[] args)
+	{
 
 		// - Intro -
 		Console.WriteLine("Welcome to ConsolePrompts demo!");
@@ -28,9 +30,12 @@ internal class Program {
 		int userAge = Prompt.For<int>("Your age").NoLessThan(1).Display();
 		const int drinkingAge = 21;
 
-		if (userAge >= drinkingAge) {
+		if (userAge >= drinkingAge)
+		{
 			Console.WriteLine("You are of drinking age!");
-		} else {
+		}
+		else
+		{
 			Console.WriteLine("Sorry, you can't have a drink.");
 		}
 
@@ -41,9 +46,12 @@ internal class Program {
 		DateOnly userBirthday = Prompt.For<DateOnly>("When is your birthday").Display();
 		DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-		if (userBirthday == today) {
+		if (userBirthday == today)
+		{
 			Console.WriteLine("Happy birthday!");
-		} else {
+		}
+		else
+		{
 			Console.WriteLine($"Your birthday is on {userBirthday}");
 		}
 
@@ -53,9 +61,12 @@ internal class Program {
 		//  -======- Boolean -======-
 		bool isHexagonEnjoyer = Prompt.ForBool("Do you like hexagons?", defaultValue: true).Display();
 
-		if (isHexagonEnjoyer) {
+		if (isHexagonEnjoyer)
+		{
 			Console.WriteLine("Hexagons are the bestagons!");
-		} else {
+		}
+		else
+		{
 			Console.WriteLine("They are alright I guess...");
 		}
 
