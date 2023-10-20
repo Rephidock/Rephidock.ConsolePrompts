@@ -45,7 +45,7 @@ public static class PromptStyler {
 	/// Creates a formatted display prompt,
 	/// taking hints into account.
 	/// </summary>
-	public static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
+	internal static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
 		
 		// Check for null prompt
 		if (string.IsNullOrWhiteSpace(textPrompt)) {
@@ -79,7 +79,7 @@ public static class PromptStyler {
 	/// <summary>
 	/// Creates a formatted invalid input message
 	/// </summary>
-	public static string MakeInvalidInputString(Exception ex) {
+	internal static string MakeInvalidInputString(Exception ex) {
 		return string.Format(InvalidInputFormat, ex.Message);
 	}
 
@@ -104,7 +104,7 @@ public static class PromptStyler {
 	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
 	/// Empty and whitespace only texts are also skipped.
 	/// </summary>
-	public static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
+	internal static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
 
 		return hints
 			.Where(hint => HintLevel >= hint.Level)
@@ -188,7 +188,7 @@ public static class PromptStyler {
 	/// <remarks>
 	/// Returns an empty string if both bounds are set to <see langword="null"/>.
 	/// </remarks>
-	public static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
+	internal static string MakeRangeHintString<T>(T? min, T? max) where T : struct, INumber<T> {
 	
 		if (min.HasValue && max.HasValue) {
 			return string.Format(HintStrings.RangeFormat, min.Value, max.Value);
