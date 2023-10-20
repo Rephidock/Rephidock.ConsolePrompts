@@ -120,6 +120,12 @@ public static class Prompt {
 
 	#endregion
 
+	/// <summary>
+	/// Default format used by <see cref="Prompt{T}"/>.
+	/// Is <see cref="CultureInfo.InvariantCulture"/>.
+	/// </summary>
+	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
+
 }
 
 
@@ -215,7 +221,7 @@ public sealed class Prompt<T> {
 
 	#region //// Parser
 
-	IFormatProvider? formatProvider = DefaultFormatProvider;
+	IFormatProvider? formatProvider = Prompt.DefaultFormatProvider;
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
@@ -247,12 +253,6 @@ public sealed class Prompt<T> {
 		this.formatProvider = formatProvider;
 		return this;
 	}
-
-	/// <summary>
-	/// Default format used by the parser.
-	/// Is <see cref="CultureInfo.InvariantCulture"/>
-	/// </summary>
-	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
 
 	#endregion
 
