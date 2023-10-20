@@ -9,7 +9,7 @@ namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>
-/// A class to create instances of <see cref="Prompt{T}"/>.
+/// A class for creating instances of <see cref="Prompt{T}"/>.
 /// </summary>
 public static class Prompt {
 

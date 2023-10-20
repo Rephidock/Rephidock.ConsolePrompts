@@ -165,7 +165,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		void Validator(string value) {
 
-			// Throw if is not a file
+			// Throw if is not a directory
 			if (Directory.Exists(value)) {
 				throw new ArgumentException("Given path is for a directory, not a file.");
 			}
