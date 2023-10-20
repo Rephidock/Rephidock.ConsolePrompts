@@ -1,6 +1,8 @@
 # Console Prompts
 
-A small library to take user input in a console with some exception handling and fluent syntax.
+![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts) ![Nuget Version Badge](https://img.shields.io/nuget/v/Rephidock.CosnolePrompts?logo=nuget)
+
+A small .NET library to take user input in a console with some exception handling and fluent syntax.
 
 ## Features
 
@@ -59,9 +61,17 @@ See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for some other examples.
 
 ### NuGet
 
-To be uploaded. Please refer to the [manual download](#Manual-Download) section.
+The best way to add the library to your project is via NuGet package manager. Use the .NET CLI command:
+
+```
+dotnet add package Rephidock.ConsolePrompts
+```
+
+or the package browser in the IDE of your choice.
 
 ### Manual download
+
+Alternatively you can download the library files manually.
 
 1. Open the [Releases](https://github.com/Rephidock/Rephidock.ConsolePrompts/releases) page.
 2. Download the `.dll`.
