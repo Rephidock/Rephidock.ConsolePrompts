@@ -132,7 +132,8 @@ public static class PromptStyler {
 
 		if (!TypeHintsEnabled) return hints;
 
-		return hints.Prepend(new PromptHint { Level = TypeHintsLevel, Text = typeof(THint).Name });
+		string hintName = HintStrings.TypeHintRenamingTable.GetValueOrDefault(typeof(THint), typeof(THint).Name);
+		return hints.Prepend(new PromptHint { Level = TypeHintsLevel, Text = hintName });
 	}
 
 	#endregion
@@ -150,6 +151,23 @@ public static class PromptStyler {
 
 		public static string BoolDefaultTrue { get; set; } = "Y/n";
 		public static string BoolDefaultFalse { get; set; } = "y/N";
+
+		#endregion
+
+		#region //// Types
+
+		/// <summary>
+		/// Dictionary that is used to change the type hint
+		/// displayed for specific types.
+		/// Type inheritance is not accounted for.
+		/// If a type is not present, type's default value will be used.
+		/// </summary>
+		public readonly static Dictionary<Type, string> TypeHintRenamingTable = new() {
+			{ typeof(float), "Float" },
+			{ typeof(BigInteger), "Int" },
+			{ typeof(DateOnly), "Date" },
+			{ typeof(TimeOnly), "Time" }
+		};
 
 		#endregion
 
