@@ -301,8 +301,14 @@ public sealed class Prompt<T> {
 
 		do {
 
+			// Filter and convert hints to strings
+			IEnumerable<string> hintTexts =
+				hints
+				.HintsTryPrependTypeHint<T>()
+				.FilterHints();
+
 			// Stylize prompt text and add hints
-			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hints);
+			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hintTexts);
 
 			try {
 
