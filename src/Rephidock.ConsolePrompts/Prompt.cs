@@ -161,10 +161,12 @@ public sealed class Prompt<T> {
 
 	/// <summary>
 	/// <para>
-	/// Removes text prompt from the current <seealso cref="Prompt"/>.
+	/// Removes text prompt from the current <see cref="Prompt"/>.
 	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
 	/// </para>
-	/// See also: <seealso cref="PromptStyler.NullPromptDisplay"/>.
+	/// <para>
+	/// See also: <see cref="PromptStyler.NullPromptDisplay"/>.
+	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> RemovePrompt() => SetPrompt(null);
@@ -180,7 +182,9 @@ public sealed class Prompt<T> {
 	/// Adds a hint to be displayed with the prompt.
 	/// Only hints with sufficient hint level will be displayed.
 	/// </para>
-	/// See also: <seealso cref="PromptStyler.HintLevel"/>
+	/// <para>
+	/// See also: <see cref="PromptStyler.HintLevel"/>
+	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
 	/// <exception cref="ArgumentException">minRequiredLevel is <see cref="PromptHintLevel.None"/></exception>

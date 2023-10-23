@@ -30,7 +30,7 @@ public static class PromptStyler {
 	/// <summary>
 	/// Format for the text prompts.
 	/// </summary>
-	/// /// <remarks>
+	/// <remarks>
 	/// {0} -- text prompt.
 	/// {1} -- hints.
 	/// </remarks>
