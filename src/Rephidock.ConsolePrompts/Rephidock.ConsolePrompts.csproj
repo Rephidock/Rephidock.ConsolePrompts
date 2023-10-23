@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Title>Rephidock.ConsolePrompts</Title>
     <Authors>Rephidock</Authors>
-    <Version>1.0.1</Version>
+    <Version>1.1.0-dev</Version>
     <Description>A small library to take user input in a console with exception handling and fluent syntax</Description>
     <Copyright>Copyright (c) 2023 Rephidock</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
