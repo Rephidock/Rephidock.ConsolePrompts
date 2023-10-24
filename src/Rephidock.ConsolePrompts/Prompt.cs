@@ -311,11 +311,7 @@ public sealed class Prompt<T> {
 				string input = Console.ReadLine() ?? "";
 
 				// Parse and validate
-				T value = ThrowingParser(input, formatProvider);
-				ThrowingValidator(value);
-
-				// Return
-				return value;
+				return ParseAndValidate(input);
 
 			} catch (Exception ex) {
 
@@ -336,6 +332,30 @@ public sealed class Prompt<T> {
 			}
 
 		} while (true);
+
+	}
+
+	/// <summary>
+	/// Parses given input and validates it using given throwing parser and validators.
+	/// <b>Will</b> throw if invalid input is given.
+	/// </summary>
+	/// <remarks>
+	/// Primarily made for <see cref="Display()"/> and for testing.
+	/// </remarks>
+	/// <returns>Parsed input</returns>
+	public T ParseAndValidate(string input) {
+
+		// Guards
+		if (ThrowingParser is null) {
+			throw new InvalidOperationException("Cannot parse input without a parser.");
+		}
+
+		// Parse and validate
+		T value = ThrowingParser(input, formatProvider);
+		ThrowingValidator(value);
+
+		// Return
+		return value;
 
 	}
 
