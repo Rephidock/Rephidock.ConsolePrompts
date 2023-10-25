@@ -167,6 +167,7 @@ public static class PromptStyler {
 		/// </summary>
 		public readonly static Dictionary<Type, string> TypeHintRenamingTable = new() {
 			{ typeof(float), "Float" },
+			{ typeof(sbyte), "Int8" },
 			{ typeof(BigInteger), "Int" },
 			{ typeof(DateOnly), "Date" },
 			{ typeof(TimeOnly), "Time" }
