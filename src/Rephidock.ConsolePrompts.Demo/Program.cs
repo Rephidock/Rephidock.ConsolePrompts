@@ -92,6 +92,24 @@ internal class Program
 		WriteSectionSeparator();
 
 
+		//  -======- Styling: Type hints -======-
+		PromptStyler.PromptFormat = "{0} ({1}): ";
+		PromptStyler.HintLevel = PromptHintLevel.Standard;
+		PromptStyler.TypeHintsEnabled = true;
+
+		Console.WriteLine("Type hints can also be enabled.");
+
+		float rating = Prompt
+			.For<float>("Give us a rating")
+			.ForceFinite()
+			.OfRange(0, 5)
+			.Display();
+
+		Console.WriteLine($"Given rating: {rating}");
+
+		WriteSectionSeparator();
+
+
 		// - Outro -
 		Console.WriteLine("This concludes the ConsolePrompts demo!");
 		Console.Write("Press any key to exit...");

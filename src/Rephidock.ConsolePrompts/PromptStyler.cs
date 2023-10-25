@@ -45,7 +45,7 @@ public static class PromptStyler {
 	/// Creates a formatted display prompt,
 	/// taking hints into account.
 	/// </summary>
-	internal static string MakePromptDisplayString(string? textPrompt, IReadOnlyList<PromptHint> hints) {
+	internal static string MakePromptDisplayString(string? textPrompt, IEnumerable<string> hintTexts) {
 		
 		// Check for null prompt
 		if (string.IsNullOrWhiteSpace(textPrompt)) {
@@ -53,7 +53,7 @@ public static class PromptStyler {
 		}
 
 		// Get hint texts
-		string hintsString = string.Join(HintSeparator, FilterHints(hints));
+		string hintsString = string.Join(HintSeparator, hintTexts);
 
 		// Format prompt display text
 		if (string.IsNullOrWhiteSpace(hintsString)) {
@@ -101,15 +101,42 @@ public static class PromptStyler {
 	public static PromptHintLevel HintLevel { get; set; } = PromptHintLevel.Standard;
 
 	/// <summary>
+	/// Enable or disable types as first hints.
+	/// Note that type hints are more technical.
+	/// False by default.
+	/// </summary>
+	/// <remarks>
+	/// Type hints are considered to have hint level <see cref="PromptHintLevel.Standard"/>
+	/// </remarks>
+	public static bool TypeHintsEnabled { get; set; } = false;
+
+	/// <summary>
+	/// Hint level for type hints.
+	/// See also <see cref="TypeHintsEnabled"/>
+	/// </summary>
+	public const PromptHintLevel TypeHintsLevel = PromptHintLevel.Standard;
+
+	/// <summary>
 	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
 	/// Empty and whitespace only texts are also skipped.
 	/// </summary>
-	internal static IEnumerable<string> FilterHints(IReadOnlyList<PromptHint> hints) {
+	internal static IEnumerable<string> FilterHints(this IEnumerable<PromptHint> hints) {
 
 		return hints
 			.Where(hint => HintLevel >= hint.Level)
 			.Where(hint => !string.IsNullOrWhiteSpace(hint.Text))
 			.Select(hint => hint.Text);
+	}
+
+	/// <summary>Tries to prepend a type hint to given hints if hints are enabled.</summary>
+	/// <typeparam name="THint">The type, the hint of which is to be prepended.</typeparam>
+	/// <returns>A new IEnumerable with prepended type hint or given hints without changes.</returns>
+	internal static IEnumerable<PromptHint> HintsTryPrependTypeHint<THint>(this IEnumerable<PromptHint> hints) {
+
+		if (!TypeHintsEnabled) return hints;
+
+		string hintName = HintStrings.TypeHintRenamingTable.GetValueOrDefault(typeof(THint), typeof(THint).Name);
+		return hints.Prepend(new PromptHint { Level = TypeHintsLevel, Text = hintName });
 	}
 
 	#endregion
@@ -127,6 +154,24 @@ public static class PromptStyler {
 
 		public static string BoolDefaultTrue { get; set; } = "Y/n";
 		public static string BoolDefaultFalse { get; set; } = "y/N";
+
+		#endregion
+
+		#region //// Types
+
+		/// <summary>
+		/// Dictionary that is used to change the type hint
+		/// displayed for specific types.
+		/// Type inheritance is not accounted for.
+		/// If a type is not present, type's Name will be used.
+		/// </summary>
+		public readonly static Dictionary<Type, string> TypeHintRenamingTable = new() {
+			{ typeof(float), "Float" },
+			{ typeof(sbyte), "Int8" },
+			{ typeof(BigInteger), "Int" },
+			{ typeof(DateOnly), "Date" },
+			{ typeof(TimeOnly), "Time" }
+		};
 
 		#endregion
 
