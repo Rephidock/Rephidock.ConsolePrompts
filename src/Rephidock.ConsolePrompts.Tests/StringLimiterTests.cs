@@ -75,15 +75,14 @@ public sealed class StringLimiterTests {
 
 	}
 
-
 	[Theory]
 	[InlineData("", 1, null, 0, null)]
 	[InlineData("aa", 3, 4, 2, 4)]
 	[InlineData("aa", 0, 1, 0, 4)]
 	[InlineData("aa", 0, 0, 0, 2)]
 	[InlineData("longer string", 10, 12, 10, 15)]
-	[InlineData("not empty", 20, null, 9, null)]
-	[InlineData("not empty", 20, 25, 0, 25)]
+	[InlineData("spikes!!!", 20, null, 9, null)]
+	[InlineData("spikes!!!", 20, 25, 0, 25)]
 	[InlineData("hello", 0, 2, 2, 5)]
 	[InlineData("something", 0, 0, 0, null)]
 	public void OfRangeLengthLimiter_Input_ThrowsIfNotInRange(string input, int badRangeLow, int? badRangeHigh, int goodRangeLow, int? goodRangeHight) {
