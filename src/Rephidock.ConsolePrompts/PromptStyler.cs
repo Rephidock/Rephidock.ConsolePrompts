@@ -102,9 +102,12 @@ public static class PromptStyler {
 
 	/// <summary>
 	/// Enable or disable types as first hints.
-	/// Type hints are considered to have hint level <see cref="PromptHintLevel.Standard"/>
+	/// Note that type hints are more technical.
 	/// False by default.
 	/// </summary>
+	/// <remarks>
+	/// Type hints are considered to have hint level <see cref="PromptHintLevel.Standard"/>
+	/// </remarks>
 	public static bool TypeHintsEnabled { get; set; } = false;
 
 	/// <summary>
@@ -160,7 +163,7 @@ public static class PromptStyler {
 		/// Dictionary that is used to change the type hint
 		/// displayed for specific types.
 		/// Type inheritance is not accounted for.
-		/// If a type is not present, type's default value will be used.
+		/// If a type is not present, type's Name will be used.
 		/// </summary>
 		public readonly static Dictionary<Type, string> TypeHintRenamingTable = new() {
 			{ typeof(float), "Float" },
