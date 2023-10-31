@@ -73,6 +73,33 @@ internal class Program
 		WriteSectionSeparator();
 
 
+		//  -======- Null Text -======-
+		Console.WriteLine("Empty or null text displays are supported.");
+		Console.WriteLine("Write Anything!");
+
+		string anything = Prompt.ForString().Display(); 
+		Console.WriteLine($"Length of Anything (trimmed): \"{anything.Length}\"");
+
+		WriteSectionSeparator();
+
+
+		//  -======- Custom Validators -======-
+		static void MustNotContainLetterAValidator(string input) {
+			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
+				throw new ArgumentException("Input must not contain letter 'A'");
+			}
+		}
+
+		string stringWithoutLetterA = Prompt
+			.ForString("I need a sentence without using letter A")
+			.AddValidator(MustNotContainLetterAValidator)
+			.Display();
+
+		Console.WriteLine($"Given sentence: \"{stringWithoutLetterA}\"");
+
+		WriteSectionSeparator();
+
+
 		//  -======- Styling -======-
 		PromptStyler.PromptFormat = "[{1}] {0} = ";
 		PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
