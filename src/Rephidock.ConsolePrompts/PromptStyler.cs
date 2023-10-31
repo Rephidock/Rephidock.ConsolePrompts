@@ -9,7 +9,7 @@ namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>
-/// A class that holds all the style information from Prompts.
+/// A class that holds all the style information for the Prompts.
 /// </summary>
 public static class PromptStyler {
 
