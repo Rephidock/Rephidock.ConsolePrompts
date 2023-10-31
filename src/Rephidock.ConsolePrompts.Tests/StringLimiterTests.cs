@@ -74,24 +74,26 @@ public sealed class StringLimiterTests {
 	}
 
 	[Theory]
-	[InlineData("", 1, null, 0, null)]
-	[InlineData("aa", 3, 4, 2, 4)]
-	[InlineData("aa", 0, 1, 0, 4)]
-	[InlineData("aa", 0, 0, 0, 2)]
-	[InlineData("longer string", 10, 12, 10, 15)]
-	[InlineData("spikes!!!", 20, null, 9, null)]
-	[InlineData("spikes!!!", 20, 25, 0, 25)]
-	[InlineData("hello", 0, 2, 2, 5)]
-	[InlineData("something", 0, 0, 0, null)]
-	public void OfRangeLengthLimiter_Input_ThrowsIfNotInRange(string input, int badRangeLow, int? badRangeHigh, int goodRangeLow, int? goodRangeHight) {
+	[InlineData(0, null, new string[] { "", " ", "aa", "something", "longer string" }, new string[] { } )]
+	[InlineData(1, null, new string[] { " ", "aa", "longer string" }, new string[] { "" } )]
+	[InlineData(10, null, new string[] { "longer string", "1234567890" }, new string[] { "", " ", "aa", "123456789" })]
+	[InlineData(0, 1, new string[] { "", "q", "\'", " " }, new string[] { "aa", "longer string" } )]
+	[InlineData(0, 4, new string[] { "", "q", "aa", "1234" }, new string[] { "12345", "longer string" } )]
+	[InlineData(2, 4, new string[] { "aa", ".?!", "1234" }, new string[] { "", "q", "12345", "longer string" } )]
+	[InlineData(10, 14, new string[] { "longer string", "1234567890" }, new string[] { "an even longer string", "me short", "" } )]
+	public void OfRangeLengthLimiter_Input_ThrowsIfNotInRange(int minLength, int? maxLength, string[] validInputs, string[] invalidInputs) {
 
 		// Arrange
-		var promptThrowing = Prompt.ForString(trim: false).OfLength(badRangeLow, badRangeHigh);
-		var promptNonThrowing = Prompt.ForString(trim: false).OfLength(goodRangeLow, goodRangeHight);
+		var prompt = Prompt.ForString(trim: false).OfLength(minLength, maxLength);
 
 		// Act and Assert
-		promptNonThrowing.ParseAndValidate(input);
-		Assert.ThrowsAny<Exception>(() => promptThrowing.ParseAndValidate(input));
+		foreach (var input in validInputs) {
+			prompt.ParseAndValidate(input);
+		}
+
+		foreach (var input in invalidInputs) {
+			Assert.ThrowsAny<Exception>(() => prompt.ParseAndValidate(input));
+		}
 
 	}
 
