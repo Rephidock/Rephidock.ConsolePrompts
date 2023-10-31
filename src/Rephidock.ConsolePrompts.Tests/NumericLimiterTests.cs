@@ -68,5 +68,91 @@ public sealed class NumericLimiterTests {
 
 	}
 
+	[Theory]
+	[InlineData("0", false)]
+	[InlineData("-0", false)]
+	[InlineData("1", false)]
+	[InlineData("-1", false)]
+	[InlineData("+infinity", false)]
+	[InlineData("-infinity", false)]
+	[InlineData("nan", true)]
+	public void DisallowNaNLimiter_Input_ThrowIfNaN(string input, bool isNan) {
+
+		// Arrange
+		var promptNoNan = Prompt.For<float>().DisallowNaN();
+		var promptNoNanCreation = Prompt.For<float>("", allowInfinite: true, allowNan: false);
+
+		// Act and Assert
+		void ActDelegateNotNan() {
+			promptNoNan.ParseAndValidate(input);
+			promptNoNanCreation.ParseAndValidate(input);
+		}
+
+		if (isNan) {
+			Assert.ThrowsAny<Exception>(ActDelegateNotNan);
+		} else {
+			ActDelegateNotNan();
+		}
+
+	}
+
+	[Theory]
+	[InlineData("0", false)]
+	[InlineData("-0", false)]
+	[InlineData("1", false)]
+	[InlineData("-1", false)]
+	[InlineData("+infinity", true)]
+	[InlineData("-infinity", true)]
+	[InlineData("nan", false)]
+	public void DisallowInfinitiesLimiter_Input_ThrowIfInfinity(string input, bool isInfinity) {
+
+		// Arrange
+		var promptNoInf = Prompt.For<float>().DisallowInfinities();
+		var promptNoInfCreation = Prompt.For<float>("", allowInfinite: false, allowNan: true);
+
+		// Act and Assert
+		void ActDelegateNotInfinity() {
+			promptNoInf.ParseAndValidate(input);
+			promptNoInfCreation.ParseAndValidate(input);
+		}
+
+		if (isInfinity) {
+			Assert.ThrowsAny<Exception>(ActDelegateNotInfinity);
+		} else {
+			ActDelegateNotInfinity();
+		}
+
+	}
+
+	[Theory]
+	[InlineData("0", false)]
+	[InlineData("-0", false)]
+	[InlineData("1", false)]
+	[InlineData("-1", false)]
+	[InlineData("+infinity", true)]
+	[InlineData("-infinity", true)]
+	[InlineData("nan", true)]
+	public void ForceFiniteLimiter_Input_ThrowIfNotFinite(string input, bool isNotFinite) {
+
+		// Arrange
+		var promptForceFinite = Prompt.For<float>().ForceFinite();
+		var promptForceFiniteCreation = Prompt.For<float>("", allowInfinite: false, allowNan: false);
+		var promptForceFiniteSeparated = Prompt.For<float>().DisallowInfinities().DisallowNaN();
+
+		// Act and Assert
+		void ActDelegateForceFinite() {
+			promptForceFinite.ParseAndValidate(input);
+			promptForceFiniteCreation.ParseAndValidate(input);
+			promptForceFiniteSeparated.ParseAndValidate(input);
+		}
+
+		if (isNotFinite) {
+			Assert.ThrowsAny<Exception>(ActDelegateForceFinite);
+		} else {
+			ActDelegateForceFinite();
+		}
+
+	}
+
 
 }
