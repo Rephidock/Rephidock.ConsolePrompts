@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.ConsolePrompts", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rephidock.ConsolePrompts.Demo", "Rephidock.ConsolePrompts.Demo\Rephidock.ConsolePrompts.Demo.csproj", "{19501CED-9B07-4FF3-B81F-F3A52CA3947E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rephidock.ConsolePrompts.Tests", "Rephidock.ConsolePrompts.Tests\Rephidock.ConsolePrompts.Tests.csproj", "{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,11 @@ Global
 		{19501CED-9B07-4FF3-B81F-F3A52CA3947E}.Release with Demo|Any CPU.ActiveCfg = Release|Any CPU
 		{19501CED-9B07-4FF3-B81F-F3A52CA3947E}.Release with Demo|Any CPU.Build.0 = Release|Any CPU
 		{19501CED-9B07-4FF3-B81F-F3A52CA3947E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}.Release with Demo|Any CPU.ActiveCfg = Release|Any CPU
+		{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}.Release with Demo|Any CPU.Build.0 = Release|Any CPU
+		{CC71BD10-F649-420A-BD7D-BCEBC0D0CC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
