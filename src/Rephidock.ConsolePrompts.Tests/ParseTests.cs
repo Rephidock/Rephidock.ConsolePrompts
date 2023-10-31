@@ -25,15 +25,13 @@ public sealed class ParseTests {
 
 		// Arrange
 		var prompt = Prompt.For<int>("", int.Parse);
-		bool isInputParsable = int.TryParse(input, out int _);
 
-		if (isInputParsable) Assert.Fail("Test case has bad semantics.");
+		if (int.TryParse(input, out int _)) {
+			Assert.Fail("Test case has bad semantics.");
+		}
 
-		// Act
-		void ActDelegate() { prompt.ParseAndValidate(input); }
-
-		// Assert
-		Assert.ThrowsAny<Exception>(ActDelegate);
+		// Act and Assert
+		Assert.ThrowsAny<Exception>(() => prompt.ParseAndValidate(input));
 
 	}
 
@@ -50,9 +48,10 @@ public sealed class ParseTests {
 
 		// Arrange
 		var prompt = Prompt.For<int>("", int.Parse);
-		bool isInputParsable = int.TryParse(input, out int resultParse);
-
-		if (!isInputParsable) Assert.Fail("Test case has bad semantics.");
+		
+		if (!int.TryParse(input, out int resultParse)) {
+			Assert.Fail("Test case has bad semantics.");
+		}
 
 		// Act
 		int resultPrompt = prompt.ParseAndValidate(input);
@@ -140,11 +139,8 @@ public sealed class ParseTests {
 		// Arrange
 		var prompt = Prompt.ForBool();
 
-		// Act
-		void ActDelegate() { prompt.ParseAndValidate(input); }
-
-		// Assert
-		Assert.ThrowsAny<Exception>(ActDelegate);
+		// Act and Assert
+		Assert.ThrowsAny<Exception>(() => prompt.ParseAndValidate(input));
 
 	}
 

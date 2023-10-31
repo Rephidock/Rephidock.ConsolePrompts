@@ -23,11 +23,10 @@ public sealed class StringLimiterTests {
 		var promptNotEmpty = Prompt.ForString(trim: false).DisallowEmpty();
 		var promptNotWhitespace = Prompt.ForString(trim: false).DisallowOnlyWhiteSpace();
 
-		// Act
+		// Act and Assert
 		void ActDelegateNotEmpty() { promptNotEmpty.ParseAndValidate(input); }
 		void ActDelegateNotWhitespace() { promptNotWhitespace.ParseAndValidate(input); }
 
-		// Assert
 		if (isEmpty) {
 			Assert.ThrowsAny<Exception>(ActDelegateNotEmpty);
 		} else {
@@ -61,18 +60,17 @@ public sealed class StringLimiterTests {
 		var promptRangeThrowing = Prompt.ForString(trim: false).OfLength(limiterLengthIncorrect, limiterLengthIncorrect);
 		var promptRangeNonThrowing = Prompt.ForString(trim: false).OfLength(limiterLengthCorrect, limiterLengthCorrect);
 
-		// Act
-		void ThrowingDelegate() {
-			promptThrowing.ParseAndValidate(input);
-			promptRangeThrowing.ParseAndValidate(input);
-		}
-
+		// Act and Assert
 		promptNonThrowing.ParseAndValidate(input);
 		promptRangeNonThrowing.ParseAndValidate(input);
 
-		// Assert
-		Assert.ThrowsAny<Exception>(ThrowingDelegate);
-
+		Assert.ThrowsAny<Exception>(
+			() => {
+				promptThrowing.ParseAndValidate(input);
+				promptRangeThrowing.ParseAndValidate(input);
+			}
+		);
+		
 	}
 
 	[Theory]
@@ -91,12 +89,9 @@ public sealed class StringLimiterTests {
 		var promptThrowing = Prompt.ForString(trim: false).OfLength(badRangeLow, badRangeHigh);
 		var promptNonThrowing = Prompt.ForString(trim: false).OfLength(goodRangeLow, goodRangeHight);
 
-		// Act
-		void ThrowingDelegate() { promptThrowing.ParseAndValidate(input); }
+		// Act and Assert
 		promptNonThrowing.ParseAndValidate(input);
-
-		// Assert
-		Assert.ThrowsAny<Exception>(ThrowingDelegate);
+		Assert.ThrowsAny<Exception>(() => promptThrowing.ParseAndValidate(input));
 
 	}
 
