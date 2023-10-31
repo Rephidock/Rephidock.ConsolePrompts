@@ -222,6 +222,15 @@ public static class PromptStyler {
 
 		#endregion
 
+		#region //// IEquatable
+
+		/// <remarks>
+		/// {0} -- excluded value
+		/// </remarks>
+		public static string NotEqualsFormat { get; set; } = "!= {0}";
+
+		#endregion
+
 		#pragma warning restore CS1591
 
 	}

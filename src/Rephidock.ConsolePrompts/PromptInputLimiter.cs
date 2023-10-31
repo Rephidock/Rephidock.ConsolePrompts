@@ -349,4 +349,29 @@ public static class PromptInputLimiter {
 
 	#endregion
 
+	#region //// IEquatable
+
+	/// <summary>Limits input by disallowing a specific value.</summary>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
+	public static Prompt<T> NotEqualTo<T>(this Prompt<T> prompt, T exclusion) where T : IEquatable<T> {
+		
+		// Define and add validator
+		void Validator(T value) {
+			if (value.Equals(exclusion)) {
+				throw new ArgumentException("Given value is excluded");
+			}
+		}
+
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		string hintText = string.Format(PromptStyler.HintStrings.NotEqualsFormat, exclusion);
+		prompt.AddHint(hintText, PromptHintLevel.Standard);
+
+		// Return
+		return prompt;
+	}
+
+	#endregion
+
 }
