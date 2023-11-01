@@ -78,7 +78,7 @@ internal class Program
 		Console.WriteLine("Write Anything!");
 
 		string anything = Prompt.ForString().Display(); 
-		Console.WriteLine($"Length of Anything (trimmed): \"{anything.Length}\"");
+		Console.WriteLine($"Length of Anything (trimmed): {anything.Length}");
 
 		WriteSectionSeparator();
 
