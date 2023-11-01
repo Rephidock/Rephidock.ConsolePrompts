@@ -86,7 +86,7 @@ internal class Program
 		//  -======- Custom Validators -======-
 		static void MustNotContainLetterAValidator(string input) {
 			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
-				throw new ArgumentException("Input must not contain letter 'A'");
+				throw new PromptInputException("Input must not contain letter 'A'");
 			}
 		}
 
