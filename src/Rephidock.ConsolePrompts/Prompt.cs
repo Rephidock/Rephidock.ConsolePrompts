@@ -161,10 +161,12 @@ public sealed class Prompt<T> {
 
 	/// <summary>
 	/// <para>
-	/// Removes text prompt from the current <seealso cref="Prompt"/>.
+	/// Removes text prompt from the current <see cref="Prompt"/>.
 	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
 	/// </para>
-	/// See also: <seealso cref="PromptStyler.NullPromptDisplay"/>.
+	/// <para>
+	/// See also: <see cref="PromptStyler.NullPromptDisplay"/>.
+	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> RemovePrompt() => SetPrompt(null);
@@ -180,10 +182,12 @@ public sealed class Prompt<T> {
 	/// Adds a hint to be displayed with the prompt.
 	/// Only hints with sufficient hint level will be displayed.
 	/// </para>
-	/// See also: <seealso cref="PromptStyler.HintLevel"/>
+	/// <para>
+	/// See also: <see cref="PromptStyler.HintLevel"/>
+	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
-	/// <exception cref="ArgumentException">minRequiredLevel is <see cref="PromptHintLevel.None"/></exception>
+	/// <exception cref="ArgumentException">Hint level is <see cref="PromptHintLevel.None"/></exception>
 	public Prompt<T> AddHint(PromptHint hint) {
 
 		if (hint.Level == PromptHintLevel.None) {
@@ -261,18 +265,24 @@ public sealed class Prompt<T> {
 	Action<T> ThrowingValidator = (T _) => { };
 
 	/// <summary>
+	/// <para>
 	/// Adds a throwing validator for user input.
-	/// On invalid input the provided validator should throw
-	///	one of following exceptions:
+	/// </para>
+	/// <para>
+	/// On invalid input the provided validator should throw a <see cref="PromptInputException"/>
+	/// or one of other exceptions caught (see below).
+	/// When the exception is caught the user will be prompted to input a value again
+	/// </para>
+	/// <para>
+	/// The following exceptions are also caught:
 	///	<see cref="FormatException"/>,
-	///	<see cref="OverflowException"/>,
 	///	<see cref="ArgumentException"/>,
 	///	<see cref="ArgumentOutOfRangeException"/>,
+	///	<see cref="OverflowException"/>,
 	///	<see cref="PathTooLongException"/>,
 	///	<see cref="NotSupportedException"/>,
 	///	<see cref="NotImplementedException"/>.
-	///	Those exceptions will be caught and the user will be
-	///	prompted to input something else.
+	///	</para>
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> AddValidator(Action<T> throwingValidator) {
@@ -297,26 +307,29 @@ public sealed class Prompt<T> {
 
 		do {
 
+			// Filter and convert hints to strings
+			IEnumerable<string> hintTexts =
+				hints
+				.HintsTryPrependTypeHint<T>()
+				.FilterHints();
+
 			// Stylize prompt text and add hints
-			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hints);
+			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hintTexts);
 
 			try {
 
-				// Read line
+				// Write text prompt and read line
 				Console.Write(styledPromptText);
 				string input = Console.ReadLine() ?? "";
 
 				// Parse and validate
-				T value = ThrowingParser(input, formatProvider);
-				ThrowingValidator(value);
-
-				// Return
-				return value;
+				return ParseAndValidate(input);
 
 			} catch (Exception ex) {
 
 				if (
-					ex is FormatException
+					ex is PromptInputException
+					|| ex is FormatException
 					|| ex is OverflowException
 					|| ex is ArgumentException
 					|| ex is ArgumentOutOfRangeException
@@ -332,6 +345,30 @@ public sealed class Prompt<T> {
 			}
 
 		} while (true);
+
+	}
+
+	/// <summary>
+	/// Parses given input and validates it using given throwing parser and validators.
+	/// <b>Will</b> throw if invalid input is given.
+	/// </summary>
+	/// <remarks>
+	/// Primarily made for <see cref="Display()"/> and for testing.
+	/// </remarks>
+	/// <returns>Parsed input</returns>
+	public T ParseAndValidate(string input) {
+
+		// Guards
+		if (ThrowingParser is null) {
+			throw new InvalidOperationException("Cannot parse input without a parser.");
+		}
+
+		// Parse and validate
+		T value = ThrowingParser(input, formatProvider);
+		ThrowingValidator(value);
+
+		// Return
+		return value;
 
 	}
 

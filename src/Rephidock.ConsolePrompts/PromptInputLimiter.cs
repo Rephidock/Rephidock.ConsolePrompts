@@ -26,7 +26,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		void Validator(string value) {
 			if (value.Length != length) {
-				throw new ArgumentException("Input is not of the correct length");
+				throw new PromptInputException($"Input must be {length} characters long.");
 			}
 		}
 		
@@ -73,7 +73,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		void Validator(string value) {
 			if (value.Length < minLength || (maxLength.HasValue && value.Length > maxLength)) {
-				throw new ArgumentException("Input length is out of range of value values");
+				throw new PromptInputException("Input length is out of range of valid values");
 			}
 		}
 
@@ -95,7 +95,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(string value) {
 			if (value == "") {
-				throw new ArgumentException("Input cannot be empty");
+				throw new PromptInputException("Input cannot be empty");
 			}
 		}
 
@@ -115,7 +115,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(string value) {
 			if (string.IsNullOrWhiteSpace(value)) {
-				throw new ArgumentException("Input cannot be empty or whitespace");
+				throw new PromptInputException("Input cannot be empty or whitespace");
 			}
 		}
 
@@ -139,10 +139,10 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(string value) {
 
-			if (value.Trim().Length == 0) throw new ArgumentException("Path is empty.");
+			if (value.Trim().Length == 0) throw new PromptInputException("Path is empty.");
 
 			if (value.IndexOfAny(Path.GetInvalidPathChars()) != -1) {
-				throw new ArgumentException("Path contains invalid characters.");
+				throw new PromptInputException("Path contains invalid characters.");
 			}
 
 			Path.GetFullPath(value); // This call may throw exceptions
@@ -167,12 +167,12 @@ public static class PromptInputLimiter {
 
 			// Throw if is not a directory
 			if (Directory.Exists(value)) {
-				throw new ArgumentException("Given path is for a directory, not a file.");
+				throw new PromptInputException("Given path is for a directory, not a file.");
 			}
 
 			// Throw if does not exist
 			if (mustExist && !File.Exists(value)) {
-				throw new ArgumentException("File does not exist.");
+				throw new PromptInputException("File does not exist.");
 			}
 
 		}
@@ -200,12 +200,12 @@ public static class PromptInputLimiter {
 
 			// Throw if is not a directory
 			if (File.Exists(value)) {
-				throw new ArgumentException("Given path is for a file, not a directory.");
+				throw new PromptInputException("Given path is for a file, not a directory.");
 			}
 
 			// Throw if does not exist
 			if (mustExist && !Directory.Exists(value)) {
-				throw new ArgumentException("Directory does not exist.");
+				throw new PromptInputException("Directory does not exist.");
 			}
 
 		}
@@ -244,10 +244,8 @@ public static class PromptInputLimiter {
 
 		// Define and add validator
 		void Validator(T value) {
-			#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-			if (min is not null && value < min) throw new ArgumentOutOfRangeException();
-			if (max is not null && value > max) throw new ArgumentOutOfRangeException();
-			#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+			if (min is not null && value < min) throw new PromptInputException("Given value is too small");
+			if (max is not null && value > max) throw new PromptInputException("Given value is too large");
 		}
 
 		prompt.AddValidator(Validator);
@@ -294,7 +292,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(T value) {
 			if (T.IsInfinity(value)) {
-				throw new ArgumentException("Value is too large or to small to be considered finite");
+				throw new PromptInputException("Value is too large or to small to be considered finite");
 			}
 		}
 
@@ -314,7 +312,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(T value) {
 			if (T.IsNaN(value)) {
-				throw new ArgumentException("Value cannot be NaN");
+				throw new PromptInputException("Value cannot be NaN");
 			}
 		}
 
@@ -334,7 +332,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(T value) {
 			if (!T.IsFinite(value)) {
-				throw new ArgumentException("Value must be finite");
+				throw new PromptInputException("Value must be finite");
 			}
 		}
 
@@ -342,6 +340,31 @@ public static class PromptInputLimiter {
 
 		// Add hint
 		prompt.AddHint(PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
+
+		// Return
+		return prompt;
+	}
+
+	#endregion
+
+	#region //// IEquatable
+
+	/// <summary>Limits input by disallowing a specific value.</summary>
+	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
+	public static Prompt<T> NotEqualTo<T>(this Prompt<T> prompt, T exclusion) where T : IEquatable<T> {
+		
+		// Define and add validator
+		void Validator(T value) {
+			if (value.Equals(exclusion)) {
+				throw new PromptInputException("Given value is excluded from the pool of valid values");
+			}
+		}
+
+		prompt.AddValidator(Validator);
+
+		// Add hint
+		string hintText = string.Format(PromptStyler.HintStrings.NotEqualsFormat, exclusion);
+		prompt.AddHint(hintText, PromptHintLevel.Standard);
 
 		// Return
 		return prompt;

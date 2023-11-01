@@ -73,6 +73,33 @@ internal class Program
 		WriteSectionSeparator();
 
 
+		//  -======- Null Text -======-
+		Console.WriteLine("Empty or null text displays are supported.");
+		Console.WriteLine("Write Anything!");
+
+		string anything = Prompt.ForString().Display(); 
+		Console.WriteLine($"Length of Anything (trimmed): {anything.Length}");
+
+		WriteSectionSeparator();
+
+
+		//  -======- Custom Validators -======-
+		static void MustNotContainLetterAValidator(string input) {
+			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
+				throw new PromptInputException("Input must not contain letter 'A'");
+			}
+		}
+
+		string stringWithoutLetterA = Prompt
+			.ForString("I need a sentence without using letter A")
+			.AddValidator(MustNotContainLetterAValidator)
+			.Display();
+
+		Console.WriteLine($"Given sentence: \"{stringWithoutLetterA}\"");
+
+		WriteSectionSeparator();
+
+
 		//  -======- Styling -======-
 		PromptStyler.PromptFormat = "[{1}] {0} = ";
 		PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
@@ -88,6 +115,24 @@ internal class Program
 			.Display();
 
 		Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
+
+		WriteSectionSeparator();
+
+
+		//  -======- Styling: Type hints -======-
+		PromptStyler.PromptFormat = "{0} ({1}): ";
+		PromptStyler.HintLevel = PromptHintLevel.Standard;
+		PromptStyler.TypeHintsEnabled = true;
+
+		Console.WriteLine("Type hints can also be enabled.");
+
+		float rating = Prompt
+			.For<float>("Give us a rating")
+			.ForceFinite()
+			.OfRange(0, 5)
+			.Display();
+
+		Console.WriteLine($"Given rating: {rating}");
 
 		WriteSectionSeparator();
 
