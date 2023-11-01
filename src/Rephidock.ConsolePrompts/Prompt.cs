@@ -322,7 +322,8 @@ public sealed class Prompt<T> {
 			} catch (Exception ex) {
 
 				if (
-					ex is FormatException
+					ex is PromptInputException
+					|| ex is FormatException
 					|| ex is OverflowException
 					|| ex is ArgumentException
 					|| ex is ArgumentOutOfRangeException
