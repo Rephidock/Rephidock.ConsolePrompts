@@ -187,7 +187,7 @@ public sealed class Prompt<T> {
 	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
-	/// <exception cref="ArgumentException">minRequiredLevel is <see cref="PromptHintLevel.None"/></exception>
+	/// <exception cref="ArgumentException">Hint level is <see cref="PromptHintLevel.None"/></exception>
 	public Prompt<T> AddHint(PromptHint hint) {
 
 		if (hint.Level == PromptHintLevel.None) {
@@ -265,18 +265,24 @@ public sealed class Prompt<T> {
 	Action<T> ThrowingValidator = (T _) => { };
 
 	/// <summary>
+	/// <para>
 	/// Adds a throwing validator for user input.
-	/// On invalid input the provided validator should throw
-	///	one of following exceptions:
+	/// </para>
+	/// <para>
+	/// On invalid input the provided validator should throw a <see cref="PromptInputException"/>
+	/// or one of other exceptions caught (see below).
+	/// When the exception is caught the user will be prompted to input a value again
+	/// </para>
+	/// <para>
+	/// The following exceptions are also caught:
 	///	<see cref="FormatException"/>,
-	///	<see cref="OverflowException"/>,
 	///	<see cref="ArgumentException"/>,
 	///	<see cref="ArgumentOutOfRangeException"/>,
+	///	<see cref="OverflowException"/>,
 	///	<see cref="PathTooLongException"/>,
 	///	<see cref="NotSupportedException"/>,
 	///	<see cref="NotImplementedException"/>.
-	///	Those exceptions will be caught and the user will be
-	///	prompted to input something else.
+	///	</para>
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> AddValidator(Action<T> throwingValidator) {
@@ -312,7 +318,7 @@ public sealed class Prompt<T> {
 
 			try {
 
-				// Read line
+				// Write text prompt and read line
 				Console.Write(styledPromptText);
 				string input = Console.ReadLine() ?? "";
 
@@ -322,7 +328,8 @@ public sealed class Prompt<T> {
 			} catch (Exception ex) {
 
 				if (
-					ex is FormatException
+					ex is PromptInputException
+					|| ex is FormatException
 					|| ex is OverflowException
 					|| ex is ArgumentException
 					|| ex is ArgumentOutOfRangeException
