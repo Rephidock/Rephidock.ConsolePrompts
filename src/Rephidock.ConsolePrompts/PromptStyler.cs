@@ -77,11 +77,37 @@ public static class PromptStyler {
 	public static string InvalidInputFormat { get; set; } = "Invalid input: {0}";
 
 	/// <summary>
-	/// Creates a formatted invalid input message
+	/// Creates a formatted invalid input message.
 	/// </summary>
 	internal static string MakeInvalidInputString(Exception ex) {
-		return string.Format(InvalidInputFormat, ex.Message);
+
+		string message;
+
+		if (ReplaceExceptionMessages) {
+			message = ExceptionReplacementMessages.GetValueOrDefault(ex.GetType(), ex.Message);
+		} else {
+			message = ex.Message;
+		}
+
+		return string.Format(InvalidInputFormat, message);
 	}
+
+	/// <summary>
+	/// If true, will cause exception messages of some exceptions
+	/// to be replaced when input is invalid.
+	/// True by default.
+	/// </summary>
+	public static bool ReplaceExceptionMessages { get; set; } = true;
+
+	/// <summary>
+	/// Dictionary that is used to replace messages for some exceptions.
+	/// Type inheritance is not accounted for.
+	/// </summary>
+	public readonly static Dictionary<Type, string> ExceptionReplacementMessages = new() {
+		{ typeof(FormatException), "Input is not in the correct format" },
+		{ typeof(OverflowException), "Given value is too large or too small" },
+		{ typeof(ArgumentOutOfRangeException), "Input is out of the range of valid values" }
+	};
 
 	#endregion
 
