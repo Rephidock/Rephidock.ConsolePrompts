@@ -7,7 +7,7 @@
     <Description>A small library to take user input in a console with exception handling and fluent syntax</Description>
     <Copyright>Copyright (c) 2023-2024 Rephidock</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>console;input</PackageTags>
+    <PackageTags>console;prompt;input</PackageTags>
     <PackageProjectUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</RepositoryUrl>
     <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
