@@ -134,7 +134,7 @@ public class Prompter {
 		}
 
 		// Create prompt
-		Prompt<bool> prompt = PromptFor<bool>(textPrompt, BoolParser).SetParserFormat(null);
+		Prompt<bool> prompt = PromptFor<bool>(textPrompt, BoolParser);
 
 		// Add y/n hint
 		string hintText;

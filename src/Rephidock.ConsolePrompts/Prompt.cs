@@ -60,7 +60,6 @@ public sealed class Prompt<T> {
 
 	internal Prompt(Prompter prompter) {
 		this.prompter = prompter;
-		formatProvider = prompter.FormatProvider;
 	}
 
 	// Prompter reference
@@ -156,7 +155,6 @@ public sealed class Prompt<T> {
 
 	#region //// Parser
 
-	IFormatProvider? formatProvider;
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
@@ -172,20 +170,6 @@ public sealed class Prompt<T> {
 		ArgumentNullException.ThrowIfNull(throwingParser, nameof(throwingParser));
 
 		ThrowingParser = throwingParser;
-		return this;
-	}
-
-	/// <inheritdoc cref="SetParser(Func{string, IFormatProvider?, T})"/>
-	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser, IFormatProvider? formatProvider) {
-		SetParser(throwingParser);
-		SetParserFormat(formatProvider);
-		return this;
-	}
-
-	/// <summary>Sets <see cref="IFormatProvider"/> to be used by the parser.</summary>
-	/// <returns>this</returns>
-	public Prompt<T> SetParserFormat(IFormatProvider? formatProvider) {
-		this.formatProvider = formatProvider;
 		return this;
 	}
 
@@ -295,7 +279,7 @@ public sealed class Prompt<T> {
 		}
 
 		// Parse and validate
-		T value = ThrowingParser(input, formatProvider);
+		T value = ThrowingParser(input, prompter.FormatProvider);
 		ThrowingValidator(value);
 
 		// Return
