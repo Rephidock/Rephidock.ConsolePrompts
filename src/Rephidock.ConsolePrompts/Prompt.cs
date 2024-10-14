@@ -69,7 +69,7 @@ public sealed class Prompt<T> {
 
 	#region //// Text Prompt
 
-	/// <summary>Text prompt to be tweaked and displayed.</summary>
+	/// <summary>Text prompt to be displayed.</summary>
 	string? textPrompt = null;
 
 	/// <summary>
@@ -153,17 +153,25 @@ public sealed class Prompt<T> {
 
 	#endregion
 
-	#region //// Parser
+	#region //// Parser and Validator
 
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
-	/// Sets the parser used by the textPrompt.
-	/// If provided input cannot be parsed, the parser should
-	/// throw an exception. See <see cref="AddValidator(Action{T})"/> 
-	/// for list of exceptions caught during user input.
+	/// <para>
+	/// Sets the parser used by this instance of <see cref="Prompt{T}"/>.
+	/// </para>
+	/// <para>
+	/// If provided input cannot be parsed, the parser should throw
+	/// a common exception, like <see cref="FormatException"/> or <see cref="ArgumentException"/>
+	/// for it to be caught during the querying.
+	/// See <see cref="AddValidator(Action{T})"/> for a full list of exceptions caught.
+	/// </para>
+	/// <para>
+	/// When the exception is caught the user will be prompted to input a value again.
+	/// </para>
 	/// </summary>
-	/// <exception cref="ArgumentNullException">throwingParser is null</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="throwingParser"/> is <see langword="null"/></exception>
 	/// <returns>this</returns>
 	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser) {
 
@@ -172,10 +180,6 @@ public sealed class Prompt<T> {
 		ThrowingParser = throwingParser;
 		return this;
 	}
-
-	#endregion
-
-	#region //// Validator
 
 	Action<T> ThrowingValidator = (T _) => { };
 
@@ -186,7 +190,9 @@ public sealed class Prompt<T> {
 	/// <para>
 	/// On invalid input the provided validator should throw a <see cref="PromptInputException"/>
 	/// or one of other exceptions caught (see below).
-	/// When the exception is caught the user will be prompted to input a value again
+	/// </para>
+	/// <para>
+	/// When the exception is caught the user will be prompted to input a value again.
 	/// </para>
 	/// <para>
 	/// The following exceptions are also caught:
