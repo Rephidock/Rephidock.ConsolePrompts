@@ -80,12 +80,10 @@ public sealed class NumericLimiterTests {
 
 		// Arrange
 		var promptNoNan = Prompt.For<float>().DisallowNaN();
-		var promptNoNanCreation = Prompt.For<float>("", allowInfinite: true, allowNan: false);
 
 		// Act and Assert
 		void ActDelegateNotNan() {
 			promptNoNan.ParseAndValidate(input);
-			promptNoNanCreation.ParseAndValidate(input);
 		}
 
 		if (isNan) {
@@ -108,12 +106,10 @@ public sealed class NumericLimiterTests {
 
 		// Arrange
 		var promptNoInf = Prompt.For<float>().DisallowInfinities();
-		var promptNoInfCreation = Prompt.For<float>("", allowInfinite: false, allowNan: true);
 
 		// Act and Assert
 		void ActDelegateNotInfinity() {
 			promptNoInf.ParseAndValidate(input);
-			promptNoInfCreation.ParseAndValidate(input);
 		}
 
 		if (isInfinity) {
@@ -136,7 +132,7 @@ public sealed class NumericLimiterTests {
 
 		// Arrange
 		var promptForceFinite = Prompt.For<float>().ForceFinite();
-		var promptForceFiniteCreation = Prompt.For<float>("", allowInfinite: false, allowNan: false);
+		var promptForceFiniteCreation = Prompt.For<float>("", forceFinite: true);
 		var promptForceFiniteSeparated = Prompt.For<float>().DisallowInfinities().DisallowNaN();
 
 		// Act and Assert
@@ -154,5 +150,26 @@ public sealed class NumericLimiterTests {
 
 	}
 
+	[Theory]
+	[InlineData("0")]
+	[InlineData("-0")]
+	[InlineData("1")]
+	[InlineData("-1")]
+	[InlineData("+infinity")]
+	[InlineData("-infinity")]
+	[InlineData("nan")]
+	public void ForceFiniteOnCreationDisabled_Input_DoesNotThrow(string input) {
+
+		// Arrange
+		var promptParsable = Prompt.For<float>();
+		var promptParsableWithText = Prompt.For<float>("");
+		var promptNumeric = Prompt.For<float>("", forceFinite: false);
+
+		// Act and Assert
+		promptParsable.ParseAndValidate(input);
+		promptParsableWithText.ParseAndValidate(input);
+		promptNumeric.ParseAndValidate(input);
+
+	}
 
 }

@@ -1,6 +1,7 @@
 TO DO:
 - Add prompt styles to prompter
 - Tweak limiters (validation)
+- Check that the specific prompt exception is thrown, tests included
 - Maybe revamp hints
 - Revamp readme
 
@@ -8,3 +9,4 @@ DOING:
 - Prompt: make work with any stream (reference streams in parent prompter)
 
 TO TEST:
+- Prompt with mock streams
