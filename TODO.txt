@@ -1,7 +1,10 @@
 TO DO:
-- Revamp: decouple from static classes
+- Add prompt styles to prompter
+- Tweak limiters (validation)
+- Maybe revamp hints
 - Revamp readme
 
 DOING:
+- Prompt: make work with any stream (reference streams in parent prompter)
 
 TO TEST:

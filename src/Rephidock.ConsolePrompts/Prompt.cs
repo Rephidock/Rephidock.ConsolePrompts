@@ -2,129 +2,51 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-using System.Globalization;
 
 
 namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>
-/// A class for creating instances of <see cref="Prompt{T}"/>.
+/// <para>
+/// A class for creating instances of <see cref="Prompt{T}"/>
+/// for <see cref="Console"/> quickly.
+/// </para>
+/// <para>
+/// For advanced use or for multiple prompts <see cref="Prompter"/>
+/// is recommended.
+/// </para>
 /// </summary>
 public static class Prompt {
 
-	#region //// Creation
+	#region //// Shortcuts
 
-	/// <summary>
-	/// Creates a prompt for any value.
-	/// A parser is required.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, Func{string, IFormatProvider?, T})"/>
 	public static Prompt<T> For<T>(string? textPrompt, Func<string, IFormatProvider?, T> parser) {
-		return new Prompt<T>().SetPrompt(textPrompt).SetParser(parser);
+		return new Prompter().PromptFor<T>(textPrompt, parser);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a parsable value.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?)"/>
 	public static Prompt<T> For<T>(string? textPrompt = null) where T : IParsable<T> {
-		return new Prompt<T>().SetPrompt(textPrompt).SetParser(T.Parse);
+		return new Prompter().PromptFor<T>(textPrompt);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a numeric value.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
-	public static Prompt<T> For<T>(string? textPrompt, bool allowInfinite, bool allowNan)
-	where T : struct, INumber<T>
-	{
-
-		Prompt<T> ret = For<T>(textPrompt);
-
-		if (!allowInfinite && !allowNan) {
-			ret.ForceFinite();
-		} else {
-			if (!allowInfinite) ret.DisallowInfinities();
-			if (!allowNan) ret.DisallowNaN();
-		}
-
-		return ret;
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, bool)"/>
+	public static Prompt<T> For<T>(string? textPrompt, bool forceFinite) where T : struct, INumber<T> {
+		return new Prompter().PromptFor<T>(textPrompt, forceFinite);
 	}
 
-	/// <summary>Creates a prompt for a string.</summary>
-	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="string"/></returns>
+	/// <inheritdoc cref="Prompter.PromptForString(string?, bool)"/>
 	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
-
-		// Define parsers
-		static string PassthroughParser(string input, IFormatProvider? _) => input;
-		static string TrimParser(string input, IFormatProvider? _) => input.Trim();
-
-		// Choose the parser
-		Func<string, IFormatProvider?, string> chosenParser = trim ? TrimParser : PassthroughParser;
-
-		// Create Prompt
-		return For<string>(textPrompt, chosenParser).SetParserFormat(null);
+		return new Prompter().PromptForString(textPrompt, trim);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a boolean.
-	/// Supports one character input (y/n).
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="bool"/></returns>
+	/// <inheritdoc cref="Prompter.PromptForBool(string?, bool)"/>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
-
-		// Define parser
-		bool BoolParser(string input, IFormatProvider? _) {
-
-			// Trim input
-			input = input.Trim();
-
-			// Check for default return
-			if (input.Length == 0) return defaultValue;
-
-			// Try default parser first
-			if (bool.TryParse(input, out bool defaultParserResult)) {
-				return defaultParserResult;
-			};
-
-			// Check for valid single characters
-			if (input.Length == 1) {
-
-				char inputChar = char.ToUpper(input[0]);
-
-				if (inputChar == 'Y' || inputChar == 'T' || inputChar == '1') return true;
-				if (inputChar == 'N' || inputChar == 'F' || inputChar == '0') return false;
-			}
-
-			// Throw if all other fails
-			throw new FormatException();
-		}
-
-		// Create prompt
-		Prompt<bool> prompt = For<bool>(textPrompt, BoolParser).SetParserFormat(null);
-
-		// Add y/n hint
-		string hintText;
-		if (defaultValue) {
-			hintText = PromptStyler.HintStrings.BoolDefaultTrue;
-		} else {
-			hintText = PromptStyler.HintStrings.BoolDefaultFalse;
-		}
-
-		prompt.AddHint(hintText, PromptHintLevel.Minimal);
-
-		// Return
-		return prompt;
+		return new Prompter().PromptForBool(textPrompt, defaultValue);
 	}
 
 	#endregion
-
-	/// <summary>
-	/// Default format used by <see cref="Prompt{T}"/>.
-	/// Is <see cref="CultureInfo.InvariantCulture"/>.
-	/// </summary>
-	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
 
 }
 
@@ -134,8 +56,17 @@ public static class Prompt {
 /// </summary>
 public sealed class Prompt<T> {
 
-	// Hide constructor
-	internal Prompt() { }
+	#region //// Parent + Constructor
+
+	internal Prompt(Prompter prompter) {
+		this.prompter = prompter;
+		formatProvider = prompter.FormatProvider;
+	}
+
+	// Prompter reference
+	readonly Prompter prompter;
+
+	#endregion
 
 	#region //// Text Prompt
 
@@ -225,7 +156,7 @@ public sealed class Prompt<T> {
 
 	#region //// Parser
 
-	IFormatProvider? formatProvider = Prompt.DefaultFormatProvider;
+	IFormatProvider? formatProvider;
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
