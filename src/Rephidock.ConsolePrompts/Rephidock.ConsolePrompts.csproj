@@ -13,7 +13,7 @@
     <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
     <PackageReleaseNotes>
       Major update 2.0:
-	</PackageReleaseNotes>
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-	
+    
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Rephidock.ConsolePrompts</RootNamespace>
