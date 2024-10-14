@@ -1,0 +1,7 @@
+TO DO:
+- Revamp: decouple from static classes
+- Revamp readme
+
+DOING:
+
+TO TEST:
