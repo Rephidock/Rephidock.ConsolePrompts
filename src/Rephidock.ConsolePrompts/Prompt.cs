@@ -240,8 +240,8 @@ public sealed class Prompt<T> {
 			try {
 
 				// Write text prompt and read line
-				Console.Write(styledPromptText);
-				string input = Console.ReadLine() ?? "";
+				prompter.OutputStream.Write(styledPromptText);
+				string input = prompter.InputStream.ReadLine() ?? "";
 
 				// Parse and validate
 				return ParseAndValidate(input);
@@ -258,7 +258,7 @@ public sealed class Prompt<T> {
 					|| ex is NotSupportedException
 					|| ex is NotImplementedException
 				) {
-					Console.WriteLine(PromptStyler.MakeInvalidInputString(ex));
+					prompter.OutputStream.WriteLine(PromptStyler.MakeInvalidInputString(ex));
 				} else {
 					throw;
 				}

@@ -6,7 +6,6 @@ TO DO:
 - Revamp readme
 
 DOING:
-- Prompt: make work with any stream (reference streams in parent prompter)
 
 TO TEST:
 - Prompt with mock streams
