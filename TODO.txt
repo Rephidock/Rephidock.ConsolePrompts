@@ -1,8 +1,9 @@
 TO DO:
-- Add prompt styles to prompter
+- Move prompt styles into prompter (maybe in an object)
 - Tweak limiters (validation)
-- Check that the specific prompt exception is thrown, tests included
+-- Maybe add IComparable
 - Maybe revamp hints
+- Update the demo
 - Revamp readme
 
 DOING:
