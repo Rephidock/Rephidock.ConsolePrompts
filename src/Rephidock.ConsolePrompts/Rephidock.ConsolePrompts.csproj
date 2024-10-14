@@ -3,23 +3,16 @@
   <PropertyGroup>
     <Title>Rephidock.ConsolePrompts</Title>
     <Authors>Rephidock</Authors>
-    <Version>1.1.0</Version>
+    <Version>2.0.0-alpha.dev.0</Version>
     <Description>A small library to take user input in a console with exception handling and fluent syntax</Description>
-    <Copyright>Copyright (c) 2023 Rephidock</Copyright>
+    <Copyright>Copyright (c) 2023-2024 Rephidock</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>console;input</PackageTags>
     <PackageProjectUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</RepositoryUrl>
     <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
     <PackageReleaseNotes>
-      Minor update 1.1.0 change log:
-        - Added NotEqualTo input limiter
-        - Added type hints and type name replacement (optional, off by default)
-        - Added exception message replacement (optional, on by default)
-        - Added PromptInputException
-        - Prompt: Added ParseAndValidate for use outside of console
-        - Documentation clarifications and fixes
-        - Internal changes and testing
+      Major update 2.0:
 	</PackageReleaseNotes>
   </PropertyGroup>
 
