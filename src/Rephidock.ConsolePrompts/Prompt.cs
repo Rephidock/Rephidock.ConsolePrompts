@@ -54,6 +54,10 @@ public static class Prompt {
 /// <summary>
 /// A prompt (query) for a value to be shown to the user.
 /// </summary>
+/// <remarks>
+/// Each prompt has dedicated text query, hints, parser and validators;
+/// everything else is read from the parent <see cref="Prompter"/>.
+/// </remarks>
 public sealed class Prompt<T> {
 
 	#region //// Parent + Constructor
@@ -108,33 +112,12 @@ public sealed class Prompt<T> {
 	readonly List<PromptHint> hints = new();
 
 	/// <summary>
-	/// <para>
 	/// Adds a hint to be displayed with the prompt.
-	/// Only hints with sufficient hint level will be displayed.
-	/// </para>
-	/// <para>
-	/// See also: <see cref="TO_BE_REMOVED_PromptStyler.HintLevel"/>
-	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
-	/// <exception cref="ArgumentException">Hint level is <see cref="PromptHintLevel.None"/></exception>
 	public Prompt<T> AddHint(PromptHint hint) {
-
-		if (hint.Level == PromptHintLevel.None) {
-			throw new ArgumentException(
-					$"Hint level {PromptHintLevel.None} is reserved to disable all hints. " +
-					$"Please use {PromptHintLevel.Minimal} or higher.",
-					nameof(hint)
-				);
-		}
-
 		hints.Add(hint);
 		return this;
-	}
-
-	/// <inheritdoc cref="AddHint(PromptHint)"/>
-	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
-		return AddHint(new PromptHint { Text = hint, Level = minRequiredLevel });
 	}
 
 	/// <summary>
@@ -149,6 +132,22 @@ public sealed class Prompt<T> {
 		}
 
 		return this;
+	}
+
+	/// <summary>
+	/// Adds a type hint to be displayed with the prompt.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompt<T> AddTypeHint() {
+		return AddHint(new PromptHint(PromptHintTypes.TypeHint));
+	}
+
+	/// <summary>
+	/// Adds a text hint to be displayed with the prompt.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompt<T> AddAdditionalText(string hintText) {
+		return AddHint(new PromptHint(PromptHintTypes.BasicText, hintText));
 	}
 
 	#endregion

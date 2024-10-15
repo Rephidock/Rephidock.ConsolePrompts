@@ -1,31 +1,35 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 
 namespace Rephidock.ConsolePrompts;
 
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-public enum PromptHintLevel {
-	None,
-	Minimal,
-	Standard,
-	Verbose
-}
-#pragma warning restore CS1591
-
-
 /// <summary>
 /// A hint displayed by <see cref="Prompt{T}"/>.
+/// Not styled.
 /// </summary>
 public readonly record struct PromptHint {
 
 	/// <summary>
-	/// Text of the hint.
+	/// The type of the hint. Used by the styler.
 	/// </summary>
-	public required string Text { get; init; }
+	// Left as a string, not enum, so that consumers
+	// can add and handle their own hint types
+	public string HintType { get; }
 
 	/// <summary>
-	/// Minimum hint level required to display the hint.
+	/// The payload of the hint.
+	/// Empty if not applicable.
 	/// </summary>
-	public required PromptHintLevel Level { get; init; }
+	public ReadOnlyCollection<string> HintPayload { get; }
+
+	/// <summary>
+	/// Creates a hint with a type and optional payload.
+	/// </summary>
+	public PromptHint(string type, params string[] payload) {
+		HintType = type;
+		HintPayload = payload.AsReadOnly();
+	}
 
 }

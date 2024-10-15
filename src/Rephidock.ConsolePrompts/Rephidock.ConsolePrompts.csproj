@@ -4,7 +4,7 @@
     <Title>Rephidock.ConsolePrompts</Title>
     <Authors>Rephidock</Authors>
     <Version>2.0.0-alpha.dev.0</Version>
-    <Description>A small library to take user input in a console with exception handling and fluent syntax</Description>
+    <Description>A library to take user input in a console with exception handling and fluent syntax</Description>
     <Copyright>Copyright (c) 2023-2024 Rephidock</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>console;prompt;input</PackageTags>
@@ -14,6 +14,7 @@
     <PackageReleaseNotes>
       Major update 2.0:
       - Reworked how prompts are created
+      - (Massively breaking!) Completely reworked prompt hints and styling.
       - New class: `Prompter`. Takes on responsibility of static classes in v1.
       - Simplified `Prompt.For&lt;T&gt; where T : INumber&lt;T&gt;`
       - Removed `Prompt&lt;T&gt;.SetParserFormat` as it is now resposibility of `Prompter`

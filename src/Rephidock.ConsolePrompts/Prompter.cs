@@ -39,21 +39,6 @@ public class Prompter {
 
 	#endregion
 
-	#region //// Format provider
-
-	/// <summary>
-	/// Default format used by this class.
-	/// Is <see cref="CultureInfo.InvariantCulture"/>.
-	/// </summary>
-	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
-
-	/// <summary>
-	/// Format used to create prompts.
-	/// </summary>
-	public IFormatProvider FormatProvider { get; set; } = DefaultFormatProvider;
-
-	#endregion
-
 	#region //// Prompt creation
 
 	/// <summary>
@@ -62,7 +47,9 @@ public class Prompter {
 	/// </summary>
 	/// <returns>A new <see cref="Prompt{T}"/></returns>
 	public Prompt<T> PromptFor<T>(string? textPrompt, Func<string, IFormatProvider?, T> parser) {
-		return new Prompt<T>(this).SetPrompt(textPrompt).SetParser(parser);
+		var prompt = new Prompt<T>(this).SetPrompt(textPrompt).SetParser(parser);
+		if (AutoAddTypeHints) prompt.AddTypeHint();
+		return prompt;
 	}
 
 	/// <summary>
@@ -70,7 +57,7 @@ public class Prompter {
 	/// </summary>
 	/// <returns>A new <see cref="Prompt{T}"/></returns>
 	public Prompt<T> PromptFor<T>(string? textPrompt = null) where T : IParsable<T> {
-		return new Prompt<T>(this).SetPrompt(textPrompt).SetParser(T.Parse);
+		return PromptFor(textPrompt, T.Parse);
 	}
 
 	/// <summary>
@@ -136,19 +123,41 @@ public class Prompter {
 		// Create prompt
 		Prompt<bool> prompt = PromptFor<bool>(textPrompt, BoolParser);
 
-		// Add y/n hint
-		string hintText;
-		if (defaultValue) {
-			hintText = TO_BE_REMOVED_PromptStyler.HintStrings.BoolDefaultTrue;
-		} else {
-			hintText = TO_BE_REMOVED_PromptStyler.HintStrings.BoolDefaultFalse;
-		}
-
-		prompt.AddHint(hintText, PromptHintLevel.Minimal);
+		// Add a y/n hint or replace the type hint
+		if (AutoAddTypeHints) prompt.RemoveLastHint();
+		prompt.AddHint(
+			new PromptHint(
+				PromptHintTypes.Boolean,
+				defaultValue ? PromptHintTypes.BooleanPayloadDefaultTrue : PromptHintTypes.BooleanPayloadDefaultFalse
+			)
+		);
 
 		// Return
 		return prompt;
 	}
+
+	#endregion
+
+	#region //// Formatting and styling
+
+	/// <summary>
+	/// Default format used by this class.
+	/// Is <see cref="CultureInfo.InvariantCulture"/>.
+	/// </summary>
+	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
+
+	/// <summary>
+	/// Format provider passed into the parsers for created prompts.
+	/// </summary>
+	public IFormatProvider FormatProvider { get; set; } = DefaultFormatProvider;
+
+	/// <summary>
+	/// Enable or disable automatically adding type hints.
+	/// (see <see cref="Prompt{T}.AddTypeHint"/>
+	/// Note that type hints are more technical.
+	/// False by default.
+	/// </summary>
+	public bool AutoAddTypeHints { get; set; } = false;
 
 	#endregion
 
