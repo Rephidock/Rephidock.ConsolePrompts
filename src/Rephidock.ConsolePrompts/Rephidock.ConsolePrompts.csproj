@@ -14,11 +14,12 @@
     <PackageReleaseNotes>
       Major update 2.0:
       - Reworked how prompts are created
-      - (Massively breaking!) Completely reworked prompt hints and styling.
+      - (Massively breaking!) Completely reworked prompt hints and tweaked styling.
       - New class: `Prompter`. Takes on responsibility of static classes in v1.
       - Simplified `Prompt.For&lt;T&gt; where T : INumber&lt;T&gt;`
       - Removed `Prompt&lt;T&gt;.SetParserFormat` as it is now resposibility of `Prompter`
       - Prompts can now work with any input and output streams.
+      - Prompts without text can now display hints.
     </PackageReleaseNotes>
   </PropertyGroup>
 

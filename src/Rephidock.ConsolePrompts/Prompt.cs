@@ -78,9 +78,11 @@ public sealed class Prompt<T> {
 
 	/// <summary>
 	/// Sets the text prompt to be displayed on query.
-	/// If text prompt is empty, whitespace or <see langword="null"/>,
-	/// <see cref="TO_BE_REMOVED_PromptStyler.NullPromptDisplay"/> will be displayed.
 	/// </summary>
+	/// <remarks>
+	/// If text prompt is empty, whitespace or <see langword="null"/>,
+	/// <see cref="Prompter.NullPromptFormat"/> will be used or its no-hints equivalent.
+	/// </remarks>
 	/// <returns>this</returns>
 	public Prompt<T> SetPrompt(string? textPrompt) {
 
@@ -99,7 +101,7 @@ public sealed class Prompt<T> {
 	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
 	/// </para>
 	/// <para>
-	/// See also: <see cref="TO_BE_REMOVED_PromptStyler.NullPromptDisplay"/>.
+	/// See also: <see cref="SetPrompt"/>.
 	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
