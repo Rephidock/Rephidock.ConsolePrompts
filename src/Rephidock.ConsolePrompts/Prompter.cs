@@ -16,10 +16,11 @@ public class Prompter {
 
 	/// <summary>
 	/// <para>Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.</para>
-	/// <para>Comes with common hint handlers.</para>
+	/// <para>Comes with common hint handlers and skips all uknown hints.</para>
 	/// </summary>
 	public Prompter() : this(Console.Out, Console.In) {
 		SetHintHandlers(PromptHintHandlers.GetCommonHandlers());
+		UnknownHintHandler = PromptHintHandlers.SkipHintHandler;
 	}
 
 	/// <summary>
@@ -31,7 +32,7 @@ public class Prompter {
 	/// Does not take ownership of (does not dispose of) given streams.
 	/// </para>
 	/// <para>
-	/// Does not come with any hint handlers.
+	/// Does not come with any hint handlers and shows all unknown hints.
 	/// </para>
 	/// </summary>
 	public Prompter(TextWriter outputStream, TextReader inputStream) {

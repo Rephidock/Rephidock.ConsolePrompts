@@ -18,6 +18,13 @@ public static class PromptHintHandlers {
 		return $"{hint.HintType}:{string.Join('&', hint.HintPayload)}";
 	}
 
+
+	/// <summary>
+	/// Hint handler that skips all hints provided.
+	/// Not included in <see cref="GetAllHandlers"/>.
+	/// </summary>
+	public static string? SkipHintHandler(PromptHint _) => null;
+
 	#endregion
 
 	#region //// Simple Handlers
