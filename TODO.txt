@@ -5,8 +5,13 @@ TO DO:
 - Revamp readme
 
 DOING:
-- Revamp hints
-- Move prompt styles into prompter (maybe in an object)
+- Hint and styling revamp
+-- Add type hint handler
+-- Add boolean hint handler
+-- Move invalid input formatting into prompter
+-- Go through and fix validators to comply with the new system
+--- while adding the appropriate hint types and handlers
 
 TO TEST:
 - Prompt with mock streams
+-- including hint and style systems
