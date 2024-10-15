@@ -13,59 +13,6 @@ namespace Rephidock.ConsolePrompts;
 /// </summary>
 public static class TO_BE_REMOVED_PromptStyler {
 
-	#region //// Text prompt
-
-	/// <summary>Text to display when no text prompt is given.</summary>
-	public static string NullPromptDisplay { get; set; } = "> ";
-
-	/// <summary>
-	/// Format for the text prompts if
-	/// there are no hints to be displayed.
-	/// </summary>
-	/// <remarks>
-	/// {0} -- text prompt.
-	/// </remarks>
-	public static string PromptFormatNoHints { get; set; } = "{0}: ";
-
-	/// <summary>
-	/// Format for the text prompts.
-	/// </summary>
-	/// <remarks>
-	/// {0} -- text prompt.
-	/// {1} -- hints.
-	/// </remarks>
-	public static string PromptFormat { get; set; } = "{0} ({1}): ";
-
-	/// <summary>
-	/// The separator between hints used for prompt formatting
-	/// </summary>
-	public static string HintSeparator { get; set; } = ", ";
-
-	/// <summary>
-	/// Creates a formatted display prompt,
-	/// taking hints into account.
-	/// </summary>
-	internal static string MakePromptDisplayString(string? textPrompt, IEnumerable<string> hintTexts) {
-		
-		// Check for null prompt
-		if (string.IsNullOrWhiteSpace(textPrompt)) {
-			return NullPromptDisplay;
-		}
-
-		// Get hint texts
-		string hintsString = string.Join(HintSeparator, hintTexts);
-
-		// Format prompt display text
-		if (string.IsNullOrWhiteSpace(hintsString)) {
-			return string.Format(PromptFormatNoHints, textPrompt);
-		} else {
-			return string.Format(PromptFormat, textPrompt, hintsString);
-		}
-
-	}
-
-	#endregion
-
 	#region //// Invalid input
 
 	/// <summary>

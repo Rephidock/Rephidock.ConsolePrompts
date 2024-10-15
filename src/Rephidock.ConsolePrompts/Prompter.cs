@@ -173,6 +173,68 @@ public class Prompter {
 
 	#endregion
 
+	#region //// Prompt text formatting
+
+	/// <summary>
+	/// Format for the text prompts.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- text prompt.
+	/// {1} -- hints.
+	/// </remarks>
+	public string PromptFormat { get; set; } = "{0} ({1}): ";
+
+	/// <summary>
+	/// Format for the text prompts if
+	/// there are no hints to be displayed.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- text prompt.
+	/// </remarks>
+	public string PromptFormatNoHints { get; set; } = "{0}: ";
+
+	/// <summary>Text to display when no text prompt is given.</summary>
+	/// <remarks>{0} -- hints</remarks>
+	public string NullPromptFormat { get; set; } = "[{0}] > ";
+
+	/// <summary>
+	/// Text to display when no text prompt is given
+	/// if there are no hints to be displayed.
+	/// </summary>
+	public string NullPromptDisplayNoHints { get; set; } = "> ";
+
+	/// <summary>
+	/// The separator between hints used for prompt formatting
+	/// </summary>
+	public string HintSeparator { get; set; } = ", ";
+
+	/// <summary>Creates a formatted display prompt, taking hints into account.</summary>
+	protected internal virtual string FormatPromptDisplay(string? textPrompt, IReadOnlyList<PromptHint> hints) {
+
+		// Check for options
+		bool isPromptNull = string.IsNullOrWhiteSpace(textPrompt);
+		bool isNoHints = hints.Count == 0;
+
+		// Use the appropriate format
+		if (isNoHints) {
+
+			if (isPromptNull) return NullPromptDisplayNoHints;
+			return string.Format(PromptFormatNoHints, textPrompt);
+
+		} else {
+
+			string hintsString = string.Join(HintSeparator, FormatHints(hints));
+
+			if (isPromptNull) return string.Format(NullPromptFormat, hintsString);
+			return string.Format(PromptFormat, textPrompt, hintsString);
+
+		}
+
+		// [unreachable]
+	}
+
+	#endregion
+
 	#region //// Hint formatting
 
 	private readonly Dictionary<string, Func<PromptHint, string?>> hintFormatHandlers = new();
