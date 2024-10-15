@@ -1,0 +1,12 @@
+How this flows:
+
+Prompter creates Prompt.
+Text and parser, hints and validators are added to Prompt.
+Prompt is called to Display.
+Prompt gives text and hints to Prompter.
+Prompter calls a handler for each hint.
+Prompter formats the text and the hint.
+Prompt puts formatted string into the output channel.
+Prompt reads input from the input channel.
+Prompt tries to parse the input.
+Prompt runs all given validators on the input.
