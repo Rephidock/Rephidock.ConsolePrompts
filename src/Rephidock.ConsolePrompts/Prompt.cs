@@ -109,15 +109,27 @@ public sealed class Prompt<T> {
 
 	#region //// Hints
 
-	readonly List<PromptHint> hints = new();
+	private readonly List<PromptHint> hints = new();
 
-	/// <summary>
-	/// Adds a hint to be displayed with the prompt.
-	/// </summary>
+	/// <summary>Adds a hint to be displayed with the prompt.</summary>
 	/// <returns>this</returns>
 	public Prompt<T> AddHint(PromptHint hint) {
 		hints.Add(hint);
 		return this;
+	}
+
+	/// <summary>Adds a type hint to be displayed with the prompt.</summary>
+	/// <remarks>Added hint has type of <see cref="PromptHintTypes.TypeHint"/></remarks>
+	/// <returns>this</returns>
+	public Prompt<T> AddTypeHint() {
+		return AddHint(new PromptHint(PromptHintTypes.TypeHint));
+	}
+
+	/// <summary>Adds a text hint to be displayed with the prompt.</summary>
+	/// <remarks>Added hint has type of <see cref="PromptHintTypes.BasicText"/></remarks>
+	/// <returns>this</returns>
+	public Prompt<T> AddAdditionalText(string hintText) {
+		return AddHint(new PromptHint(PromptHintTypes.BasicText, hintText));
 	}
 
 	/// <summary>
@@ -134,20 +146,18 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
-	/// <summary>
-	/// Adds a type hint to be displayed with the prompt.
-	/// </summary>
+	/// <summary>Removes all added hints.</summary>
 	/// <returns>this</returns>
-	public Prompt<T> AddTypeHint() {
-		return AddHint(new PromptHint(PromptHintTypes.TypeHint));
+	public Prompt<T> RemoveAllHints() {
+		hints.Clear();
+		return this;
 	}
 
-	/// <summary>
-	/// Adds a text hint to be displayed with the prompt.
-	/// </summary>
+	/// <summary>Removes all added hints which match a predicate</summary>
 	/// <returns>this</returns>
-	public Prompt<T> AddAdditionalText(string hintText) {
-		return AddHint(new PromptHint(PromptHintTypes.BasicText, hintText));
+	public Prompt<T> RemoveHintsMatching(Predicate<PromptHint> predicate) {
+		hints.RemoveAll(predicate);
+		return this;
 	}
 
 	#endregion

@@ -124,7 +124,10 @@ public class Prompter {
 		Prompt<bool> prompt = PromptFor<bool>(textPrompt, BoolParser);
 
 		// Add a y/n hint or replace the type hint
-		if (AutoAddTypeHints) prompt.RemoveLastHint();
+		if (AutoAddTypeHints) {
+			prompt.RemoveHintsMatching(hint => hint.HintType == PromptHintTypes.TypeHint);
+		}
+
 		prompt.AddHint(
 			new PromptHint(
 				PromptHintTypes.Boolean,
@@ -138,7 +141,7 @@ public class Prompter {
 
 	#endregion
 
-	#region //// Formatting and styling
+	#region //// Format provider and misc. settings
 
 	/// <summary>
 	/// Default format used by this class.
@@ -153,10 +156,12 @@ public class Prompter {
 
 	/// <summary>
 	/// Enable or disable automatically adding type hints.
-	/// (see <see cref="Prompt{T}.AddTypeHint"/>
-	/// Note that type hints are more technical.
-	/// False by default.
+	/// (see <see cref="Prompt{T}.AddTypeHint"/>.
+	/// <see langword="false"/> by default.
 	/// </summary>
+	/// <remarks>
+	/// Note that type hints are more technical.
+	/// </remarks>
 	public bool AutoAddTypeHints { get; set; } = false;
 
 	#endregion
