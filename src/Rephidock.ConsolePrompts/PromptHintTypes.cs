@@ -3,9 +3,7 @@
 namespace Rephidock.ConsolePrompts;
 
 
-/// <summary>
-/// Contains default hint types provided.
-/// </summary>
+/// <summary>A listing of default hint types.</summary>
 public static class PromptHintTypes {
 
 	/// <summary>Hint type denoting simple text</summary>

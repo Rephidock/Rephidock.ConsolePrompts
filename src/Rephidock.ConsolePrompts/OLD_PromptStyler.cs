@@ -113,47 +113,6 @@ public static class TO_BE_REMOVED_PromptStyler {
 
 	#region //// Hints
 
-	/// <summary>
-	/// <para>
-	/// Current hint level. Only hints with this level or lower will be displayed.
-	/// </para>
-	/// <para>
-	/// <see cref="PromptHintLevel.None"/> is the lowest and disables all hints.
-	/// </para>
-	/// <para>
-	/// <see cref="PromptHintLevel.Standard"/> by default.
-	/// </para>
-	/// </summary>
-	public static PromptHintLevel HintLevel { get; set; } = PromptHintLevel.Standard;
-
-	/// <summary>
-	/// Enable or disable types as first hints.
-	/// Note that type hints are more technical.
-	/// False by default.
-	/// </summary>
-	/// <remarks>
-	/// Type hints are considered to have hint level <see cref="PromptHintLevel.Standard"/>
-	/// </remarks>
-	public static bool TypeHintsEnabled { get; set; } = false;
-
-	/// <summary>
-	/// Hint level for type hints.
-	/// See also <see cref="TypeHintsEnabled"/>
-	/// </summary>
-	public const PromptHintLevel TypeHintsLevel = PromptHintLevel.Standard;
-
-	/// <summary>
-	/// Filters given hints based on <see cref="HintLevel"/> and grabs only hint texts.
-	/// Empty and whitespace only texts are also skipped.
-	/// </summary>
-	internal static IEnumerable<string> FilterHints(this IEnumerable<PromptHint> hints) {
-
-		return hints
-			.Where(hint => HintLevel >= hint.Level)
-			.Where(hint => !string.IsNullOrWhiteSpace(hint.Text))
-			.Select(hint => hint.Text);
-	}
-
 	/// <summary>Tries to prepend a type hint to given hints if hints are enabled.</summary>
 	/// <typeparam name="THint">The type, the hint of which is to be prepended.</typeparam>
 	/// <returns>A new IEnumerable with prepended type hint or given hints without changes.</returns>

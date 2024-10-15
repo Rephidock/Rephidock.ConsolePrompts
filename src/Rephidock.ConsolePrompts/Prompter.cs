@@ -2,6 +2,7 @@
 using System.IO;
 using System.Globalization;
 using System.Numerics;
+using System.Collections.Generic;
 
 
 namespace Rephidock.ConsolePrompts;
@@ -14,9 +15,12 @@ namespace Rephidock.ConsolePrompts;
 public class Prompter {
 
 	/// <summary>
-	/// Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.
+	/// <para>Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.</para>
+	/// <para>Comes with common hint handlers.</para>
 	/// </summary>
-	public Prompter() : this(Console.Out, Console.In) { }
+	public Prompter() : this(Console.Out, Console.In) {
+		SetHintHandlers(PromptHintHandlers.GetCommonHandlers());
+	}
 
 	/// <summary>
 	/// <para>
@@ -25,6 +29,9 @@ public class Prompter {
 	/// </para>
 	/// <para>
 	/// Does not take ownership of (does not dispose of) given streams.
+	/// </para>
+	/// <para>
+	/// Does not come with any hint handlers.
 	/// </para>
 	/// </summary>
 	public Prompter(TextWriter outputStream, TextReader inputStream) {
@@ -163,6 +170,66 @@ public class Prompter {
 	/// Note that type hints are more technical.
 	/// </remarks>
 	public bool AutoAddTypeHints { get; set; } = false;
+
+	#endregion
+
+	#region //// Hint formatting
+
+	private readonly Dictionary<string, Func<PromptHint, string?>> hintFormatHandlers = new();
+
+	/// <summary>A hint handler for all hints of undefined hint types.</summary>
+	public Func<PromptHint, string?> UnknownHintHandler { get; set; } = PromptHintHandlers.DebugHintHandler;
+
+	/// <summary>
+	/// <para>
+	/// Sets a hint handler for a specific hint type (see <see cref="PromptHint.HintType"/>).
+	/// </para>
+	/// <para>
+	/// A handler takes in a <see cref="PromptHint"/> and returns a display <see langword="string"/>
+	/// for that hint or <see langword="null"/> if the hint should not be visible.
+	/// </para>
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompter SetHintHandler(string hintType, Func<PromptHint, string?> handler) {
+		hintFormatHandlers[hintType] = handler;
+		return this;
+	}
+
+	/// <summary>
+	/// <para>
+	/// Calls <see cref="SetHintHandler(string, Func{PromptHint, string?})"/>
+	/// for all handlers in the provided dictionary.
+	/// </para>
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompter SetHintHandlers(Dictionary<string, Func<PromptHint, string?>> handlers) {
+		foreach (var pair in handlers) SetHintHandler(pair.Key, pair.Value);
+		return this;
+	}
+
+	/// <summary>
+	/// Removes all hint handlers, forcing <see cref="UnknownHintHandler"/>
+	/// to be used for every hint, unless new handlers are added.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompter RemoveAllHintHandlers() {
+		hintFormatHandlers.Clear();
+		return this;
+	}
+
+	/// <summary>Formats each hint in accordance with hint handlers.</summary>
+	protected IEnumerable<string> FormatHints(IReadOnlyList<PromptHint> hints) {
+
+		foreach (var hint in hints) {
+
+			// Find handler based on hint type
+			var hintHadler = hintFormatHandlers.GetValueOrDefault(hint.HintType, UnknownHintHandler);
+
+			string? hintString = hintHadler(hint);
+			if (hintString is not null) yield return hintString;
+		}
+	
+	}
 
 	#endregion
 
