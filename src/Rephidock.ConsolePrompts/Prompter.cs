@@ -139,9 +139,9 @@ public class Prompter {
 		// Add y/n hint
 		string hintText;
 		if (defaultValue) {
-			hintText = PromptStyler.HintStrings.BoolDefaultTrue;
+			hintText = TO_BE_REMOVED_PromptStyler.HintStrings.BoolDefaultTrue;
 		} else {
-			hintText = PromptStyler.HintStrings.BoolDefaultFalse;
+			hintText = TO_BE_REMOVED_PromptStyler.HintStrings.BoolDefaultFalse;
 		}
 
 		prompt.AddHint(hintText, PromptHintLevel.Minimal);

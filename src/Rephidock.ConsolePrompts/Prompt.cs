@@ -75,7 +75,7 @@ public sealed class Prompt<T> {
 	/// <summary>
 	/// Sets the text prompt to be displayed on query.
 	/// If text prompt is empty, whitespace or <see langword="null"/>,
-	/// <see cref="PromptStyler.NullPromptDisplay"/> will be displayed.
+	/// <see cref="TO_BE_REMOVED_PromptStyler.NullPromptDisplay"/> will be displayed.
 	/// </summary>
 	/// <returns>this</returns>
 	public Prompt<T> SetPrompt(string? textPrompt) {
@@ -95,7 +95,7 @@ public sealed class Prompt<T> {
 	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
 	/// </para>
 	/// <para>
-	/// See also: <see cref="PromptStyler.NullPromptDisplay"/>.
+	/// See also: <see cref="TO_BE_REMOVED_PromptStyler.NullPromptDisplay"/>.
 	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
@@ -113,7 +113,7 @@ public sealed class Prompt<T> {
 	/// Only hints with sufficient hint level will be displayed.
 	/// </para>
 	/// <para>
-	/// See also: <see cref="PromptStyler.HintLevel"/>
+	/// See also: <see cref="TO_BE_REMOVED_PromptStyler.HintLevel"/>
 	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
@@ -235,7 +235,7 @@ public sealed class Prompt<T> {
 				.FilterHints();
 
 			// Stylize prompt text and add hints
-			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hintTexts);
+			string styledPromptText = TO_BE_REMOVED_PromptStyler.MakePromptDisplayString(textPrompt, hintTexts);
 
 			try {
 
@@ -258,7 +258,7 @@ public sealed class Prompt<T> {
 					|| ex is NotSupportedException
 					|| ex is NotImplementedException
 				) {
-					prompter.OutputStream.WriteLine(PromptStyler.MakeInvalidInputString(ex));
+					prompter.OutputStream.WriteLine(TO_BE_REMOVED_PromptStyler.MakeInvalidInputString(ex));
 				} else {
 					throw;
 				}

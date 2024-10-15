@@ -11,7 +11,7 @@ namespace Rephidock.ConsolePrompts;
 /// <summary>
 /// A class that holds all the style information for the Prompts.
 /// </summary>
-public static class PromptStyler {
+public static class TO_BE_REMOVED_PromptStyler {
 
 	#region //// Text prompt
 

@@ -33,7 +33,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, length);
+		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.LengthFormat, length);
 		prompt.AddHint(hintText, PromptHintLevel.Standard);
 
 		// Return
@@ -80,8 +80,8 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string rangeText = PromptStyler.MakeRangeHintString(minLength, maxLength);
-		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, rangeText);
+		string rangeText = TO_BE_REMOVED_PromptStyler.MakeRangeHintString(minLength, maxLength);
+		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.LengthFormat, rangeText);
 		prompt.AddHint(hintText, PromptHintLevel.Standard);
 
 		// Return
@@ -102,7 +102,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotEmpty, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotEmpty, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -122,7 +122,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotWhitespace, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotWhitespace, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -152,7 +152,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.Path, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.Path, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -181,10 +181,10 @@ public static class PromptInputLimiter {
 
 		// Add hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(PromptStyler.HintStrings.FilePath, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.FilePath, PromptHintLevel.Verbose);
 
 		if (mustExist) {
-			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
+			prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
 		}
 
 		// Return
@@ -214,10 +214,10 @@ public static class PromptInputLimiter {
 
 		// Add hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(PromptStyler.HintStrings.DirectoryPath, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.DirectoryPath, PromptHintLevel.Verbose);
 
 		if (mustExist) {
-			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
+			prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
 		}
 
 		// Return
@@ -251,7 +251,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.MakeRangeHintString(min, max), PromptHintLevel.Standard);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.MakeRangeHintString(min, max), PromptHintLevel.Standard);
 
 		// Return
 		return prompt;
@@ -299,7 +299,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotInfinite, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotInfinite, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -319,7 +319,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotNan, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotNan, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -339,7 +339,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
+		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
 
 		// Return
 		return prompt;
@@ -363,7 +363,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(PromptStyler.HintStrings.NotEqualsFormat, exclusion);
+		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.NotEqualsFormat, exclusion);
 		prompt.AddHint(hintText, PromptHintLevel.Standard);
 
 		// Return

@@ -101,9 +101,9 @@ internal class Program
 
 
 		//  -======- Styling -======-
-		PromptStyler.PromptFormat = "[{1}] {0} = ";
-		PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
-		PromptStyler.HintLevel = PromptHintLevel.Verbose;
+		TO_BE_REMOVED_PromptStyler.PromptFormat = "[{1}] {0} = ";
+		TO_BE_REMOVED_PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
+		TO_BE_REMOVED_PromptStyler.HintLevel = PromptHintLevel.Verbose;
 
 		Console.WriteLine("f(x) = 60 + 10x");
 
@@ -120,9 +120,9 @@ internal class Program
 
 
 		//  -======- Styling: Type hints -======-
-		PromptStyler.PromptFormat = "{0} ({1}): ";
-		PromptStyler.HintLevel = PromptHintLevel.Standard;
-		PromptStyler.TypeHintsEnabled = true;
+		TO_BE_REMOVED_PromptStyler.PromptFormat = "{0} ({1}): ";
+		TO_BE_REMOVED_PromptStyler.HintLevel = PromptHintLevel.Standard;
+		TO_BE_REMOVED_PromptStyler.TypeHintsEnabled = true;
 
 		Console.WriteLine("Type hints can also be enabled.");
 
