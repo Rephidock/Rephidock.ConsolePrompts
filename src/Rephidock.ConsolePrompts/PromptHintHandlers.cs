@@ -8,16 +8,13 @@ namespace Rephidock.ConsolePrompts;
 /// <summary>A listing of default hint handlers.</summary>
 public static class PromptHintHandlers {
 
-	#region //// Exotic handlers
+	#region //// Generic handlers (no designated hint key)
 
 	/// <summary>
 	/// A handler that shows raw contents of the hint.
 	/// Not included in <see cref="GetAllHandlers"/>.
 	/// </summary>
-	public static string? DebugHintHandler(PromptHint hint) {
-		return $"{hint.HintType}:{string.Join('&', hint.HintPayload)}";
-	}
-
+	public static string? DebugHintHandler(PromptHint hint) => hint.ToString();
 
 	/// <summary>
 	/// Hint handler that skips all hints provided.
@@ -29,8 +26,8 @@ public static class PromptHintHandlers {
 
 	#region //// Simple Handlers
 
-	/// <summary>Hint handler for type <see cref="PromptHintTypes.BasicText"/></summary>
-	public static string? BasicTextHintHandler(PromptHint hint) => hint.HintPayload[0];
+	/// <summary>Hint handler for type <see cref="PromptHintKeys.BasicText"/></summary>
+	public static string? BasicTextHintHandler(PromptHint hint) => (hint as PromptHint<string>)?.Payload;
 
 	// TODO
 

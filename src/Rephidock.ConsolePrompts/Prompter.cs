@@ -133,14 +133,11 @@ public class Prompter {
 
 		// Add a y/n hint or replace the type hint
 		if (AutoAddTypeHints) {
-			prompt.RemoveHintsMatching(hint => hint.HintType == PromptHintTypes.TypeHint);
+			prompt.RemoveHintsMatching(hint => hint.Key == PromptHintKeys.TypeHint);
 		}
 
 		prompt.AddHint(
-			new PromptHint(
-				PromptHintTypes.Boolean,
-				defaultValue ? PromptHintTypes.BooleanPayloadDefaultTrue : PromptHintTypes.BooleanPayloadDefaultFalse
-			)
+			new PromptHint<bool>(PromptHintKeys.Boolean, defaultValue)
 		);
 
 		// Return
@@ -168,7 +165,8 @@ public class Prompter {
 	/// <see langword="false"/> by default.
 	/// </summary>
 	/// <remarks>
-	/// Note that type hints are more technical.
+	/// <para>Note that type hints are more technical.</para>
+	/// <para>A type hint for <see langword="bool"/> is skipped because of a y/n hint already present.</para>
 	/// </remarks>
 	public bool AutoAddTypeHints { get; set; } = false;
 
@@ -245,7 +243,7 @@ public class Prompter {
 
 	/// <summary>
 	/// <para>
-	/// Sets a hint handler for a specific hint type (see <see cref="PromptHint.HintType"/>).
+	/// Sets a hint handler for a specific hint key (see <see cref="PromptHint.Key"/>).
 	/// </para>
 	/// <para>
 	/// A handler takes in a <see cref="PromptHint"/> and returns a display <see langword="string"/>
@@ -285,8 +283,8 @@ public class Prompter {
 
 		foreach (var hint in hints) {
 
-			// Find handler based on hint type
-			var hintHadler = hintFormatHandlers.GetValueOrDefault(hint.HintType, UnknownHintHandler);
+			// Find handler based on hint key
+			var hintHadler = hintFormatHandlers.GetValueOrDefault(hint.Key, UnknownHintHandler);
 
 			string? hintString = hintHadler(hint);
 			if (hintString is not null) yield return hintString;

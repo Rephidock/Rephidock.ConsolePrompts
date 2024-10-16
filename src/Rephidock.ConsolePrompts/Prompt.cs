@@ -121,17 +121,17 @@ public sealed class Prompt<T> {
 	}
 
 	/// <summary>Adds a type hint to be displayed with the prompt.</summary>
-	/// <remarks>Added hint has type of <see cref="PromptHintTypes.TypeHint"/></remarks>
+	/// <remarks>Added hint has key of <see cref="PromptHintKeys.TypeHint"/></remarks>
 	/// <returns>this</returns>
 	public Prompt<T> AddTypeHint() {
-		return AddHint(new PromptHint(PromptHintTypes.TypeHint));
+		return AddHint(new PromptHint<Type>(PromptHintKeys.TypeHint, typeof(T)));
 	}
 
 	/// <summary>Adds a text hint to be displayed with the prompt.</summary>
-	/// <remarks>Added hint has type of <see cref="PromptHintTypes.BasicText"/></remarks>
+	/// <remarks>Added hint has type of <see cref="PromptHintKeys.BasicText"/></remarks>
 	/// <returns>this</returns>
 	public Prompt<T> AddTextHint(string hintText) {
-		return AddHint(new PromptHint(PromptHintTypes.BasicText, hintText));
+		return AddHint(new PromptHint<string>(PromptHintKeys.BasicText, hintText));
 	}
 
 	/// <summary>
