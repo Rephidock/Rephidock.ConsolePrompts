@@ -18,11 +18,20 @@ public class Prompter {
 
 	/// <summary>
 	/// <para>Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.</para>
-	/// <para>Comes with common hint handlers and skips all uknown hints.</para>
+	/// <para>Comes with common hint handlers and skips all uknown hints unless specified otherwise.</para>
 	/// </summary>
-	public Prompter() : this(Console.Out, Console.In) {
-		SetHintHandlers(PromptHintHandlers.GetCommonHandlers());
-		UnknownHintHandler = PromptHintHandlers.SkipHintHandler;
+	/// <param name="autoSetupHints">
+	/// Wether to automatically hint handlers from <see cref="PromptHintHandlers.GetCommonHandlers"/>
+	/// as well as a <see cref="PromptHintHandlers.SkipHintHandler(PromptHint)"/>
+	/// as <see cref="UnknownHintHandler"/>.
+	/// </param>
+	public Prompter(bool autoSetupHints = true) : this(Console.Out, Console.In) {
+
+		if (autoSetupHints) {
+			SetHintHandlers(PromptHintHandlers.GetCommonHandlers());
+			UnknownHintHandler = PromptHintHandlers.SkipHintHandler;
+		}
+
 	}
 
 	/// <summary>
@@ -254,6 +263,7 @@ public class Prompter {
 	/// for that hint or <see langword="null"/> if the hint should not be visible.
 	/// </para>
 	/// </summary>
+	/// <remarks>At most one handler can exist per hint key.</remarks>
 	/// <returns>this</returns>
 	public Prompter SetHintHandler(string hintType, Func<PromptHint, string?> handler) {
 		hintFormatHandlers[hintType] = handler;
