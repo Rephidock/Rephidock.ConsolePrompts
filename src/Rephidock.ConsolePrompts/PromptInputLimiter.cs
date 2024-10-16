@@ -108,7 +108,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotEmpty, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.StringNotEmpty));
 
 		// Return
 		return prompt;
@@ -128,7 +128,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotWhitespace, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.StringNotEmptyOrWhitespace));
 
 		// Return
 		return prompt;

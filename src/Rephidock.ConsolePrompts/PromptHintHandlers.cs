@@ -84,6 +84,12 @@ public static class PromptHintHandlers {
 		return null;
 	}
 
+	/// <summary>
+	/// Hint handler for keys <see cref="PromptHintKeys.StringNotEmpty"/>
+	/// and <see cref="PromptHintKeys.StringNotEmptyOrWhitespace"/>
+	/// </summary>
+	public static string? StringNotEmptyHintHandler(PromptHint _) => "not empty";
+
 	#endregion
 
 	#region //// Collections
@@ -96,6 +102,8 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.TypeHint, TypeHintHandler },
 			{ PromptHintKeys.Boolean, BooleanHintHandler },
 			{ PromptHintKeys.StringLength, StringLengthHintHandler },
+			{ PromptHintKeys.StringNotEmpty, StringNotEmptyHintHandler },
+			{ PromptHintKeys.StringNotEmptyOrWhitespace, StringNotEmptyHintHandler },
 		};
 	}
 

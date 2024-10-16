@@ -21,4 +21,10 @@ public static class PromptHintKeys {
 	/// </summary>
 	public const string StringLength = "strlen";
 
+	/// <summary>Hint key denoting a string must not be empty.</summary>
+	public const string StringNotEmpty = "strnotempty";
+
+	/// <summary>Hint key denoting a string must not be empty or just whitespace.</summary>
+	public const string StringNotEmptyOrWhitespace = "strnotemptyorws";
+
 }

@@ -7,15 +7,7 @@ namespace Rephidock.ConsolePrompts;
 
 public static class TO_BE_REMOVED_PromptStyler {
 
-	public static class HintStrings {		
-
-		#region //// Strings
-
-		public static string NotEmpty { get; set; } = "not empty";
-
-		public static string NotWhitespace { get; set; } = "not empty";
-
-		#endregion
+	public static class HintStrings {
 
 		#region //// Path
 
