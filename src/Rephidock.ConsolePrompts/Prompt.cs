@@ -130,7 +130,7 @@ public sealed class Prompt<T> {
 	/// <summary>Adds a text hint to be displayed with the prompt.</summary>
 	/// <remarks>Added hint has type of <see cref="PromptHintTypes.BasicText"/></remarks>
 	/// <returns>this</returns>
-	public Prompt<T> AddAdditionalText(string hintText) {
+	public Prompt<T> AddTextHint(string hintText) {
 		return AddHint(new PromptHint(PromptHintTypes.BasicText, hintText));
 	}
 
