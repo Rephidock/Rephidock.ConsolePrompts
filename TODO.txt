@@ -6,8 +6,6 @@ TO DO:
 
 DOING:
 - Hint and styling revamp
--- Add type hint handler
--- Add boolean hint handler
 -- Move invalid input formatting into prompter
 -- Go through and fix validators to comply with the new system
 --- while adding the appropriate hint types and handlers

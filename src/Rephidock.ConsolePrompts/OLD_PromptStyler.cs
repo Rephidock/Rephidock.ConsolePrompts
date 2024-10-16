@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
 
 
 namespace Rephidock.ConsolePrompts;
@@ -58,21 +56,6 @@ public static class TO_BE_REMOVED_PromptStyler {
 
 	#endregion
 
-	#region //// Hints
-
-	/// <summary>Tries to prepend a type hint to given hints if hints are enabled.</summary>
-	/// <typeparam name="THint">The type, the hint of which is to be prepended.</typeparam>
-	/// <returns>A new IEnumerable with prepended type hint or given hints without changes.</returns>
-	internal static IEnumerable<PromptHint> HintsTryPrependTypeHint<THint>(this IEnumerable<PromptHint> hints) {
-
-		if (!TypeHintsEnabled) return hints;
-
-		string hintName = HintStrings.TypeHintRenamingTable.GetValueOrDefault(typeof(THint), typeof(THint).Name);
-		return hints.Prepend(new PromptHint { Level = TypeHintsLevel, Text = hintName });
-	}
-
-	#endregion
-
 	#region //// Hint Strings
 
 	/// <summary>
@@ -81,31 +64,6 @@ public static class TO_BE_REMOVED_PromptStyler {
 	public static class HintStrings {
 
 		#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
-		#region //// Boolean
-
-		public static string BoolDefaultTrue { get; set; } = "Y/n";
-		public static string BoolDefaultFalse { get; set; } = "y/N";
-
-		#endregion
-
-		#region //// Types
-
-		/// <summary>
-		/// Dictionary that is used to change the type hint
-		/// displayed for specific types.
-		/// Type inheritance is not accounted for.
-		/// If a type is not present, type's Name will be used.
-		/// </summary>
-		public readonly static Dictionary<Type, string> TypeHintRenamingTable = new() {
-			{ typeof(float), "Float" },
-			{ typeof(sbyte), "Int8" },
-			{ typeof(BigInteger), "Int" },
-			{ typeof(DateOnly), "Date" },
-			{ typeof(TimeOnly), "Time" }
-		};
-
-		#endregion
 
 		#region //// Strings
 
