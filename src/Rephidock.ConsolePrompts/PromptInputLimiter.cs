@@ -145,7 +145,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(string value) {
 
-			if (value.Trim().Length == 0) throw new PromptInputException("Path is empty.");
+			if (string.IsNullOrWhiteSpace(value)) throw new PromptInputException("Path is empty.");
 
 			if (value.IndexOfAny(Path.GetInvalidPathChars()) != -1) {
 				throw new PromptInputException("Path contains invalid characters.");
