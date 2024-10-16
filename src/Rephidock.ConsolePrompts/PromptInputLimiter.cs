@@ -69,6 +69,10 @@ public static class PromptInputLimiter {
 			return prompt.OfLength(minLength);
 		}
 
+		if (minLength == 1 && !maxLength.HasValue) {
+			return prompt.DisallowEmpty();
+		}
+
 		// Define and add validator
 		void Validator(string value) {
 			if (value.Length < minLength || (maxLength.HasValue && value.Length > maxLength)) {
