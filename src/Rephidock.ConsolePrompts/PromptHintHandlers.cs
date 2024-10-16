@@ -67,6 +67,25 @@ public static class PromptHintHandlers {
 
 	#endregion
 
+	#region //// String limiters
+
+	/// <summary>Hint handler for key <see cref="PromptHintKeys.StringLength"/></summary>
+	public static string? StringLengthHintHandler(PromptHint hint) {
+
+		// Fixed legnth
+		if (hint is PromptHint<int> fixedLengthHint) return $"{fixedLengthHint.Payload} chrs.";
+
+		// Length range
+		if (hint is PromptHint<(int? min, int? max)> rangeLengthHint) {
+			return $"{rangeLengthHint.Payload.min}..{rangeLengthHint.Payload.max} chrs.";
+		}
+
+		// Unknown hint
+		return null;
+	}
+
+	#endregion
+
 	#region //// Collections
 
 	/// <summary>Returns all handlers of this listing.</summary>
@@ -76,6 +95,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.BasicText, BasicTextHintHandler },
 			{ PromptHintKeys.TypeHint, TypeHintHandler },
 			{ PromptHintKeys.Boolean, BooleanHintHandler },
+			{ PromptHintKeys.StringLength, StringLengthHintHandler },
 		};
 	}
 
@@ -89,6 +109,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.BasicText, BasicTextHintHandler },
 			{ PromptHintKeys.TypeHint, TypeHintHandler },
 			{ PromptHintKeys.Boolean, BooleanHintHandler },
+			{ PromptHintKeys.StringLength, StringLengthHintHandler },
 		};
 	}
 

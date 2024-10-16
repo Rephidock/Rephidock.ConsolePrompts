@@ -33,15 +33,14 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.LengthFormat, length);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		prompt.AddHint(new PromptHint<int>(PromptHintKeys.StringLength, length));
 
 		// Return
 		return prompt; 
 	}
 
 	/// <summary>
-	/// Limits input to be of length within given bounds.
+	/// Limits input to be of length within given inclusive bounds.
 	/// Set <paramref name="minLength"/> to 0 for no lower bound.
 	/// Set <paramref name="maxLength"/> to <see langword="null"/> for no upper bound.
 	/// </summary>
@@ -80,9 +79,12 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string rangeText = TO_BE_REMOVED_PromptStyler.MakeRangeHintString(minLength, maxLength);
-		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.LengthFormat, rangeText);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		prompt.AddHint(
+			new PromptHint<(int?, int?)>(
+				PromptHintKeys.StringLength, 
+				(minLength, maxLength)
+			)
+		);
 
 		// Return
 		return prompt;
