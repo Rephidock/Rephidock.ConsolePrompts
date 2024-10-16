@@ -1,13 +1,15 @@
 TO DO:
+- Fix validators while adding the hint keys and handlers
+-- Path limiters
+-- Numeric value limiters
+-- Numeric finiteness limiters
+-- IEquatable limiters
 - Tweak limiters (validation)
 -- Maybe add IComparable
 - Update the demo
 - Revamp readme
 
 DOING:
-- Hint and styling revamp
--- Go through and fix validators to comply with the new system
---- while adding the appropriate hint types and handlers
 
 TO TEST:
 - Prompt with mock streams
