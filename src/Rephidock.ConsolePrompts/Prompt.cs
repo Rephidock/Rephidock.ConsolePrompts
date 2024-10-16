@@ -263,7 +263,7 @@ public sealed class Prompt<T> {
 					|| ex is NotSupportedException
 					|| ex is NotImplementedException
 				) {
-					prompter.OutputStream.WriteLine(TO_BE_REMOVED_PromptStyler.MakeInvalidInputString(ex));
+					prompter.OutputStream.WriteLine(prompter.FormatInputError(ex));
 				} else {
 					throw;
 				}

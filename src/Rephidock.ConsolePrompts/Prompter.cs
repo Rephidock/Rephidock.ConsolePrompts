@@ -14,6 +14,8 @@ namespace Rephidock.ConsolePrompts;
 /// </summary>
 public class Prompter {
 
+	#region //// Constructors
+
 	/// <summary>
 	/// <para>Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.</para>
 	/// <para>Comes with common hint handlers and skips all uknown hints.</para>
@@ -39,6 +41,8 @@ public class Prompter {
 		OutputStream = outputStream;
 		InputStream = inputStream;
 	}
+
+	#endregion
 
 	#region //// Streams
 
@@ -290,6 +294,23 @@ public class Prompter {
 			if (hintString is not null) yield return hintString;
 		}
 	
+	}
+
+	#endregion
+
+	#region //// Invalid error formatting
+
+	/// <summary>
+	/// Format used for invalid input message.
+	/// </summary>
+	/// <remarks>
+	/// {0} -- Exception message.
+	/// </remarks>
+	public string InvalidInputFormat { get; set; } = "Invalid input: {0}";
+
+	/// <summary>Formats the result of an invalid input.</summary>
+	protected internal virtual string FormatInputError(Exception ex) {
+		return string.Format(InvalidInputFormat, ex.Message);
 	}
 
 	#endregion

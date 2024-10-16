@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 
 
 namespace Rephidock.ConsolePrompts;
@@ -10,53 +8,6 @@ namespace Rephidock.ConsolePrompts;
 /// A class that holds all the style information for the Prompts.
 /// </summary>
 public static class TO_BE_REMOVED_PromptStyler {
-
-	#region //// Invalid input
-
-	/// <summary>
-	/// Format used for invalid input message.
-	/// </summary>
-	/// <remarks>
-	/// {0} -- Exception message.
-	/// </remarks>
-	public static string InvalidInputFormat { get; set; } = "Invalid input: {0}";
-
-	/// <summary>
-	/// Creates a formatted invalid input message.
-	/// </summary>
-	internal static string MakeInvalidInputString(Exception ex) {
-
-		string message;
-
-		if (ReplaceExceptionMessages) {
-			message = ExceptionReplacementMessages.GetValueOrDefault(ex.GetType(), ex.Message);
-		} else {
-			message = ex.Message;
-		}
-
-		return string.Format(InvalidInputFormat, message);
-	}
-
-	/// <summary>
-	/// If true, will cause exception messages of some exceptions
-	/// to be replaced when input is invalid.
-	/// True by default.
-	/// </summary>
-	public static bool ReplaceExceptionMessages { get; set; } = true;
-
-	/// <summary>
-	/// Dictionary that is used to replace messages for some exceptions.
-	/// Type inheritance is not accounted for.
-	/// </summary>
-	public readonly static Dictionary<Type, string> ExceptionReplacementMessages = new() {
-		{ typeof(FormatException), "Input is not in the correct format" },
-		{ typeof(OverflowException), "Given value is too large or too small" },
-		{ typeof(ArgumentOutOfRangeException), "Input is out of the range of valid values" }
-	};
-
-	#endregion
-
-	#region //// Hint Strings
 
 	/// <summary>
 	/// Standard strings for hints added to the <see cref="Prompt{T}"/> instance.
@@ -148,7 +99,5 @@ public static class TO_BE_REMOVED_PromptStyler {
 
 		return "";
 	}
-
-	#endregion
 
 }
