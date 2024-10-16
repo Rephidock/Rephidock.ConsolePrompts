@@ -92,6 +92,19 @@ public static class PromptHintHandlers {
 		};
 	}
 
+	/// <summary>Returns the most essential handlers of this listing.</summary>
+	/// <remarks>
+	/// <para>Creates a new dictionary</para>
+	/// <para>A handler for <see cref="PromptHintKeys.TypeHint"/> is still included.</para>
+	/// </remarks>
+	public static Dictionary<string, Func<PromptHint, string?>> GetEssentalHandlers() {
+		return new() {
+			{ PromptHintKeys.BasicText, BasicTextHintHandler },
+			{ PromptHintKeys.TypeHint, TypeHintHandler },
+			{ PromptHintKeys.Boolean, BooleanHintHandler },
+		};
+	}
+
 	#endregion
 
 }
