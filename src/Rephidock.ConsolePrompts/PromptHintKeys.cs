@@ -19,12 +19,12 @@ public static class PromptHintKeys {
 	/// Hint key denoting a string length limit.
 	/// Payload: exact legnth as int -OR- length range as (int?,int?) 
 	/// </summary>
-	public const string StringLength = "strlen";
+	public const string StringLength = "strLen";
 
 	/// <summary>Hint key denoting a string must not be empty.</summary>
-	public const string StringNotEmpty = "strnotempty";
+	public const string StringNotEmpty = "strNotEmpty";
 
 	/// <summary>Hint key denoting a string must not be empty or just whitespace.</summary>
-	public const string StringNotEmptyOrWhitespace = "strnotemptyorws";
+	public const string StringNotEmptyOrWhitespace = "strNotEmptyOrWS"; 
 
 }
