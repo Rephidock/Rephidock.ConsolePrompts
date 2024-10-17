@@ -6,13 +6,13 @@ namespace Rephidock.ConsolePrompts;
 /// <summary>A listing of default hint types.</summary>
 public static class PromptHintKeys {
 
-	/// <summary>Hint key denoting simple text. Payload: given text.</summary>
+	/// <summary>Hint key denoting simple text. Payload: given text (as string).</summary>
 	public const string BasicText = "text";
 
-	/// <summary>Hint key denoting requested type. Payload: the required type.</summary>
+	/// <summary>Hint key denoting requested type. Payload: the required type (as Type).</summary>
 	public const string TypeHint = "type";
 
-	/// <summary>Hint key denoting a y/n prompt. Payload: default value.</summary>
+	/// <summary>Hint key denoting a y/n prompt. Payload: default value (as bool).</summary>
 	public const string Boolean = "bool";
 
 
