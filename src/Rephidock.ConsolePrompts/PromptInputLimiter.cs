@@ -226,7 +226,10 @@ public static class PromptInputLimiter {
 
 	#region //// Numeric Value Limits
 
-	/// <summary>Limits input to be in numeric range.</summary>
+	/// <summary>
+	/// Limits input to be in an inclusive numeric range.
+	/// Range may be unbounded.
+	/// </summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<T> OfRange<T>(this Prompt<T> prompt, T? min, T? max) where T : struct, INumber<T> {
 		
@@ -261,7 +264,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>
-	/// Limits input by setting a low numeric bound.
+	/// Limits input by setting an inclusive low numeric bound.
 	/// If high bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
 	/// </summary>
 	/// <remarks>
@@ -273,7 +276,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>
-	/// Limits input by setting a high numeric bound.
+	/// Limits input by setting an inclusive high numeric bound.
 	/// If low bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
 	/// </summary>
 	/// <remarks>
