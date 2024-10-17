@@ -305,7 +305,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotInfinite, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericNotInfinity));
 
 		// Return
 		return prompt;
@@ -325,7 +325,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.NotNan, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericNotNan));
 
 		// Return
 		return prompt;
@@ -345,7 +345,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericFinite));
 
 		// Return
 		return prompt;

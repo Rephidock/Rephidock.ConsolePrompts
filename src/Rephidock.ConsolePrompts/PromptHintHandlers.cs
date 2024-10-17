@@ -119,6 +119,15 @@ public static class PromptHintHandlers {
 		return null;
 	}
 
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.NumericFinite"/></summary>
+	public static string? NumericFiniteHintHandler(PromptHint _) => "finite";
+
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.NumericNotInfinity"/></summary>
+	public static string? NumericNotInfnityHintHandler(PromptHint _) => "not inf.";
+
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.NumericNotNan"/></summary>
+	public static string? NumericNotNaNHintHandler(PromptHint _) => "not NaN";
+
 	#endregion
 
 	#region //// Collections
@@ -137,6 +146,9 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.FilePath, FilePathHintHandler },
 			{ PromptHintKeys.DirectoryPath, DirectoryPathHintHandler },
 			{ PromptHintKeys.NumericRange, NumericRangeHintHandler },
+			{ PromptHintKeys.NumericFinite, NumericFiniteHintHandler },
+			{ PromptHintKeys.NumericNotInfinity, NumericNotInfnityHintHandler },
+			{ PromptHintKeys.NumericNotNan, NumericNotNaNHintHandler },
 		};
 	}
 

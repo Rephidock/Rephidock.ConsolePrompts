@@ -51,4 +51,13 @@ public static class PromptHintKeys {
 	/// </summary>
 	public const string NumericRange = "range";
 
+	/// <summary>Hint key denoting input must be finite.</summary>
+	public const string NumericFinite = "finite";
+
+	/// <summary>Hint key denoting input must not be infinity.</summary>
+	public const string NumericNotInfinity = "notInfinite";
+
+	/// <summary>Hint key denoting input must not be NaN.</summary>
+	public const string NumericNotNan = "notNaN";
+
 }
