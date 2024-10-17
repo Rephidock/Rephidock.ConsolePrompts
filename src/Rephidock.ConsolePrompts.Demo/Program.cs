@@ -8,7 +8,10 @@ namespace Rephidock.ConsolePrompts.Demo;
 internal class Program
 {
 
-	static void WriteSectionSeparator() => Console.WriteLine("\n-=-=-=-=-=-=-\n");
+	static void StartNextSection(string sectionName)
+	{
+		Console.WriteLine($"\n\n-=-=-=- {sectionName} -=-=-=-\n");
+	}
 
 
 	static void Main(string[] args)
@@ -16,17 +19,22 @@ internal class Program
 
 		// - Intro -
 		Console.WriteLine("Welcome to ConsolePrompts demo!");
-		WriteSectionSeparator();
+
+		
+
+		// ---------------------------------
+		// -======- Quick/Basic Use -======-
+		// ---------------------------------
+		StartNextSection("Quick/Basic Use");
 
 
-		//  -======- Strings -======-
+		// Use Prompt static class for quick prompt creation
 		string name = Prompt.ForString("What is your name", trim: true).DisallowEmpty().Display();
 		Console.WriteLine($"Hello, {name}");
 
-		WriteSectionSeparator();
 
-
-		//  -======- Numbers -======-
+		// Numbers supported.
+		// Be careful with floats: "Infinity" and "NaN" are valid inputs unless disabled.
 		int userAge = Prompt.For<int>("Your age").NoLessThan(1).Display();
 		const int drinkingAge = 21;
 
@@ -39,10 +47,8 @@ internal class Program
 			Console.WriteLine("Sorry, you can't have a drink.");
 		}
 
-		WriteSectionSeparator();
 
-
-		//  -======- IParsable -======-
+		// Supports IParsable
 		DateOnly userBirthday = Prompt.For<DateOnly>("When is your birthday").Display();
 		DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
@@ -55,10 +61,8 @@ internal class Program
 			Console.WriteLine($"Your birthday is on {userBirthday}");
 		}
 
-		WriteSectionSeparator();
 
-
-		//  -======- Boolean -======-
+		// Booleans are supported and allow single character answers.
 		bool isHexagonEnjoyer = Prompt.ForBool("Do you like hexagons?", defaultValue: true).Display();
 
 		if (isHexagonEnjoyer)
@@ -70,19 +74,64 @@ internal class Program
 			Console.WriteLine("They are alright I guess...");
 		}
 
-		WriteSectionSeparator();
+		
 
 
-		//  -======- Null Text -======-
-		Console.WriteLine("Empty or null text displays are supported.");
-		Console.WriteLine("Write Anything!");
-
-		string anything = Prompt.ForString().Display(); 
-		Console.WriteLine($"Length of Anything (trimmed): {anything.Length}");
-
-		WriteSectionSeparator();
+		// --------------------------
+		// -======- Prompter -======-
+		// --------------------------
+		StartNextSection("Prompter");
 
 
+		// For multiple prompts or advanced features use Prompter.
+		Prompter prompter = new();
+
+		float favouriteFloat = prompter
+			.PromptFor<float>("What's your favourite float")
+			.Display();
+
+		if (float.IsFinite(favouriteFloat))
+		{
+			Console.WriteLine("Ah, finite as expected.");
+		}
+		else
+		{
+			Console.WriteLine("Oh, not finte. Great choice.");
+		}
+
+
+		// Only a single prompter object is required for multiple prompts
+		string nameSecond = prompter
+			.PromptForString("What's your name again?")
+			.DisallowEmpty()
+			.Display();
+
+		if (name != nameSecond) Console.WriteLine("I am confused...");
+
+
+
+
+		// ---------------------------
+		// -======- Null Text -======-
+		// ---------------------------
+		StartNextSection("Null Text");
+
+
+		// Empty or null text displays are supported
+		string mysteryInput = prompter.PromptForString().Display(); 
+		Console.WriteLine($"Mystery Length: {mysteryInput.Length}");
+
+
+		// Common hints are still shown (unless disabled)
+		double mysteryNumericInput = prompter
+			.PromptFor<double>(null, forceFinite: true)
+			.NotEqualTo(0)
+			.Display();
+
+		Console.WriteLine($"Mystery Sqaure: {mysteryNumericInput * mysteryNumericInput}");
+
+
+		/*
 		//  -======- Custom Validators -======-
 		static void MustNotContainLetterAValidator(string input) {
 			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
@@ -97,7 +146,7 @@ internal class Program
 
 		Console.WriteLine($"Given sentence: \"{stringWithoutLetterA}\"");
 
-		WriteSectionSeparator();
+		StartNextSection();
 
 
 		//  -======- Styling -======-
@@ -116,7 +165,7 @@ internal class Program
 
 		Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
-		WriteSectionSeparator();
+		StartNextSection();
 
 
 		//  -======- Styling: Type hints -======-
@@ -134,14 +183,20 @@ internal class Program
 
 		Console.WriteLine($"Given rating: {rating}");
 
-		WriteSectionSeparator();
+		StartNextSection();
+
+		*/
+		
+
 
 
 		// - Outro -
+		Console.WriteLine();
+		Console.WriteLine();
 		Console.WriteLine("This concludes the ConsolePrompts demo!");
 		Console.Write("Press any key to exit...");
 		Console.ReadKey(intercept: true);
-
+		
 	}
 
 }
