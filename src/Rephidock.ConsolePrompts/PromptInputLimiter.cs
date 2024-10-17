@@ -158,7 +158,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.Path, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.Path));
 
 		// Return
 		return prompt;
@@ -185,13 +185,9 @@ public static class PromptInputLimiter {
 
 		prompt.OfPath().AddValidator(Validator);
 
-		// Add hint
+		// Replace hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.FilePath, PromptHintLevel.Verbose);
-
-		if (mustExist) {
-			prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
-		}
+		prompt.AddHint(new PromptHint<bool>(PromptHintKeys.FilePath, mustExist));
 
 		// Return
 		return prompt;
@@ -218,13 +214,9 @@ public static class PromptInputLimiter {
 
 		prompt.OfPath().AddValidator(Validator);
 
-		// Add hint
+		// Replace hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.DirectoryPath, PromptHintLevel.Verbose);
-
-		if (mustExist) {
-			prompt.AddHint(TO_BE_REMOVED_PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
-		}
+		prompt.AddHint(new PromptHint<bool>(PromptHintKeys.DirectoryPath, mustExist));
 
 		// Return
 		return prompt;

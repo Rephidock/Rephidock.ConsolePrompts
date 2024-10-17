@@ -67,7 +67,7 @@ public static class PromptHintHandlers {
 
 	#endregion
 
-	#region //// String limiters
+	#region //// String restrictions
 
 	/// <summary>Hint handler for key <see cref="PromptHintKeys.StringLength"/></summary>
 	public static string? StringLengthHintHandler(PromptHint hint) {
@@ -92,6 +92,19 @@ public static class PromptHintHandlers {
 
 	#endregion
 
+	#region //// Path restrictions
+
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.Path"/></summary>
+	public static string? PathHintHandler(PromptHint _) => "path";
+
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.FilePath"/></summary>
+	public static string? FilePathHintHandler(PromptHint _) => "file path";
+
+	/// <summary>Hint handler for keys <see cref="PromptHintKeys.DirectoryPath"/></summary>
+	public static string? DirectoryPathHintHandler(PromptHint _) => "directory path";
+
+	#endregion
+
 	#region //// Collections
 
 	/// <summary>Returns all handlers of this listing.</summary>
@@ -104,6 +117,9 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.StringLength, StringLengthHintHandler },
 			{ PromptHintKeys.StringNotEmpty, StringNotEmptyHintHandler },
 			{ PromptHintKeys.StringNotEmptyOrWhitespace, StringNotEmptyHintHandler },
+			{ PromptHintKeys.Path, PathHintHandler },
+			{ PromptHintKeys.FilePath, FilePathHintHandler },
+			{ PromptHintKeys.DirectoryPath, DirectoryPathHintHandler },
 		};
 	}
 
