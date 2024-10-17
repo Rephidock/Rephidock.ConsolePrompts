@@ -1,8 +1,4 @@
 TO DO:
-- Fix validators while adding the hint keys and handlers
--- IEquatable limiters
-- Tweak limiters (validation)
--- Maybe add IComparable
 - Update the demo
 - Revamp readme
 

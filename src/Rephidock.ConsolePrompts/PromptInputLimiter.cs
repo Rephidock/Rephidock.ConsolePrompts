@@ -369,8 +369,8 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(TO_BE_REMOVED_PromptStyler.HintStrings.NotEqualsFormat, exclusion);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		string exclusionString = exclusion is null ? "null" : exclusion.ToString() ?? "unknown value";
+		prompt.AddHint(new PromptHint<string>(PromptHintKeys.NotEqual, exclusionString));
 
 		// Return
 		return prompt;

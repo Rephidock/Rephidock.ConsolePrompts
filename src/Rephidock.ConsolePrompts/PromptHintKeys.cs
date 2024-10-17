@@ -60,4 +60,8 @@ public static class PromptHintKeys {
 	/// <summary>Hint key denoting input must not be NaN.</summary>
 	public const string NumericNotNan = "notNaN";
 
+
+	/// <summary>Hint key denoting a banned value. Payload: the value stringified (as string).</summary>
+	public const string NotEqual = "notEqual";
+
 }

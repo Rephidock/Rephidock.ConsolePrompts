@@ -37,6 +37,15 @@ public static class PromptHintHandlers {
 		return boolHint.Payload ? "Y/n" : "y/N";
 	}
 
+	/// <summary>Hint handler for key <see cref="PromptHintKeys.NotEqual"/></summary>
+	public static string? NotEqualHintHandler(PromptHint hint) {
+
+		// Skip hints of incorrect type.
+		if (hint is not PromptHint<string> typeHint) return null;
+
+		return $"=/= {typeHint.Payload}";
+	}
+
 	#endregion
 
 	#region //// Type Handler
@@ -149,6 +158,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.NumericFinite, NumericFiniteHintHandler },
 			{ PromptHintKeys.NumericNotInfinity, NumericNotInfnityHintHandler },
 			{ PromptHintKeys.NumericNotNan, NumericNotNaNHintHandler },
+			{ PromptHintKeys.NotEqual, NotEqualHintHandler },
 		};
 	}
 
@@ -164,6 +174,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.Boolean, BooleanHintHandler },
 			{ PromptHintKeys.StringLength, StringLengthHintHandler },
 			{ PromptHintKeys.NumericRange, NumericRangeHintHandler },
+			{ PromptHintKeys.NotEqual, NotEqualHintHandler },
 		};
 	}
 
