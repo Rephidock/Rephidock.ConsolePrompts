@@ -1,6 +1,5 @@
 TO DO:
 - Fix validators while adding the hint keys and handlers
--- Numeric value limiters
 -- Numeric finiteness limiters
 -- IEquatable limiters
 - Tweak limiters (validation)

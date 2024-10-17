@@ -249,7 +249,12 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(TO_BE_REMOVED_PromptStyler.MakeRangeHintString(min, max), PromptHintLevel.Standard);
+		prompt.AddHint(
+			new PromptHint<(string?, string?)>(
+				PromptHintKeys.NumericRange,
+				(min?.ToString(), max?.ToString())
+			)
+		);
 
 		// Return
 		return prompt;

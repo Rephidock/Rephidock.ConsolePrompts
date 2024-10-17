@@ -44,4 +44,11 @@ public static class PromptHintKeys {
 	/// </summary>
 	public const string DirectoryPath = "pathDirectory";
 
+
+	/// <summary>
+	/// Hint key denoting a numerical range.
+	/// Payload: stringified range bounds as (string?,string?).
+	/// </summary>
+	public const string NumericRange = "range";
+
 }

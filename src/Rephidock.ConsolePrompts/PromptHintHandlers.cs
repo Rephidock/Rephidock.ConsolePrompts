@@ -105,6 +105,22 @@ public static class PromptHintHandlers {
 
 	#endregion
 
+	#region //// Numeric restrictions
+
+	/// <summary>Hint handler for key <see cref="PromptHintKeys.NumericRange"/></summary>
+	public static string? NumericRangeHintHandler(PromptHint hint) {
+
+		// Stringified range
+		if (hint is PromptHint<(string? min, string? max)> rangeHint) {
+			return $"{rangeHint.Payload.min}..{rangeHint.Payload.max}";
+		}
+
+		// Unknown hint
+		return null;
+	}
+
+	#endregion
+
 	#region //// Collections
 
 	/// <summary>Returns all handlers of this listing.</summary>
@@ -120,6 +136,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.Path, PathHintHandler },
 			{ PromptHintKeys.FilePath, FilePathHintHandler },
 			{ PromptHintKeys.DirectoryPath, DirectoryPathHintHandler },
+			{ PromptHintKeys.NumericRange, NumericRangeHintHandler },
 		};
 	}
 
@@ -134,6 +151,7 @@ public static class PromptHintHandlers {
 			{ PromptHintKeys.TypeHint, TypeHintHandler },
 			{ PromptHintKeys.Boolean, BooleanHintHandler },
 			{ PromptHintKeys.StringLength, StringLengthHintHandler },
+			{ PromptHintKeys.NumericRange, NumericRangeHintHandler },
 		};
 	}
 
