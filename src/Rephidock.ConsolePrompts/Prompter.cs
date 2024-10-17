@@ -227,15 +227,17 @@ public class Prompter {
 		bool isPromptNull = string.IsNullOrWhiteSpace(textPrompt);
 		bool isNoHints = hints.Count == 0;
 
+		// If there are hints -- format them
+		string hintsString = isNoHints ? "" : string.Join(HintSeparator, FormatHints(hints));
+
 		// Use the appropriate format
-		if (isNoHints) {
+		// Note: hints can be skipped during formatting
+		if (isNoHints || string.IsNullOrWhiteSpace(hintsString)) {
 
 			if (isPromptNull) return NullPromptDisplayNoHints;
 			return string.Format(PromptFormatNoHints, textPrompt);
 
 		} else {
-
-			string hintsString = string.Join(HintSeparator, FormatHints(hints));
 
 			if (isPromptNull) return string.Format(NullPromptFormat, hintsString);
 			return string.Format(PromptFormat, textPrompt, hintsString);
