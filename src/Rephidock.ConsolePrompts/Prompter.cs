@@ -267,8 +267,8 @@ public class Prompter {
 	/// </summary>
 	/// <remarks>At most one handler can exist per hint key.</remarks>
 	/// <returns>this</returns>
-	public Prompter SetHintHandler(string hintType, Func<PromptHint, string?> handler) {
-		hintFormatHandlers[hintType] = handler;
+	public Prompter SetHintHandler(string hintKey, Func<PromptHint, string?> handler) {
+		hintFormatHandlers[hintKey] = handler;
 		return this;
 	}
 
@@ -281,6 +281,17 @@ public class Prompter {
 	/// <returns>this</returns>
 	public Prompter SetHintHandlers(Dictionary<string, Func<PromptHint, string?>> handlers) {
 		foreach (var pair in handlers) SetHintHandler(pair.Key, pair.Value);
+		return this;
+	}
+
+	/// <summary>
+	/// Removes a hint handler for a specified hint key,
+	/// forcing <see cref="UnknownHintHandler"/> to be used,
+	/// unless a new handler is set.
+	/// </summary>
+	/// <returns>this</returns>
+	public Prompter RemoveHintHandler(string hintKey) {
+		hintFormatHandlers.Remove(hintKey);
 		return this;
 	}
 
