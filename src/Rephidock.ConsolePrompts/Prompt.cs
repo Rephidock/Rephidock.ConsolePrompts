@@ -18,7 +18,7 @@ namespace Rephidock.ConsolePrompts;
 /// </summary>
 public static class Prompt {
 
-	private static Prompter defaultPrompter = new();
+	private static readonly Prompter defaultPrompter = new();
 
 	#region //// Shortcuts
 
