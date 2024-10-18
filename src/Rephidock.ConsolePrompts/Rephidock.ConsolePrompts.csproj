@@ -15,12 +15,13 @@
       Major update 2.0:
       - Reworked how prompts are created
       - (Massively breaking!) Completely reworked prompt hints and tweaked styling. See Demo project.
-      - New class: `Prompter`. Takes on responsibility of static classes in v1.
+      - New class: `Prompter`. Handles `Prompt` creation, hint display and style.
       - Simplified `Prompt.For&lt;T&gt; where T : INumber&lt;T&gt;`
       - Removed `Prompt&lt;T&gt;.SetParserFormat` as it is now resposibility of `Prompter`
       - Prompts can now work with any input and output streams.
       - Prompts without text can now display hints.
       - Removed built-in invalid input exception message changes.
+      - Renamed the class containing validators to be in line with new classes.
     </PackageReleaseNotes>
   </PropertyGroup>
 
