@@ -13,7 +13,7 @@ namespace Rephidock.ConsolePrompts;
 /// </summary>
 public static class PromptRestrictions {
 
-	#region //// String Limits
+	#region //// Strings
 
 	/// <summary>Limits input to be of specified exact length.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -136,7 +136,7 @@ public static class PromptRestrictions {
 
 	#endregion
 
-	#region //// Path Limits
+	#region //// File System
 
 	/// <summary>Limits input to be a valid filesystem path.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -224,7 +224,7 @@ public static class PromptRestrictions {
 
 	#endregion
 
-	#region //// Numeric Value Limits
+	#region //// Numeric Value
 
 	/// <summary>
 	/// Limits input to be in an inclusive numeric range.
@@ -289,7 +289,7 @@ public static class PromptRestrictions {
 
 	#endregion
 
-	#region //// Numeric Finiteness limits
+	#region //// Numeric Finiteness
 
 	/// <summary>Denies input of infinite values.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
