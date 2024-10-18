@@ -3,10 +3,6 @@ TO DO:
 - Add a list of all default hints added in the docs somewhere
 
 DOING:
-- Update the demo
--- Parsers and validators
--- Hints
--- Formatting/styling
 
 TO TEST:
 - Prompt with mock streams
