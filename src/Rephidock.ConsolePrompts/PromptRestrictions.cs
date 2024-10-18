@@ -11,7 +11,7 @@ namespace Rephidock.ConsolePrompts;
 /// Holds extension methods that return the
 /// object operated on to allow fluent syntax.
 /// </summary>
-public static class PromptInputLimiter {
+public static class PromptRestrictions {
 
 	#region //// String Limits
 
