@@ -34,7 +34,7 @@ internal class Program
 		Console.WriteLine($"Hello, {name}");
 
 
-		// Supports IParsable, incluiding numbers.
+		// Supports IParsable, including numbers.
 		// Be careful with floats: "Infinity" and "NaN" are valid inputs
 		// (unless disabled with forceFinite parameter).
 		int userAge = Prompt.For<int>("Your age").NoLessThan(1).Display();
@@ -50,7 +50,7 @@ internal class Program
 		}
 
 
-		// Futher section has an example with a DateOnly.
+		// Further section has an example with a DateOnly.
 
 		// Booleans are supported and allow single character answers.
 		bool isHexagonEnjoyer = Prompt.ForBool("Do you like hexagons?", defaultValue: true).Display();
@@ -84,7 +84,7 @@ internal class Program
 			.NoLessThan(0)
 			.Display();
 
-		Console.WriteLine($"Mystery Sqaure Root: {Math.Sqrt(mysteryNumericInput)}");
+		Console.WriteLine($"Mystery Square Root: {Math.Sqrt(mysteryNumericInput)}");
 
 
 
@@ -98,21 +98,21 @@ internal class Program
 		// For advanced features (explored further) use a Prompter.
 		Prompter prompter = new();
 
-		float favouriteFloat = prompter
-			.PromptFor<float>("What's your favourite float")
+		float favoriteFloat = prompter
+			.PromptFor<float>("What's your favorite float")
 			.Display();
 
-		if (float.IsFinite(favouriteFloat))
+		if (float.IsFinite(favoriteFloat))
 		{
 			Console.WriteLine("Ah, finite as expected.");
 		}
 		else
 		{
-			Console.WriteLine("Oh, not finte. Great choice.");
+			Console.WriteLine("Oh, not finite. Great choice.");
 		}
 
 
-		// Only a single prompter object is required for multiple prompts
+		// Only a single prompter object is required for multiple prompts.
 		string nameSecond = prompter
 			.PromptForString("What's your name again?")
 			.DisallowEmpty()
@@ -124,9 +124,9 @@ internal class Program
 
 
 		// ---------------------------------------
-		// -======- Further Customisation -======-
+		// -======- Further Customization -======-
 		// ---------------------------------------
-		StartNextSection("Further Customisation");
+		StartNextSection("Further Customization");
 
 
 		// Hints and format prompts is customizable.
@@ -134,7 +134,7 @@ internal class Program
 		prompter = new Prompter(autoSetupHints: false);
 
 		// Set up all hints to be displayed
-		// (includes uncommon hints, like "not empty")
+		// (includes uncommon hints, like "not empty").
 		prompter.SetHintHandlers(PromptHintHandlers.GetAllHandlers());
 		prompter.UnknownHintHandler = PromptHintHandlers.DebugHintHandler;
 
@@ -155,7 +155,7 @@ internal class Program
 		Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
 
-		// Alternatively all hints can be disabled like so
+		// Alternatively all hints can be disabled like so:
 		prompter = new Prompter(autoSetupHints: false) {
 			UnknownHintHandler = PromptHintHandlers.SkipHintHandler
 		};
@@ -178,20 +178,20 @@ internal class Program
 		prompter.SetHintHandler(PromptHintKeys.StringNotEmptyOrWhitespace, _ => "not empty");
 		prompter.UnknownHintHandler = hint => $"<unknown hint key {hint.Key}>";
 
-		// Lets create a prompt with some hints and see what is displayed
+		// Lets create a prompt with some hints and see what is displayed.
 		_ = prompter
 			.PromptForString("Give me 3 characters")
 			.AddTextHint("3 chrs.")     // This adds a BasicText hint. The given text becomes Payload.
-			.DisallowOnlyWhiteSpace()   // Also adds a StringNotEmptyOrWhitespace hint
+			.DisallowOnlyWhiteSpace()   // Also adds a StringNotEmptyOrWhitespace hint.
 			.OfLength(3)                // Also adds a StringLength hint; Handler not set, unknown will be used.
 
-			// When a prompt is dispalyed all hints are passed through
+			// When a prompt is displayed all hints are passed through
 			// the prompter's hint handlers based on the hints' keys.
 			.Display();
 
-		// autoSetupHints is true by default
+		// autoSetupHints is true by default.
 		// It adds CommonHintHandlers from PromptHintHandlers
-		// and sets a SkipHintHandler as an UnknownHintHandler
+		// and sets a SkipHintHandler as an UnknownHintHandler.
 
 		// The Prompt static class uses a prompter with automatically set up hints.
 		
@@ -212,7 +212,7 @@ internal class Program
 		}
 
 
-		// You can define your own hints and handlers for them from the ground up
+		// You can define your own hints and handlers for them from the ground up.
 		const string exampleHintKey = "userExample";
 
 		static string? ExampleHintHandler(PromptHint hint) {
@@ -223,7 +223,7 @@ internal class Program
 			// Handle hints with integer payload
 			if (hint is PromptHint<int> intHint) return $"example.{intHint.Payload}";
 
-			// Handle other hints, incluidng with no payload
+			// Handle other hints, including with no payload
 			return "example";
 		}
 
@@ -241,21 +241,21 @@ internal class Program
 		// ---------------------------------------
 		// -======- More About Validators -======-
 		// ---------------------------------------
-		StartNextSection("More About Validotrs");
+		StartNextSection("More About Validators");
 
 
-		// All restrictions already seen just their internal validator and restrictions.
+		// All restrictions already seen just add their internal validators and hints.
 
-		// Let's define own validator. Must throw on invalid input.
+		// Let's define own validator. Must throw on invalid input
 		static void MustNotContainLetterAValidator(string input) {
 			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
 				throw new PromptInputException("Input must not contain letter 'A'");
 			}
 		}
 
-		// and add it with an appropriate hint
+		// and add it with an appropriate hint.
 		string stringWithoutLetterA = Prompt
-			.ForString("Give me a sentance", trim: true)
+			.ForString("Give me a sentence", trim: true)
 			.AddValidator(MustNotContainLetterAValidator)
 			.AddTextHint("without letter A")
 			.Display();
