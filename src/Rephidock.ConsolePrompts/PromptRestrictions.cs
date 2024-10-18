@@ -114,7 +114,7 @@ public static class PromptRestrictions {
 		return prompt;
 	}
 
-	/// <summary>Denies input that is whitespace only.</summary>
+	/// <summary>Denies input that is empty or whitespace only.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowOnlyWhiteSpace(this Prompt<string> prompt) {
 
