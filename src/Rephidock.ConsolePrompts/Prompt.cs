@@ -13,37 +13,38 @@ namespace Rephidock.ConsolePrompts;
 /// for <see cref="Console"/> quickly.
 /// </para>
 /// <para>
-/// For advanced use or for multiple prompts <see cref="Prompter"/>
-/// is recommended.
+/// For advanced features use <see cref="Prompter"/> directly.
 /// </para>
 /// </summary>
 public static class Prompt {
+
+	private static Prompter defaultPrompter = new();
 
 	#region //// Shortcuts
 
 	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, Func{string, IFormatProvider?, T})"/>
 	public static Prompt<T> For<T>(string? textPrompt, Func<string, IFormatProvider?, T> parser) {
-		return new Prompter().PromptFor<T>(textPrompt, parser);
+		return defaultPrompter.PromptFor<T>(textPrompt, parser);
 	}
 
 	/// <inheritdoc cref="Prompter.PromptFor{T}(string?)"/>
 	public static Prompt<T> For<T>(string? textPrompt = null) where T : IParsable<T> {
-		return new Prompter().PromptFor<T>(textPrompt);
+		return defaultPrompter.PromptFor<T>(textPrompt);
 	}
 
 	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, bool)"/>
 	public static Prompt<T> For<T>(string? textPrompt, bool forceFinite) where T : struct, INumber<T> {
-		return new Prompter().PromptFor<T>(textPrompt, forceFinite);
+		return defaultPrompter.PromptFor<T>(textPrompt, forceFinite);
 	}
 
 	/// <inheritdoc cref="Prompter.PromptForString(string?, bool)"/>
 	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
-		return new Prompter().PromptForString(textPrompt, trim);
+		return defaultPrompter.PromptForString(textPrompt, trim);
 	}
 
 	/// <inheritdoc cref="Prompter.PromptForBool(string?, bool)"/>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
-		return new Prompter().PromptForBool(textPrompt, defaultValue);
+		return defaultPrompter.PromptForBool(textPrompt, defaultValue);
 	}
 
 	#endregion
