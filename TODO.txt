@@ -5,6 +5,4 @@ TO DO:
 DOING:
 
 TO TEST:
-- Prompt with mock streams
--- including hint and style systems
-- Test all limiters and their displayed hints
+- (maybe) Restrictions put their correct hints
