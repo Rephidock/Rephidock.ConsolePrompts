@@ -6,7 +6,7 @@ using Rephidock.ConsolePrompts;
 namespace Rephidock.ConsolePrompts.Tests;
 
 
-public sealed class NumericLimiterTests {
+public sealed class NumericRestrictionsTests {
 
 	[Theory]
 	[InlineData(null, null, new string[] { "0", "1", "-1", "-99", "99", "2147483647", "-2147483648" }, new string[] { })]
@@ -15,7 +15,7 @@ public sealed class NumericLimiterTests {
 	[InlineData(null, 1, new string[] { "1", "0", "-1", "-99", "-2147483648"}, new string[] { "99", "2147483647" })]
 	[InlineData(0, 1, new string[] { "1", "0" }, new string[] { "99", "2147483647", "-1", "-99", "-2147483648", "2", "3", "63", "64", "15" })]
 	[InlineData(2, 64, new string[] { "2", "3", "63", "64", "15" }, new string[] { "2147483647", "-1", "-2147483648", "1", "0", "65" })]
-	public void OfRangeLimiter_InputFinite_ThrowsIfOutOfRange(int? minBound, int? maxBound, string[] validInputs, string[] invalidInputs) {
+	public void OfRangeRestriction_InputFinite_ThrowsIfOutOfRange(int? minBound, int? maxBound, string[] validInputs, string[] invalidInputs) {
 
 		// Arrange
 		var prompt = Prompt.For<int>().OfRange(minBound, maxBound);
@@ -36,7 +36,7 @@ public sealed class NumericLimiterTests {
 	[InlineData(0f, null, new string[] { "infinity" }, new string[] { "-infinity" })]
 	[InlineData(null, 0f, new string[] { "-infinity" }, new string[] { "infinity" })]
 	[InlineData(0f, 1f, new string[] { }, new string[] { "infinity", "-infinity" })]
-	public void OfRangeLimiter_InputNotFinite_ThrowsIfOutOfRange(float? minBound, float? maxBound, string[] validInputs, string[] invalidInputs) {
+	public void OfRangeRestriction_InputNotFinite_ThrowsIfOutOfRange(float? minBound, float? maxBound, string[] validInputs, string[] invalidInputs) {
 
 		// Arrange
 		var prompt = Prompt.For<float>().OfRange(minBound, maxBound);
@@ -56,7 +56,7 @@ public sealed class NumericLimiterTests {
 	[InlineData(float.NegativeInfinity, null, new string[] { "infinity", "-infinity", "0", "1", "-1", "64", "-64" })]
 	[InlineData(null, float.PositiveInfinity, new string[] { "infinity", "-infinity", "0", "1", "-1", "64", "-64" })]
 	[InlineData(float.NegativeInfinity, float.PositiveInfinity, new string[] { "infinity", "-infinity", "0", "1", "-1", "64", "-64" })]
-	public void OfRangeLimiter_InputWithInfiniteBounds_DoesNotThrown(float? minBound, float? maxBound, string[] validInputs) {
+	public void OfRangeRestriction_InputWithInfiniteBounds_DoesNotThrown(float? minBound, float? maxBound, string[] validInputs) {
 
 		// Arrange
 		var prompt = Prompt.For<float>().OfRange(minBound, maxBound);
@@ -76,7 +76,7 @@ public sealed class NumericLimiterTests {
 	[InlineData("+infinity", false)]
 	[InlineData("-infinity", false)]
 	[InlineData("nan", true)]
-	public void DisallowNaNLimiter_Input_ThrowIfNaN(string input, bool isNan) {
+	public void DisallowNaNRestriction_Input_ThrowIfNaN(string input, bool isNan) {
 
 		// Arrange
 		var promptNoNan = Prompt.For<float>().DisallowNaN();
@@ -102,7 +102,7 @@ public sealed class NumericLimiterTests {
 	[InlineData("+infinity", true)]
 	[InlineData("-infinity", true)]
 	[InlineData("nan", false)]
-	public void DisallowInfinitiesLimiter_Input_ThrowIfInfinity(string input, bool isInfinity) {
+	public void DisallowInfinitiesRestriction_Input_ThrowIfInfinity(string input, bool isInfinity) {
 
 		// Arrange
 		var promptNoInf = Prompt.For<float>().DisallowInfinities();
@@ -128,7 +128,7 @@ public sealed class NumericLimiterTests {
 	[InlineData("+infinity", true)]
 	[InlineData("-infinity", true)]
 	[InlineData("nan", true)]
-	public void ForceFiniteLimiter_Input_ThrowIfNotFinite(string input, bool isNotFinite) {
+	public void ForceFiniteRestriction_Input_ThrowIfNotFinite(string input, bool isNotFinite) {
 
 		// Arrange
 		var promptForceFinite = Prompt.For<float>().ForceFinite();
