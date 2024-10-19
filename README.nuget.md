@@ -1,20 +1,20 @@
 # Console Prompts
 
-[![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts)](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/LICENSE)
+[![GitHub License Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts)](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/LICENSE)
 
-A small .NET library to take user input in a console with some exception handling and fluent syntax.
+A .NET library to take user input in a console with exception handling and fluent syntax.
 
 ## Features
 
 - User input queries with fluent syntax
+- Support for strings, `IParsable`, including numbers, and booleans
 - Input restrictions (e.g. numeric range, string length, path to an existing file)
 - Invalid input handling
-- Prompt styling
-- Support for `IParsable`
+- Hints and styling
 
 ## Usage
 
-Use the `Prompt` class to create a query with one of the `For` methods. Add limits to the query with fluent syntax and `Display` the query to the user.
+Use the `Prompt` class to create a query with one of the `For` methods, add restrictions to the query with fluent syntax and `Display` the query to the user.
 
 ```csharp
 int userAge = Prompt.For<int>("Your age").NoLessThan(1).Display();
@@ -33,22 +33,28 @@ else
 ![image: example_prompt_age](https://raw.github.com/Rephidock/Rephidock.ConsolePrompts/main/media/example_prompt_age.png)
 
 
-### Styling
+### Advanced Use
 
-The way prompts are displayed can be changed with `PromptStyler` class.
+Use the `Prompter` class to customize how prompts and hints are displayed. 
 
 ```csharp
-PromptStyler.PromptFormat = "[{1}] {0} = ";
-PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
-PromptStyler.HintLevel = PromptHintLevel.Verbose;
+Prompter prompter = new Prompter(autoSetupHints: false);
 
-Console.WriteLine("f(x) = 60 + 10x");
+// Set up all hints to be displayed
+prompter.SetHintHandlers(PromptHintHandlers.GetAllHandlers());
 
-float x = Prompt
-	.For<float>("x")
+// Change format of prompts
+prompter.PromptFormat = "[{1}] {0} := ";
+prompter.HintSeparator = " & ";
+prompter.InvalidInputFormat = "Not accepted: {0}";
+
+// Example prompt
+float x = prompter
+	.PromptFor<float>("x")
+	.AddTypeHint()
 	.ForceFinite()
-	.OfRange(0, 1)
-	.AddHint("real", PromptHintLevel.Verbose)
+	.OfRange(-1, 1)
+	.NotEqualTo(0)
 	.Display();
 
 Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
@@ -56,4 +62,4 @@ Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
 ![image: example_styled_float](https://raw.github.com/Rephidock/Rephidock.ConsolePrompts/main/media/example_styled_float.png)
 
-See [Demo Project](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/src/Rephidock.ConsolePrompts.Demo) on the source repository for some other examples.
+See [Demo Project](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/src/Rephidock.ConsolePrompts.Demo) on the source repository for a more full tutorial.
