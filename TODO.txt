@@ -1,8 +1,8 @@
 TO DO:
-- Revamp readme
 - Add a list of all default hints added in the docs somewhere
 
 DOING:
+- Revamp readme
 
 TO TEST:
 - (maybe) Restrictions put their correct hints
