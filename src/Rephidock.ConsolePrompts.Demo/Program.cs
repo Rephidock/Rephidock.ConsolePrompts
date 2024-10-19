@@ -52,7 +52,8 @@ internal class Program
 
 		// Further section has an example with a DateOnly.
 
-		// Booleans are supported and allow single character answers.
+
+		// Booleans are supported and allow single character answers (y/n).
 		bool isHexagonEnjoyer = Prompt.ForBool("Do you like hexagons?", defaultValue: true).Display();
 
 		if (isHexagonEnjoyer)
@@ -104,7 +105,7 @@ internal class Program
 
 		if (float.IsFinite(favoriteFloat))
 		{
-			Console.WriteLine("Ah, finite as expected.");
+			Console.WriteLine("Ah, finite as expected. Great choice.");
 		}
 		else
 		{
@@ -129,7 +130,7 @@ internal class Program
 		StartNextSection("Further Customization");
 
 
-		// Hints and format prompts is customizable.
+		// Hints and prompt format are customizable.
 		// Requires a prompter.
 		prompter = new Prompter(autoSetupHints: false);
 
@@ -160,6 +161,9 @@ internal class Program
 			UnknownHintHandler = PromptHintHandlers.SkipHintHandler
 		};
 
+		// To change the formats for hints themselves set custom hint handlers
+		// (explored in the next section).
+
 
 
 
@@ -169,8 +173,8 @@ internal class Program
 		StartNextSection("More About Hints");
 
 
-		// When a parser a created without hint setup
-		// it has no hint handlers and a debug unknown hint handler.
+		// When a parser is created without hint setup it has no hint handlers set
+		// and uses a DebugHintHandler for unknown hints.
 		prompter = new Prompter(autoSetupHints: false);
 
 		// Lets add some handlers!
@@ -198,6 +202,7 @@ internal class Program
 
 		// Additionally type hints exist.
 		// Prompter can add them automatically or they can be added manually.
+		// Some types are renamed for general clarity.
 		DateOnly userBirthday = Prompt
 			.For<DateOnly>("When is your birthday")
 			.AddTypeHint()
