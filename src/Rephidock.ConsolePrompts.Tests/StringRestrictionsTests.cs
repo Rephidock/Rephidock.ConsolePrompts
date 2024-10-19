@@ -6,7 +6,7 @@ using Rephidock.ConsolePrompts;
 namespace Rephidock.ConsolePrompts.Tests;
 
 
-public sealed class StringLimiterTests {
+public sealed class StringRestrictionsTests {
 
 	[Theory]
 	[InlineData("", true, true)]
@@ -17,7 +17,7 @@ public sealed class StringLimiterTests {
 	[InlineData("0", false, false)]
 	[InlineData("something ", false, false)]
 	[InlineData("\tsomething", false, false)]
-	public void OfEmptyLimiters_Input_ThrowsIfInvalid(string input, bool isEmpty, bool isOnlyWhitespace) {
+	public void OfEmptyRestrictions_Input_ThrowsIfInvalid(string input, bool isEmpty, bool isOnlyWhitespace) {
 
 		// Arrange
 		var promptNotEmpty = Prompt.ForString(trim: false).DisallowEmpty();
@@ -51,7 +51,7 @@ public sealed class StringLimiterTests {
 	[InlineData("hello", 2, 5)]
 	[InlineData(" hello ", 5, 7)]
 	[InlineData("hello", 16, 5)]
-	public void OfExactLengthLimiter_Input_ThrowsIfNotCorrectLength(string input, int limiterLengthIncorrect, int limiterLengthCorrect) {
+	public void OfExactLengthRestriction_Input_ThrowsIfNotCorrectLength(string input, int limiterLengthIncorrect, int limiterLengthCorrect) {
 
 		// Arrange
 		var promptThrowing = Prompt.ForString(trim: false).OfLength(limiterLengthIncorrect);
@@ -81,7 +81,10 @@ public sealed class StringLimiterTests {
 	[InlineData(0, 4, new string[] { "", "q", "aa", "1234" }, new string[] { "12345", "longer string" } )]
 	[InlineData(2, 4, new string[] { "aa", ".?!", "1234" }, new string[] { "", "q", "12345", "longer string" } )]
 	[InlineData(10, 14, new string[] { "longer string", "1234567890" }, new string[] { "an even longer string", "me short", "" } )]
-	public void OfRangeLengthLimiter_Input_ThrowsIfNotInRange(int minLength, int? maxLength, string[] validInputs, string[] invalidInputs) {
+	public void OfRangeLengthRestriction_Input_ThrowsIfNotInRange(
+		int minLength, int? maxLength,
+		string[] validInputs, string[] invalidInputs
+	) {
 
 		// Arrange
 		var prompt = Prompt.ForString(trim: false).OfLength(minLength, maxLength);

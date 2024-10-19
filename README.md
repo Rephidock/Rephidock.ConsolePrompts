@@ -1,21 +1,21 @@
 # Console Prompts
 
-[![GitHub Licence Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts)](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/LICENSE)
+[![GitHub License Badge](https://img.shields.io/github/license/Rephidock/Rephidock.ConsolePrompts)](https://github.com/Rephidock/Rephidock.ConsolePrompts/blob/main/LICENSE)
 [![Nuget Version Badge](https://img.shields.io/nuget/v/Rephidock.ConsolePrompts?logo=nuget)](https://www.nuget.org/packages/Rephidock.ConsolePrompts)
 
-A small .NET library to take user input in a console with some exception handling and fluent syntax.
+A .NET library to take user input in a console with exception handling and fluent syntax.
 
 ## Features
 
 - User input queries with fluent syntax
+- Support for strings, `IParsable`, including numbers, and booleans
 - Input restrictions (e.g. numeric range, string length, path to an existing file)
 - Invalid input handling
-- Prompt styling
-- Support for `IParsable`
+- Hints and styling
 
 ## Usage
 
-Use the `Prompt` class to create a query with one of the `For` methods. Add limits to the query with fluent syntax and `Display` the query to the user.
+Use the `Prompt` class to create a query with one of the `For` methods, add restrictions to the query with fluent syntax and `Display` the query to the user.
 
 ```csharp
 int userAge = Prompt.For<int>("Your age").NoLessThan(1).Display();
@@ -33,22 +33,28 @@ else
 
 ![image: example_prompt_age](media/example_prompt_age.png)
 
-### Styling
+### Advanced Use
 
-The way prompts are displayed can be changed with `PromptStyler` class.
+Use the `Prompter` class to customize how prompts and hints are displayed. 
 
 ```csharp
-PromptStyler.PromptFormat = "[{1}] {0} = ";
-PromptStyler.InvalidInputFormat = "I can't accept that: {0}";
-PromptStyler.HintLevel = PromptHintLevel.Verbose;
+Prompter prompter = new Prompter(autoSetupHints: false);
 
-Console.WriteLine("f(x) = 60 + 10x");
+// Set up all hints to be displayed
+prompter.SetHintHandlers(PromptHintHandlers.GetAllHandlers());
 
-float x = Prompt
-	.For<float>("x")
+// Change format of prompts
+prompter.PromptFormat = "[{1}] {0} := ";
+prompter.HintSeparator = " & ";
+prompter.InvalidInputFormat = "Not accepted: {0}";
+
+// Example prompt
+float x = prompter
+	.PromptFor<float>("x")
+	.AddTypeHint()
 	.ForceFinite()
-	.OfRange(0, 1)
-	.AddHint("real", PromptHintLevel.Verbose)
+	.OfRange(-1, 1)
+	.NotEqualTo(0)
 	.Display();
 
 Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
@@ -56,7 +62,7 @@ Console.WriteLine($"f(x) = 60 + 10 * {x} = {60 + 10 * x}");
 
 ![image: example_styled_float](media/example_styled_float.png)
 
-See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for some other examples.
+See [Demo Project](./src/Rephidock.ConsolePrompts.Demo) for a more full tutorial.
 
 ## Installation
 
@@ -69,22 +75,3 @@ dotnet add package Rephidock.ConsolePrompts
 ```
 
 or the package browser in the IDE of your choice.
-
-### Manual download
-
-Alternatively you can download the library files manually.
-
-1. Open the [Releases](https://github.com/Rephidock/Rephidock.ConsolePrompts/releases) page.
-2. Download the `.dll`.
-3. (Optional, Recommended) Also download the `.xml` file of the same release.
-
-   The `.xml` file contains documentation and should be placed in the same directory as the `.dll` for hints to appear in an IDE. 
-   
-4. Add the dependency in your `.csproj` file:
-   ```xml
-   <ItemGroup>
-     <Reference Include="Rephidock.ConsolePrompts">
-       <HintPath>Relative\Or\Absolute\Path\To\Rephidock.ConsolePrompts.dll</HintPath>
-     </Reference>
-   </ItemGroup>
-   ```

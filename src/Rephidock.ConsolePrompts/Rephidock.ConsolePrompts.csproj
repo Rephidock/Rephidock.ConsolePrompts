@@ -3,24 +3,27 @@
   <PropertyGroup>
     <Title>Rephidock.ConsolePrompts</Title>
     <Authors>Rephidock</Authors>
-    <Version>1.1.0</Version>
-    <Description>A small library to take user input in a console with exception handling and fluent syntax</Description>
-    <Copyright>Copyright (c) 2023 Rephidock</Copyright>
+    <Version>2.0.0</Version>
+    <Description>A library to take user input in a console with exception handling and fluent syntax</Description>
+    <Copyright>Copyright (c) 2023-2024 Rephidock</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>console;input</PackageTags>
+    <PackageTags>console;prompt;input</PackageTags>
     <PackageProjectUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rephidock/Rephidock.ConsolePrompts</RepositoryUrl>
     <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
     <PackageReleaseNotes>
-      Minor update 1.1.0 change log:
-        - Added NotEqualTo input limiter
-        - Added type hints and type name replacement (optional, off by default)
-        - Added exception message replacement (optional, on by default)
-        - Added PromptInputException
-        - Prompt: Added ParseAndValidate for use outside of console
-        - Documentation clarifications and fixes
-        - Internal changes and testing
-	</PackageReleaseNotes>
+      Major update 2.0:
+      - (Massively breaking!) Completely reworked prompt hints and styling. See Demo project.
+      - New class: `Prompter`. Handles `Prompt` creation, hint display and style.
+      - Simplified `Prompt.For&lt;T&gt; where T : INumber&lt;T&gt;`.
+      - Removed `Prompt&lt;T&gt;.SetParserFormat` as it is now resposibility of `Prompter`.
+      - Prompts can now work with input and output streams other than the Console.
+      - Prompts without text can now display hints.
+      - Type hints are now added directly to Prompts.
+      - Added a way to remove prompt's hints matching a predicate or remove all of the hints.
+      - Removed built-in invalid input exception message changes.
+      - Renamed the class containing validators to be in line with new classes.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,23 +32,14 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-	
+    
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Rephidock.ConsolePrompts</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;Release with Demo</Configurations>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release with Demo|AnyCPU'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Optimize>True</Optimize>
   </PropertyGroup>
 
 </Project>

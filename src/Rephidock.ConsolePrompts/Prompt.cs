@@ -2,129 +2,52 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-using System.Globalization;
 
 
 namespace Rephidock.ConsolePrompts;
 
 
 /// <summary>
-/// A class for creating instances of <see cref="Prompt{T}"/>.
+/// <para>
+/// A class for creating instances of <see cref="Prompt{T}"/>
+/// for <see cref="Console"/> quickly.
+/// </para>
+/// <para>
+/// For advanced features use <see cref="Prompter"/> directly.
+/// </para>
 /// </summary>
 public static class Prompt {
 
-	#region //// Creation
+	private static readonly Prompter defaultPrompter = new();
 
-	/// <summary>
-	/// Creates a prompt for any value.
-	/// A parser is required.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	#region //// Shortcuts
+
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, Func{string, IFormatProvider?, T})"/>
 	public static Prompt<T> For<T>(string? textPrompt, Func<string, IFormatProvider?, T> parser) {
-		return new Prompt<T>().SetPrompt(textPrompt).SetParser(parser);
+		return defaultPrompter.PromptFor<T>(textPrompt, parser);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a parsable value.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?)"/>
 	public static Prompt<T> For<T>(string? textPrompt = null) where T : IParsable<T> {
-		return new Prompt<T>().SetPrompt(textPrompt).SetParser(T.Parse);
+		return defaultPrompter.PromptFor<T>(textPrompt);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a numeric value.
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/></returns>
-	public static Prompt<T> For<T>(string? textPrompt, bool allowInfinite, bool allowNan)
-	where T : struct, INumber<T>
-	{
-
-		Prompt<T> ret = For<T>(textPrompt);
-
-		if (!allowInfinite && !allowNan) {
-			ret.ForceFinite();
-		} else {
-			if (!allowInfinite) ret.DisallowInfinities();
-			if (!allowNan) ret.DisallowNaN();
-		}
-
-		return ret;
+	/// <inheritdoc cref="Prompter.PromptFor{T}(string?, bool)"/>
+	public static Prompt<T> For<T>(string? textPrompt, bool forceFinite) where T : struct, INumber<T> {
+		return defaultPrompter.PromptFor<T>(textPrompt, forceFinite);
 	}
 
-	/// <summary>Creates a prompt for a string.</summary>
-	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="string"/></returns>
+	/// <inheritdoc cref="Prompter.PromptForString(string?, bool)"/>
 	public static Prompt<string> ForString(string? textPrompt = null, bool trim = true) {
-
-		// Define parsers
-		static string PassthroughParser(string input, IFormatProvider? _) => input;
-		static string TrimParser(string input, IFormatProvider? _) => input.Trim();
-
-		// Choose the parser
-		Func<string, IFormatProvider?, string> chosenParser = trim ? TrimParser : PassthroughParser;
-
-		// Create Prompt
-		return For<string>(textPrompt, chosenParser).SetParserFormat(null);
+		return defaultPrompter.PromptForString(textPrompt, trim);
 	}
 
-	/// <summary>
-	/// Creates a prompt for a boolean.
-	/// Supports one character input (y/n).
-	/// </summary>
-	/// <returns>A new <see cref="Prompt{T}"/> where T is <see langword="bool"/></returns>
+	/// <inheritdoc cref="Prompter.PromptForBool(string?, bool)"/>
 	public static Prompt<bool> ForBool(string? textPrompt = null, bool defaultValue = false) {
-
-		// Define parser
-		bool BoolParser(string input, IFormatProvider? _) {
-
-			// Trim input
-			input = input.Trim();
-
-			// Check for default return
-			if (input.Length == 0) return defaultValue;
-
-			// Try default parser first
-			if (bool.TryParse(input, out bool defaultParserResult)) {
-				return defaultParserResult;
-			};
-
-			// Check for valid single characters
-			if (input.Length == 1) {
-
-				char inputChar = char.ToUpper(input[0]);
-
-				if (inputChar == 'Y' || inputChar == 'T' || inputChar == '1') return true;
-				if (inputChar == 'N' || inputChar == 'F' || inputChar == '0') return false;
-			}
-
-			// Throw if all other fails
-			throw new FormatException();
-		}
-
-		// Create prompt
-		Prompt<bool> prompt = For<bool>(textPrompt, BoolParser).SetParserFormat(null);
-
-		// Add y/n hint
-		string hintText;
-		if (defaultValue) {
-			hintText = PromptStyler.HintStrings.BoolDefaultTrue;
-		} else {
-			hintText = PromptStyler.HintStrings.BoolDefaultFalse;
-		}
-
-		prompt.AddHint(hintText, PromptHintLevel.Minimal);
-
-		// Return
-		return prompt;
+		return defaultPrompter.PromptForBool(textPrompt, defaultValue);
 	}
 
 	#endregion
-
-	/// <summary>
-	/// Default format used by <see cref="Prompt{T}"/>.
-	/// Is <see cref="CultureInfo.InvariantCulture"/>.
-	/// </summary>
-	public static IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
 
 }
 
@@ -132,21 +55,35 @@ public static class Prompt {
 /// <summary>
 /// A prompt (query) for a value to be shown to the user.
 /// </summary>
+/// <remarks>
+/// Each prompt has dedicated text query, hints, parser and validators;
+/// everything else is read from the parent <see cref="Prompter"/>.
+/// </remarks>
 public sealed class Prompt<T> {
 
-	// Hide constructor
-	internal Prompt() { }
+	#region //// Parent + Constructor
+
+	internal Prompt(Prompter prompter) {
+		this.prompter = prompter;
+	}
+
+	// Prompter reference
+	readonly Prompter prompter;
+
+	#endregion
 
 	#region //// Text Prompt
 
-	/// <summary>Text prompt to be tweaked and displayed.</summary>
+	/// <summary>Text prompt to be displayed.</summary>
 	string? textPrompt = null;
 
 	/// <summary>
 	/// Sets the text prompt to be displayed on query.
-	/// If text prompt is empty, whitespace or <see langword="null"/>,
-	/// <see cref="PromptStyler.NullPromptDisplay"/> will be displayed.
 	/// </summary>
+	/// <remarks>
+	/// If text prompt is empty, whitespace or <see langword="null"/>,
+	/// <see cref="Prompter.NullPromptFormat"/> will be used or its no-hints equivalent.
+	/// </remarks>
 	/// <returns>this</returns>
 	public Prompt<T> SetPrompt(string? textPrompt) {
 
@@ -165,7 +102,7 @@ public sealed class Prompt<T> {
 	/// Equivalent of setting text prompt to whitespace or <see langword="null"/>.
 	/// </para>
 	/// <para>
-	/// See also: <see cref="PromptStyler.NullPromptDisplay"/>.
+	/// See also: <see cref="SetPrompt"/>.
 	/// </para>
 	/// </summary>
 	/// <returns>this</returns>
@@ -175,36 +112,27 @@ public sealed class Prompt<T> {
 
 	#region //// Hints
 
-	readonly List<PromptHint> hints = new();
+	private readonly List<PromptHint> hints = new();
 
-	/// <summary>
-	/// <para>
-	/// Adds a hint to be displayed with the prompt.
-	/// Only hints with sufficient hint level will be displayed.
-	/// </para>
-	/// <para>
-	/// See also: <see cref="PromptStyler.HintLevel"/>
-	/// </para>
-	/// </summary>
+	/// <summary>Adds a hint to be displayed with the prompt.</summary>
 	/// <returns>this</returns>
-	/// <exception cref="ArgumentException">Hint level is <see cref="PromptHintLevel.None"/></exception>
 	public Prompt<T> AddHint(PromptHint hint) {
-
-		if (hint.Level == PromptHintLevel.None) {
-			throw new ArgumentException(
-					$"Hint level {PromptHintLevel.None} is reserved to disable all hints. " +
-					$"Please use {PromptHintLevel.Minimal} or higher.",
-					nameof(hint)
-				);
-		}
-
 		hints.Add(hint);
 		return this;
 	}
 
-	/// <inheritdoc cref="AddHint(PromptHint)"/>
-	public Prompt<T> AddHint(string hint, PromptHintLevel minRequiredLevel) {
-		return AddHint(new PromptHint { Text = hint, Level = minRequiredLevel });
+	/// <summary>Adds a type hint to be displayed with the prompt.</summary>
+	/// <remarks>Added hint has key of <see cref="PromptHintKeys.TypeHint"/></remarks>
+	/// <returns>this</returns>
+	public Prompt<T> AddTypeHint() {
+		return AddHint(new PromptHint<Type>(PromptHintKeys.TypeHint, typeof(T)));
+	}
+
+	/// <summary>Adds a text hint to be displayed with the prompt.</summary>
+	/// <remarks>Added hint has type of <see cref="PromptHintKeys.BasicText"/></remarks>
+	/// <returns>this</returns>
+	public Prompt<T> AddTextHint(string hintText) {
+		return AddHint(new PromptHint<string>(PromptHintKeys.BasicText, hintText));
 	}
 
 	/// <summary>
@@ -221,20 +149,41 @@ public sealed class Prompt<T> {
 		return this;
 	}
 
+	/// <summary>Removes all added hints.</summary>
+	/// <returns>this</returns>
+	public Prompt<T> RemoveAllHints() {
+		hints.Clear();
+		return this;
+	}
+
+	/// <summary>Removes all added hints which match a predicate</summary>
+	/// <returns>this</returns>
+	public Prompt<T> RemoveHintsMatching(Predicate<PromptHint> predicate) {
+		hints.RemoveAll(predicate);
+		return this;
+	}
+
 	#endregion
 
-	#region //// Parser
+	#region //// Parser and Validator
 
-	IFormatProvider? formatProvider = Prompt.DefaultFormatProvider;
 	Func<string, IFormatProvider?, T>? ThrowingParser;
 
 	/// <summary>
-	/// Sets the parser used by the textPrompt.
-	/// If provided input cannot be parsed, the parser should
-	/// throw an exception. See <see cref="AddValidator(Action{T})"/> 
-	/// for list of exceptions caught during user input.
+	/// <para>
+	/// Sets the parser used by this instance of <see cref="Prompt{T}"/>.
+	/// </para>
+	/// <para>
+	/// If provided input cannot be parsed, the parser should throw
+	/// a common exception, like <see cref="FormatException"/> or <see cref="ArgumentException"/>
+	/// for it to be caught during the querying.
+	/// See <see cref="AddValidator(Action{T})"/> for a full list of exceptions caught.
+	/// </para>
+	/// <para>
+	/// When the exception is caught the user will be prompted to input a value again.
+	/// </para>
 	/// </summary>
-	/// <exception cref="ArgumentNullException">throwingParser is null</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="throwingParser"/> is <see langword="null"/></exception>
 	/// <returns>this</returns>
 	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser) {
 
@@ -243,24 +192,6 @@ public sealed class Prompt<T> {
 		ThrowingParser = throwingParser;
 		return this;
 	}
-
-	/// <inheritdoc cref="SetParser(Func{string, IFormatProvider?, T})"/>
-	public Prompt<T> SetParser(Func<string, IFormatProvider?, T> throwingParser, IFormatProvider? formatProvider) {
-		SetParser(throwingParser);
-		SetParserFormat(formatProvider);
-		return this;
-	}
-
-	/// <summary>Sets <see cref="IFormatProvider"/> to be used by the parser.</summary>
-	/// <returns>this</returns>
-	public Prompt<T> SetParserFormat(IFormatProvider? formatProvider) {
-		this.formatProvider = formatProvider;
-		return this;
-	}
-
-	#endregion
-
-	#region //// Validator
 
 	Action<T> ThrowingValidator = (T _) => { };
 
@@ -271,7 +202,9 @@ public sealed class Prompt<T> {
 	/// <para>
 	/// On invalid input the provided validator should throw a <see cref="PromptInputException"/>
 	/// or one of other exceptions caught (see below).
-	/// When the exception is caught the user will be prompted to input a value again
+	/// </para>
+	/// <para>
+	/// When the exception is caught the user will be prompted to input a value again.
 	/// </para>
 	/// <para>
 	/// The following exceptions are also caught:
@@ -307,20 +240,14 @@ public sealed class Prompt<T> {
 
 		do {
 
-			// Filter and convert hints to strings
-			IEnumerable<string> hintTexts =
-				hints
-				.HintsTryPrependTypeHint<T>()
-				.FilterHints();
-
 			// Stylize prompt text and add hints
-			string styledPromptText = PromptStyler.MakePromptDisplayString(textPrompt, hintTexts);
+			string styledPromptText = prompter.FormatPromptDisplay(textPrompt, hints);
 
 			try {
 
 				// Write text prompt and read line
-				Console.Write(styledPromptText);
-				string input = Console.ReadLine() ?? "";
+				prompter.OutputStream.Write(styledPromptText);
+				string input = prompter.InputStream.ReadLine() ?? "";
 
 				// Parse and validate
 				return ParseAndValidate(input);
@@ -337,7 +264,7 @@ public sealed class Prompt<T> {
 					|| ex is NotSupportedException
 					|| ex is NotImplementedException
 				) {
-					Console.WriteLine(PromptStyler.MakeInvalidInputString(ex));
+					prompter.OutputStream.WriteLine(prompter.FormatInputError(ex));
 				} else {
 					throw;
 				}
@@ -364,7 +291,7 @@ public sealed class Prompt<T> {
 		}
 
 		// Parse and validate
-		T value = ThrowingParser(input, formatProvider);
+		T value = ThrowingParser(input, prompter.FormatProvider);
 		ThrowingValidator(value);
 
 		// Return

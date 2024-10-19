@@ -11,9 +11,9 @@ namespace Rephidock.ConsolePrompts;
 /// Holds extension methods that return the
 /// object operated on to allow fluent syntax.
 /// </summary>
-public static class PromptInputLimiter {
+public static class PromptRestrictions {
 
-	#region //// String Limits
+	#region //// Strings
 
 	/// <summary>Limits input to be of specified exact length.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -33,15 +33,14 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, length);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		prompt.AddHint(new PromptHint<int>(PromptHintKeys.StringLength, length));
 
 		// Return
 		return prompt; 
 	}
 
 	/// <summary>
-	/// Limits input to be of length within given bounds.
+	/// Limits input to be of length within given inclusive bounds.
 	/// Set <paramref name="minLength"/> to 0 for no lower bound.
 	/// Set <paramref name="maxLength"/> to <see langword="null"/> for no upper bound.
 	/// </summary>
@@ -70,6 +69,10 @@ public static class PromptInputLimiter {
 			return prompt.OfLength(minLength);
 		}
 
+		if (minLength == 1 && !maxLength.HasValue) {
+			return prompt.DisallowEmpty();
+		}
+
 		// Define and add validator
 		void Validator(string value) {
 			if (value.Length < minLength || (maxLength.HasValue && value.Length > maxLength)) {
@@ -80,9 +83,12 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string rangeText = PromptStyler.MakeRangeHintString(minLength, maxLength);
-		string hintText = string.Format(PromptStyler.HintStrings.LengthFormat, rangeText);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		prompt.AddHint(
+			new PromptHint<(int?, int?)>(
+				PromptHintKeys.StringLength, 
+				(minLength, maxLength)
+			)
+		);
 
 		// Return
 		return prompt;
@@ -102,13 +108,13 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotEmpty, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.StringNotEmpty));
 
 		// Return
 		return prompt;
 	}
 
-	/// <summary>Denies input that is whitespace only.</summary>
+	/// <summary>Denies input that is empty or whitespace only.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<string> DisallowOnlyWhiteSpace(this Prompt<string> prompt) {
 
@@ -122,7 +128,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotWhitespace, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.StringNotEmptyOrWhitespace));
 
 		// Return
 		return prompt;
@@ -130,7 +136,7 @@ public static class PromptInputLimiter {
 
 	#endregion
 
-	#region //// Path Limits
+	#region //// File System
 
 	/// <summary>Limits input to be a valid filesystem path.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -139,7 +145,7 @@ public static class PromptInputLimiter {
 		// Define and add validator
 		static void Validator(string value) {
 
-			if (value.Trim().Length == 0) throw new PromptInputException("Path is empty.");
+			if (string.IsNullOrWhiteSpace(value)) throw new PromptInputException("Path is empty.");
 
 			if (value.IndexOfAny(Path.GetInvalidPathChars()) != -1) {
 				throw new PromptInputException("Path contains invalid characters.");
@@ -152,7 +158,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.Path, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.Path));
 
 		// Return
 		return prompt;
@@ -179,13 +185,9 @@ public static class PromptInputLimiter {
 
 		prompt.OfPath().AddValidator(Validator);
 
-		// Add hint
+		// Replace hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(PromptStyler.HintStrings.FilePath, PromptHintLevel.Verbose);
-
-		if (mustExist) {
-			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
-		}
+		prompt.AddHint(new PromptHint<bool>(PromptHintKeys.FilePath, mustExist));
 
 		// Return
 		return prompt;
@@ -212,13 +214,9 @@ public static class PromptInputLimiter {
 
 		prompt.OfPath().AddValidator(Validator);
 
-		// Add hint
+		// Replace hint
 		prompt.RemoveLastHint(); // remove HintStrings.Path hint
-		prompt.AddHint(PromptStyler.HintStrings.DirectoryPath, PromptHintLevel.Verbose);
-
-		if (mustExist) {
-			prompt.AddHint(PromptStyler.HintStrings.MustExist, PromptHintLevel.Verbose);
-		}
+		prompt.AddHint(new PromptHint<bool>(PromptHintKeys.DirectoryPath, mustExist));
 
 		// Return
 		return prompt;
@@ -226,9 +224,12 @@ public static class PromptInputLimiter {
 
 	#endregion
 
-	#region //// Numeric Value Limits
+	#region //// Numeric Value
 
-	/// <summary>Limits input to be in numeric range.</summary>
+	/// <summary>
+	/// Limits input to be in an inclusive numeric range.
+	/// Range may be unbounded.
+	/// </summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
 	public static Prompt<T> OfRange<T>(this Prompt<T> prompt, T? min, T? max) where T : struct, INumber<T> {
 		
@@ -251,14 +252,19 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.MakeRangeHintString(min, max), PromptHintLevel.Standard);
+		prompt.AddHint(
+			new PromptHint<(string?, string?)>(
+				PromptHintKeys.NumericRange,
+				(min?.ToString(), max?.ToString())
+			)
+		);
 
 		// Return
 		return prompt;
 	}
 
 	/// <summary>
-	/// Limits input by setting a low numeric bound.
+	/// Limits input by setting an inclusive low numeric bound.
 	/// If high bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
 	/// </summary>
 	/// <remarks>
@@ -270,7 +276,7 @@ public static class PromptInputLimiter {
 	}
 
 	/// <summary>
-	/// Limits input by setting a high numeric bound.
+	/// Limits input by setting an inclusive high numeric bound.
 	/// If low bound is also needed use <see cref="OfRange{T}(Prompt{T}, T?, T?)"/>
 	/// </summary>
 	/// <remarks>
@@ -283,7 +289,7 @@ public static class PromptInputLimiter {
 
 	#endregion
 
-	#region //// Numeric Finiteness limits
+	#region //// Numeric Finiteness
 
 	/// <summary>Denies input of infinite values.</summary>
 	/// <returns>The <see cref="Prompt{T}"/> instance operated on.</returns>
@@ -299,7 +305,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotInfinite, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericNotInfinity));
 
 		// Return
 		return prompt;
@@ -319,7 +325,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.NotNan, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericNotNan));
 
 		// Return
 		return prompt;
@@ -339,7 +345,7 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		prompt.AddHint(PromptStyler.HintStrings.Finite, PromptHintLevel.Verbose);
+		prompt.AddHint(new PromptHint(PromptHintKeys.NumericFinite));
 
 		// Return
 		return prompt;
@@ -363,8 +369,8 @@ public static class PromptInputLimiter {
 		prompt.AddValidator(Validator);
 
 		// Add hint
-		string hintText = string.Format(PromptStyler.HintStrings.NotEqualsFormat, exclusion);
-		prompt.AddHint(hintText, PromptHintLevel.Standard);
+		string exclusionString = exclusion is null ? "null" : exclusion.ToString() ?? "unknown value";
+		prompt.AddHint(new PromptHint<string>(PromptHintKeys.NotEqual, exclusionString));
 
 		// Return
 		return prompt;
