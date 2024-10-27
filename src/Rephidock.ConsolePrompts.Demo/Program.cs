@@ -210,9 +210,12 @@ internal class Program
 
 		DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-		if (userBirthday == today) {
+		if (userBirthday == today)
+		{
 			Console.WriteLine("Happy birthday!");
-		} else {
+		}
+		else
+		{
 			Console.WriteLine($"Ah, on {userBirthday}. Got it.");
 		}
 
@@ -220,7 +223,8 @@ internal class Program
 		// You can define your own hints and handlers for them from the ground up.
 		const string exampleHintKey = "userExample";
 
-		static string? ExampleHintHandler(PromptHint hint) {
+		static string? ExampleHintHandler(PromptHint hint)
+		{
 
 			// Skip unrelated hints if assigned
 			if (hint.Key != exampleHintKey) return null;
@@ -251,9 +255,11 @@ internal class Program
 
 		// All restrictions already seen just add their internal validators and hints.
 
-		// Let's define own validator. Must throw on invalid input
-		static void MustNotContainLetterAValidator(string input) {
-			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase)) {
+		// Let's define own validator. Must throw on invalid input.
+		static void MustNotContainLetterAValidator(string input)
+		{
+			if (input.Contains('A', StringComparison.InvariantCultureIgnoreCase))
+			{
 				throw new PromptInputException("Input must not contain letter 'A'");
 			}
 		}
