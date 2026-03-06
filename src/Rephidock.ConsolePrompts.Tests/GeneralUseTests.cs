@@ -19,9 +19,9 @@ public sealed class GeneralUseTests {
 	public void Prompt_FirstInputCorrect_ReadsSteamTillEndAndReturnsExpected(string input) {
 
 		// Arrange
-		using var outputStram = new StringWriter();
+		using var outputStream = new StringWriter();
 		using var inputStream = new StringReader(input + '\n');
-		var prompter = new Prompter(outputStram, inputStream);
+		var prompter = new Prompter(outputStream, inputStream);
 		var prompt = prompter.PromptForString(null, trim: false);
 
 		// Act
@@ -40,9 +40,9 @@ public sealed class GeneralUseTests {
 	public void Prompt_FirstInputIncorrect_ReadsSteamTillEndAndReturnsExpected(string inputsJoined, int expected) {
 
 		// Arrange
-		using var outputStram = new StringWriter();
+		using var outputStream = new StringWriter();
 		using var inputStream = new StringReader(inputsJoined);
-		var prompter = new Prompter(outputStram, inputStream);
+		var prompter = new Prompter(outputStream, inputStream);
 		var prompt = prompter.PromptFor<int>(null);
 
 		// Act
@@ -62,9 +62,9 @@ public sealed class GeneralUseTests {
 	public void Prompt_FirstInputCorrect_DoesNotOverRead(string inputsJoined) {
 
 		// Arrange
-		using var outputStram = new StringWriter();
+		using var outputStream = new StringWriter();
 		using var inputStream = new StringReader(inputsJoined);
-		var prompter = new Prompter(outputStram, inputStream);
+		var prompter = new Prompter(outputStream, inputStream);
 		var prompt = prompter.PromptForString(null, trim: false);
 
 		// Act

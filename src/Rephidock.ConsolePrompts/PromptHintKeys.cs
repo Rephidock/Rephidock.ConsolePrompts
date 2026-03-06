@@ -18,7 +18,7 @@ public static class PromptHintKeys {
 
 	/// <summary>
 	/// Hint key denoting a string length limit.
-	/// Payload: exact legnth as int -OR- length range as (int?,int?) 
+	/// Payload: exact length as int -OR- length range as (int?,int?) 
 	/// </summary>
 	public const string StringLength = "strLen";
 
@@ -34,13 +34,13 @@ public static class PromptHintKeys {
 
 	/// <summary>
 	/// Hint key denoting the input must be a file system path to a file.
-	/// Payload: wether the file must exist (as bool).
+	/// Payload: whether the file must exist (as bool).
 	/// </summary>
 	public const string FilePath = "pathFile";
 
 	/// <summary>
 	/// Hint key denoting the input must be a file system path to a directory.
-	/// Payload: wether the directory must exist (as bool).
+	/// Payload: whether the directory must exist (as bool).
 	/// </summary>
 	public const string DirectoryPath = "pathDirectory";
 

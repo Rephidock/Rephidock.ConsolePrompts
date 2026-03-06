@@ -40,7 +40,7 @@ public record PromptHint {
 }
 
 
-/// <typeparam name="TPayload">The type of addictional information stored, ideally immutable.</typeparam>
+/// <typeparam name="TPayload">The type of additional information stored, ideally immutable.</typeparam>
 /// <remarks>For a hint without a payload see <see cref="PromptHint"/>.</remarks>
 /// <inheritdoc cref="PromptHint"/>
 public record PromptHint<TPayload> : PromptHint {

@@ -81,7 +81,7 @@ public static class PromptHintHandlers {
 	/// <summary>Hint handler for key <see cref="PromptHintKeys.StringLength"/></summary>
 	public static string? StringLengthHintHandler(PromptHint hint) {
 
-		// Fixed legnth
+		// Fixed length
 		if (hint is PromptHint<int> fixedLengthHint) return $"{fixedLengthHint.Payload} chrs.";
 
 		// Length range
