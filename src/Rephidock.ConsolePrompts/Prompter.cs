@@ -18,10 +18,10 @@ public class Prompter {
 
 	/// <summary>
 	/// <para>Creates a <see cref="Prompter"/> for the <see cref="Console"/> streams.</para>
-	/// <para>Comes with common hint handlers and skips all uknown hints unless specified otherwise.</para>
+	/// <para>Comes with common hint handlers and skips all unknown hints unless specified otherwise.</para>
 	/// </summary>
 	/// <param name="autoSetupHints">
-	/// Wether to automatically hint handlers from <see cref="PromptHintHandlers.GetCommonHandlers"/>
+	/// Whether to automatically hint handlers from <see cref="PromptHintHandlers.GetCommonHandlers"/>
 	/// as well as a <see cref="PromptHintHandlers.SkipHintHandler(PromptHint)"/>
 	/// as <see cref="UnknownHintHandler"/>.
 	/// </param>
@@ -174,7 +174,7 @@ public class Prompter {
 
 	/// <summary>
 	/// Enable or disable automatically adding type hints.
-	/// (see <see cref="Prompt{T}.AddTypeHint"/>.
+	/// (see <see cref="Prompt{T}.AddTypeHint"/>).
 	/// <see langword="false"/> by default.
 	/// </summary>
 	/// <remarks>
@@ -311,9 +311,9 @@ public class Prompter {
 		foreach (var hint in hints) {
 
 			// Find handler based on hint key
-			var hintHadler = hintFormatHandlers.GetValueOrDefault(hint.Key, UnknownHintHandler);
+			var hintHandler = hintFormatHandlers.GetValueOrDefault(hint.Key, UnknownHintHandler);
 
-			string? hintString = hintHadler(hint);
+			string? hintString = hintHandler(hint);
 			if (hintString is not null) yield return hintString;
 		}
 	

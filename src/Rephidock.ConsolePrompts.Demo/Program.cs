@@ -177,12 +177,12 @@ internal class Program
 		// and uses a DebugHintHandler for unknown hints.
 		prompter = new Prompter(autoSetupHints: false);
 
-		// Lets add some handlers!
+		// Let's add some handlers!
 		prompter.SetHintHandler(PromptHintKeys.BasicText, hint => (hint as PromptHint<string>)?.Payload);
 		prompter.SetHintHandler(PromptHintKeys.StringNotEmptyOrWhitespace, _ => "not empty");
 		prompter.UnknownHintHandler = hint => $"<unknown hint key {hint.Key}>";
 
-		// Lets create a prompt with some hints and see what is displayed.
+		// Let's create a prompt with some hints and see what is displayed.
 		_ = prompter
 			.PromptForString("Give me 3 characters")
 			.AddTextHint("3 chrs.")     // This adds a BasicText hint. The given text becomes Payload.
